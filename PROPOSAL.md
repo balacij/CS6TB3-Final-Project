@@ -8,8 +8,6 @@
 
 ## Design
 
-### Challenges
-
 ### Language Changes/Decisions
 
 ### Pseudocode examples

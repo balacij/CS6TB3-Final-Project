@@ -4,38 +4,119 @@
 Project 9: Disjoint Union Types
 
 ## Objective
+The goal of this project is to add disjoint union types to P0, with adding some "functional" aspects onto them such as pattern matching.
 
 ## Division of Work
 As I am enrolled in 6TB3, I, Jason Balaci, will be the only team member and will be building the entire project by myself.
 
 ## Design
 
-### Challenges
+### Language Changes
+An approximate language proposal:
+```
+type ::= identifier << dynamic list of possible types, thereby allowing embedding types within types >>
 
-### Language Changes/Decisions
+constructor ::= identifier{" " type}
+sumTypeDefinition ::= "data" identifier = constructor {" | " constructor} 
+
+case ::= constructor ":\n" statementBlock
+caseExpr ::= "case " expression " of {\n" case {"\n" case} "}"
+```
+Note: whitespace will be allowed but is not important to be added to the above proposal.
+
+We specifically want to note the following:
+1. Language changes will be influenced by Haskell and Agda.
+2. `data <Type Name> = <Constructor Name> {<Type> }| <Constructor Name> {<Type> }| ...` will be the general structure of a type definition of a sum type.
+3. `case x of { a: ... b: ... c: ... ... }` will be the general structure of pattern matching on variables, with new lines between each case (examples below).
+4. Deep pattern matching will not be allowed when "case"-ing. When using a "case" on some sum type, each case should be a single constructor (along with new variable names when applicable) from the parent type. You will not be allowed to further pattern match on any of the individual variables.
+5. A single "default" case will allowed as the last case, matching any non-explicitly matched types. It will be similar to how Java's switch-statements' "default".
 
 ### Pseudocode examples
+The following are some examples of the proposed language changes.
 
 #### Simple
+The following are some _simple_ examples that do not include any generalized types.
 ```
 data MaybeInt =
-      Just Int
+      Just integer
     | Nothing
+
+procedure defaultOr(x: MaybeInt, d: integer) → (y: integer)
+    case x of {
+        Just b:
+            y := b
+        Nothing:
+            y := d
+    }
+
+procedure add(x, y: MaybeInt) → (r: integer)
+    r := defaultOr(x, 0) + defaultOr(y, 0)
+
+program arithmetic
+    var x, y, z: integer
+    var mX, mY : MaybeInt
+      x ← read(); y ← read()
+      if x ≥ 10
+        then mX := Just x
+        else mX := Nothing
+      if y ≥ 10
+        then mY := Nothing
+        else mY := Just y
+      z ← add(mX, mY)
+      write(z)
+
 ```
 
 ```
 data IntBinTree =
       Tip
-    | Branch IntBinTree Integer IntBinTree
+    | Branch IntBinTree integer IntBinTree
+
+procedure total(b: IntBinTree) → (r: integer)
+    var lt, lr: integer
+    case b of {
+        Tip:
+            r := 0
+        Branch l v r:
+            lt ← total(l)
+            rt ← total(r)
+            r := lt + v + rt
+    }
 ```
 
+Using `quotrem` from course notes, `EitherIntInt` is a more common example of using `Either` (influenced by Haskell), `EvenOddIntInt` is a variant of `Either` in that it has the same construction with different names. 
 ```
-data EitherIntFloat =
-      Left Int
-    | Right Float
+data EitherIntInt =
+      Left integer
+    | Right integer
+
+data EvenOddIntInt =
+      Even integer
+    | Odd integer
+
+procedure evenOrOdd(i: integer) → (eo: EitherIntInt)
+    var q, r: integer
+    q, r = quotrem(i, 2)
+    if r ≠ 0
+        then eo := Odd i
+        else eo := Even i
+
+procedure printIfEven(eo: EvenOddIntInt)
+    case eo of {
+        Even i:
+            write(i)
+    }
+
+procedure printIfOdd(eo: EvenOddIntInt)
+    case eo of {
+        Odd i:
+            write(i)
+    }
 ```
 
 #### Generalized
+The following are the same examples but using parameters to generalize the same constructions.
+
 ```
 data Maybe a =
       Just a
@@ -65,5 +146,9 @@ data Either a b =
 | Apr. 7 - Apr.12 |             Finishing touches + Presentation             |             |
 
 ## Resources
+* The **existing P0 compiler from course notes** will be augmented to allow for the disjoint union types and other language features as discussed above.
+* **GitLab** will be used for hosting all project artifacts, including, but not limited to, Jupyter Notebooks, notes, related research, examples, and build artifacts.
+* **JupyterHub** will be used to develop the language changes. Files from JupyterHub will only exported at least once per week for uploading to GitLab so that GitLab contains a somewhat up-to-date notes.
+* Language decisions will be influced by my experience with **Haskell**, **Agda**, and **Java**.
 * https://en.wikipedia.org/wiki/Algebraic_data_type
 
