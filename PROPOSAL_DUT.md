@@ -139,11 +139,11 @@ data Either a b =
 
 |       Week      |                           Name                           | Description |
 |:---------------:|:--------------------------------------------------------:|-------------|
-|   Mar. 10 - 16  | Prototyping <br>+ Deciding between project<br>+ Learning |             |
-|   Mar. 17 - 23  |                       Implementing                       |             |
-|   Mar. 24 - 30  |             Debugging, rewriting, optimizing             |             |
-| Mar. 21 - Apr.6 |                   Creating presentation                  |             |
-| Apr. 7 - Apr.12 |             Finishing touches + Presentation             |             |
+|   Mar. 10 - 16  | Prototyping <br>+ Deciding between project<br>+ Learning | - Study P0, watch lecture videos about P0 and WebAssembly, learning how to develop P0 programs and how to write WebAssembly S-expressions, and about how WebAssembly works in general<br> - Decide between projects<br> - Formalize proposed grammar changes to P0|
+|   Mar. 17 - 23  |                       Implementing                       | - Building a prototype of disjoint union types |
+|   Mar. 24 - 30  |             Debugging, rewriting, optimizing             | - Create examples, test cases, and write nice error messages<br> - Work on generalizing type parameters for the sum types<br> - Restructure if necessary (general code clean up) |
+| Mar. 21 - Apr.6 |                   Creating presentation                  | - Create presentation examples and material, using JupypterHub for creating a slideshow, similar to course notes |
+| Apr. 7 - Apr.12 |             Finishing touches + Presentation             | - Submission due on Apr. 12th<br> - Final tests and quality control<br> - Practicing presentation before presentation date |
 
 ## Resources
 * The **existing P0 compiler from course notes** will be augmented to allow for the disjoint union types and other language features as discussed above.
