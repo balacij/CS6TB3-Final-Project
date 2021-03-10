@@ -1,5 +1,19 @@
 # Project Proposal
 
+## Table of Contents
+- [Project Proposal](#project-proposal)
+  - [Table of Contents](#table-of-contents)
+  - [Topic](#topic)
+  - [Objective](#objective)
+  - [Division of Work](#division-of-work)
+  - [Design](#design)
+    - [Language Changes](#language-changes)
+    - [Pseudocode examples](#pseudocode-examples)
+      - [Simple](#simple)
+      - [Generalized](#generalized)
+  - [Weekly Plan](#weekly-plan)
+  - [Resources](#resources)
+
 ## Topic
 Project 9: Disjoint Union Types
 

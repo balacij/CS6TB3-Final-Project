@@ -1,5 +1,16 @@
 # Project Proposal
 
+## Table of Contents
+- [Project Proposal](#project-proposal)
+  - [Table of Contents](#table-of-contents)
+  - [Topic](#topic)
+  - [Objective](#objective)
+  - [Division of Work](#division-of-work)
+  - [Design](#design)
+    - [Some examples of code specialization](#some-examples-of-code-specialization)
+  - [Weekly Plan](#weekly-plan)
+  - [Resources](#resources)
+
 ## Topic
 Partial Evaluation in P0
 
