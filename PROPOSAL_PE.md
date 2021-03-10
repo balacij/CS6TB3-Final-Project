@@ -23,6 +23,7 @@ There are many ways in which we can specialize code in P0, but here are a few:
 6. In general, if we have some pure n-ary operator we may compute/specialize it if all of it's inputs are static.
 7. Any program without any impure function usage should be computed entirely before running. For example, if we have some program meant to compute the `X`-th fibonacci number (where `X` is some constant defined in the code, specifically not read in during runtime), we will pre-compute the `X`-th fibonacci number and specialize the code such that it merely loads the `X`-th fibonacci number into memory (or just sets it to some variable).
 8. We should strip unnecessary code. For example, if we have "no-op" code, we should remove it through specialization. Additionally, if we have code that is no longer used after specialization, we should try to remove it wherever possible.
+9. Pure function/procedure applications are static in the context of static arguments.
 
 There will also be a schema for writing applications that are "partial evaluator" friendly, in that they are built in such a way that static information and dynamic information is grouped together in such a way that the partial evaluator may make the most use of the information as possible (for example, if we write something as `static + dynamic + static`, we may not be able to partially evaluate this even slightly unless we do not write it as `dynamic + static + static` [up to the associativity of the operator]).
 
