@@ -12,7 +12,7 @@ As I am enrolled in 6TB3, I, Jason Balaci, will be the only team member and will
 ## Design
 A partial evaluator in P0 would be implemented using an "online" style whereby it reasons about specializations as it tries to compile P0 programs into WebAssembly (or just before compiling), relying on the already constructed Abstract Syntax Tree for P0.
 
-When compiling, a partial evaluator tries to specialize
+When compiling, an online partial evaluator tries to specialize the constructed program as it goes along. As Abstract Syntax Trees are "trees", early reasoning about program constructions starts with "later" parts of a program (generally the "ends"). All AST components are then divided into "static" and "dynamic" components. Static components are "constants" from which we can use to pre-compute/specialize components accordingly. For example, if we had some condition "if True then a := 5 else a := 3", we know we can specialize this into "a := 5" as the "True" is constant (static) data. Since P0 is an imperative language, it contains mixed "pure" and "impure" code segments for which we will need to differentiate. Pure code is code that contains no side-effects, and impure code is code that contains side-effects.
 
 ## Weekly Plan
 
