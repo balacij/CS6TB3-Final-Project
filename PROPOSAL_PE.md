@@ -12,7 +12,7 @@ As I am enrolled in 6TB3, I, Jason Balaci, will be the only team member and will
 ## Design
 A partial evaluator in P0 would be implemented using an "online" style whereby it reasons about specializations as it tries to compile P0 programs into WebAssembly (or just before compiling), relying on the already constructed Abstract Syntax Tree for P0.
 
-When compiling, an online partial evaluator tries to specialize the constructed program as it goes along. As Abstract Syntax Trees are "trees", early reasoning about program constructions starts with "later" parts of a program (generally the "ends"). All AST components are then divided into "static" and "dynamic" components. Static components are "constants" from which we can use to pre-compute/specialize components accordingly. For example, if we had some condition "if True then a := 5 else a := 3", we know we can specialize this into "a := 5" as the "True" is constant (static) data. Since P0 is an imperative language, it contains mixed "pure" and "impure" code segments for which we will need to differentiate. Pure code is code that contains no side-effects, and impure code is code that contains side-effects.
+When compiling, an online partial evaluator tries to specialize the constructed program as it goes along. As Abstract Syntax Trees are "trees", early reasoning about program constructions starts with "later" parts of a program (generally the "ends"). All AST components are then divided into "static" and "dynamic" components. Static components are "constants" from which we can use to pre-compute/specialize components accordingly. For example, if we had some condition `if True then a := 5 else a := 3`, we know we can specialize this into `a := 5` as the `True` is constant (static) data that we may use to specialize the `if` statement. Since P0 is an imperative language, it contains mixed "pure" and "impure" code segments for which we will need to differentiate. Pure code is code that contains no side-effects, and impure code is code that contains side-effects.
 
 There are many ways in which we can specialize code in P0, but here are a few:
 1. All constants are static.
@@ -20,17 +20,22 @@ There are many ways in which we can specialize code in P0, but here are a few:
 3. We may deem a function/procedure to be impure if it contains some component that is "impure". However, we may still specialize areas in and around it despite it containing some impure area.
 4. If we have some pure binary operator, we may compute/specialize it if both of it's inputs are static.
 5. If we have some pure unary operator, we may compute/specialize it if it's input is static.
-6. If we have some pure n-ary operator we may compute/specialize it if all of it's inputs are static.
+6. In general, if we have some pure n-ary operator we may compute/specialize it if all of it's inputs are static.
 7. Any program without any impure function usage should be computed entirely before running. For example, if we have some program meant to compute the `X`-th fibonacci number (where `X` is some constant defined in the code, specifically not read in during runtime), we will pre-compute the `X`-th fibonacci number and specialize the code such that it merely loads the `X`-th fibonacci number into memory (or just sets it to some variable).
 8. We should strip unnecessary code. For example, if we have "no-op" code, we should remove it through specialization. Additionally, if we have code that is no longer used after specialization, we should try to remove it wherever possible.
 
-### Examples of Specialization
+There will also be a schema for writing applications that are "partial evaluator" friendly, in that they are built in such a way that static information and dynamic information is grouped together in such a way that the partial evaluator may make the most use of the information as possible (for example, if we write something as `static + dynamic + static`, we may not be able to partially evaluate this even slightly unless we do not write it as `dynamic + static + static` [up to the associativity of the operator]).
+
+### Some examples of code specialization
+
+Below are some examples of code specialization, however, these are not the only examples that this work would be limited to.
 
 | Code | Effective Specialization |
 |------|----------------|
 | `if True then a := 5 else a := 3` | `a := 3` |
 | `5 + 3` | `8` |
 | `5 * 3` | `15` |
+| `5 = 3` | `False` |
 | `5 - 3` | `2` |
 | `-(5 + 3)` | `-8` |
 | `not(False)` | `True` |
@@ -38,7 +43,8 @@ There are many ways in which we can specialize code in P0, but here are a few:
 | `if a > 0 then b := 3 else b := 0` | `b := 3` |
 | `const a := 4; if a > 0 then b := 3 else b := 0` | `const a := 4; b := 3` |
 | `const a := 4; b := a + 3` | `const a := 4; b := 7` |
-| `q, r := quotrem(5,2)` | `q, r := 2, 1` |
+| `q, r := quotrem(5,2)` where `quotrem` is a pure function | `q, r := 2, 1` |
+| `q := fib(10)` where `fib` is a pure function (fibonacci) | `q := 55` |
 
 ## Weekly Plan
 
