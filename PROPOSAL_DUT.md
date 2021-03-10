@@ -19,7 +19,7 @@ type ::= identifier << dynamic list of possible types, thereby allowing embeddin
 constructor ::= identifier{" " type}
 sumTypeDefinition ::= "data" identifier = constructor {" | " constructor} 
 
-case ::= constructor ":\n" statementBlock
+case ::= constructor ":\n" statementBlock "\n"
 caseExpr ::= "case " expression " of {\n" case {"\n" case} "}"
 ```
 Note: whitespace will be allowed but is not important to be added to the above proposal.
@@ -139,7 +139,7 @@ data Either a b =
 
 |       Week      |                           Name                           | Description |
 |:---------------:|:--------------------------------------------------------:|-------------|
-|   Mar. 10 - 16  | Prototyping <br>+ Deciding between project<br>+ Learning | - Study P0, watch lecture videos about P0 and WebAssembly, learning how to develop P0 programs and how to write WebAssembly S-expressions, and about how WebAssembly works in general<br> - Decide between projects<br> - Formalize proposed grammar changes to P0|
+|   Mar. 10 - 16  | Prototyping <br>+ Deciding between project<br>+ Learning about P0 | - Study P0, watch lecture videos about P0 and WebAssembly, learning how to develop P0 programs and how to write WebAssembly S-expressions, and about how WebAssembly works in general<br> - Decide between projects<br> - Formalize proposed grammar changes to P0|
 |   Mar. 17 - 23  |                       Implementing                       | - Building a prototype of disjoint union types |
 |   Mar. 24 - 30  |             Debugging, rewriting, optimizing             | - Create examples, test cases, and write nice error messages<br> - Work on generalizing type parameters for the sum types<br> - Restructure if necessary (general code clean up) |
 | Mar. 21 - Apr.6 |                   Creating presentation                  | - Create presentation examples and material, using JupypterHub for creating a slideshow, similar to course notes |
