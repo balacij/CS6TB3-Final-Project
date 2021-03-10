@@ -24,6 +24,22 @@ There are many ways in which we can specialize code in P0, but here are a few:
 7. Any program without any impure function usage should be computed entirely before running. For example, if we have some program meant to compute the `X`-th fibonacci number (where `X` is some constant defined in the code, specifically not read in during runtime), we will pre-compute the `X`-th fibonacci number and specialize the code such that it merely loads the `X`-th fibonacci number into memory (or just sets it to some variable).
 8. We should strip unnecessary code. For example, if we have "no-op" code, we should remove it through specialization. Additionally, if we have code that is no longer used after specialization, we should try to remove it wherever possible.
 
+### Examples of Specialization
+
+| Code | Effective Specialization |
+|------|----------------|
+| `if True then a := 5 else a := 3` | `a := 3` |
+| `5 + 3` | `8` |
+| `5 * 3` | `15` |
+| `5 - 3` | `2` |
+| `-(5 + 3)` | `-8` |
+| `not(False)` | `True` |
+| `write(5+3)` | `write(8)` |
+| `if a > 0 then b := 3 else b := 0` | `b := 3` |
+| `const a := 4; if a > 0 then b := 3 else b := 0` | `const a := 4; b := 3` |
+| `const a := 4; b := a + 3` | `const a := 4; b := 7` |
+| `q, r := quotrem(5,2)` | `q, r := 2, 1` |
+
 ## Weekly Plan
 
 |       Week      |                           Name                           | Description |
