@@ -31,3 +31,4 @@ When compiling, a partial evaluator tries to specialize
 * Language decisions will be influced by my experience with **Haskell**, **Agda**, and **Java**.
 * "Tutorial on Online Partial Evaluation" - https://www.cs.utexas.edu/~wcook/tutorial/PEnotes.pdf
 * "Partially-static data as Free Extension of Algebras" - https://www.cl.cam.ac.uk/~jdy22/papers/partially-static-data-as-free-extension-of-algebras.pdf
+* My discussion session notes from CAS 761 (from which we discussed the above 2 papers) - https://www.cas.mcmaster.ca/~carette/CAS761/F2020/index.html
