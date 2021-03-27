@@ -266,14 +266,16 @@ def selector(x):
             y = expression()
             if type(x.tp) == Array:
                 if y.tp == Int:
-                    if type(y) == Const and (y.val < x.tp.lower or y.val >= x.tp.lower + x.tp.length):
-                        mark('index out of bounds')
+                    if type(y) == Const and (
+                        y.val < x.tp.lower or y.val >= x.tp.lower + x.tp.length
+                    ):
+                        mark("index out of bounds")
                     else:
                         x = CG.genIndex(x, y)
                 else:
-                    mark('index not integer')
+                    mark("index not integer")
             else:
-                mark('not an array')
+                mark("not an array")
             if SC.sym == RBRAK:
                 getSym()
             else:
@@ -314,7 +316,7 @@ def factor():
             x = CG.genConst(x)
             getSym()
         else:
-            mark('variable or constant identifier expected')
+            mark("variable or constant identifier expected")
         x = selector(x)
     elif SC.sym == NUMBER:
         x = Const(Int, SC.val)
@@ -326,7 +328,7 @@ def factor():
         if SC.sym == RPAREN:
             getSym()
         else:
-            mark(') expected')
+            mark(") expected")
     elif SC.sym == LBRACE:
         getSym()
         if SC.sym in FIRSTEXPRESSION:
@@ -334,7 +336,7 @@ def factor():
             if y.tp == Int:
                 x = CG.genUnaryOp(SET, y)
             else:
-                mark('not integer')
+                mark("not integer")
             while SC.sym == COMMA:
                 getSym()
                 y = expression()
@@ -349,12 +351,12 @@ def factor():
         if SC.sym == RBRACE:
             getSym()
         else:
-            mark('} expected')
+            mark("} expected")
     elif SC.sym == NOT:
         getSym()
         x = factor()
         if x.tp != Bool:
-            mark('not boolean')
+            mark("not boolean")
         elif type(x) == Const:
             x.val = 1 - x.val  # constant folding
         else:
@@ -366,9 +368,9 @@ def factor():
         if type(x.tp) == Set:
             x = CG.genUnaryOp(op, x)
         else:
-            mark('set expected')
+            mark("set expected")
     else:
-        mark('expression expected')
+        mark("expression expected")
     return x
 
 
@@ -406,7 +408,7 @@ def term():
             else:
                 x = CG.genBinaryOp(AND, x, y)
         else:
-            mark('bad type')
+            mark("bad type")
     return x
 
 
@@ -425,7 +427,7 @@ def simpleExpression():
         getSym()
         x = term()
         if x.tp != Int:
-            mark('bad type')
+            mark("bad type")
         elif type(x) == Const:
             x.val = -x.val  # constant folding
         else:
@@ -456,7 +458,7 @@ def simpleExpression():
                 x = CG.genBinaryOp(OR, x, y)
         else:
             print(x, y)
-            mark('bad type')
+            mark("bad type")
     return x
 
 
@@ -493,16 +495,18 @@ def expression():
                 else:
                     x = CG.genRelation(op, x, y)
             else:
-                mark('bad type')
-        elif (op == ELEMENT and x.tp == Int) or (op in (SUBSET, SUPERSET) and type(x.tp) == Set):
+                mark("bad type")
+        elif (op == ELEMENT and x.tp == Int) or (
+            op in (SUBSET, SUPERSET) and type(x.tp) == Set
+        ):
             x = CG.genUnaryOp(op, x)
             y = simpleExpression()
             if type(y.tp) == Set:
                 x = CG.genRelation(op, x, y)
             else:
-                mark('set expected')
+                mark("set expected")
         else:
-            mark('bad type')
+            mark("bad type")
     return x
 
 
@@ -533,7 +537,7 @@ def statementBlock():
     x = statementList()
     while SC.sym in FIRSTSTATEMENT:
         if not SC.newline:
-            mark('new line expected')
+            mark("new line expected")
         y = statementList()
         x = CG.genSeq(x, y)
     return x
@@ -555,7 +559,7 @@ def statementSuite():
         if SC.sym == DEDENT:
             getSym()
         else:
-            mark('dedent or new line expected')
+            mark("dedent or new line expected")
     else:
         mark("indented statement expected")
     return x
@@ -583,7 +587,7 @@ def statement():
         x = find(SC.val)
         if type(x) in {Proc, StdProc}:  # procedure call without result
             if x.res != []:
-                mark('variable for result expected')
+                mark("variable for result expected")
             getSym()
             call, xs, y = True, [], x
         elif type(x) == Var:  # assignment or procedure call with result
@@ -603,11 +607,11 @@ def statement():
                                 xs += [CG.genLeftAssign(CG.genVar(x))]
                                 getSym()
                             else:
-                                mark('variable identifier expected')
+                                mark("variable identifier expected")
                         else:
-                            mark('duplicate variable identifier')
+                            mark("duplicate variable identifier")
                     else:
-                        mark('identifier expected')
+                        mark("identifier expected")
             if SC.sym == BECOMES:
                 getSym()
                 call = False
@@ -620,9 +624,9 @@ def statement():
                         if compatible(x.tp, y.tp):
                             x = CG.genAssign(x, y)
                         else:
-                            mark('incompatible assignment')
+                            mark("incompatible assignment")
                 else:
-                    mark('unbalanced assignment')
+                    mark("unbalanced assignment")
             elif SC.sym == LARROW:
                 getSym()
                 if SC.sym == IDENT:
@@ -630,18 +634,18 @@ def statement():
                     getSym()
                     call = True
                 else:
-                    mark('procedure identifier expected')
+                    mark("procedure identifier expected")
                 if type(y) in {Proc, StdProc}:
                     if len(xs) == len(y.res):
                         for x, r in zip(xs, y.res):
                             if not compatible(x.tp, r.tp):
-                                mark('incompatible call')
+                                mark("incompatible call")
                     else:
-                        mark('unbalanced call')
+                        mark("unbalanced call")
                 else:
-                    mark('procedure expected')
+                    mark("procedure expected")
             else:
-                mark(':= or ← expected')
+                mark(":= or ← expected")
         else:
             mark("variable or procedure expected")
         if call:  # call y(ap) or xs ← y(ap)
@@ -656,9 +660,9 @@ def statement():
                     if compatible(fp[i].tp, a.tp):
                         ap.append(CG.genActualPara(a, fp[i], i))
                     else:
-                        mark('incompatible parameter')
+                        mark("incompatible parameter")
                 else:
-                    mark('extra parameter')
+                    mark("extra parameter")
                 i = i + 1
                 while SC.sym == COMMA:
                     getSym()
@@ -667,22 +671,22 @@ def statement():
                         if compatible(fp[i].tp, a.tp):
                             ap.append(CG.genActualPara(a, fp[i], i))
                         else:
-                            mark('incompatible parameter')
+                            mark("incompatible parameter")
                     else:
-                        mark('extra parameter')
+                        mark("extra parameter")
                     i = i + 1
             if SC.sym == RPAREN:
                 getSym()
             else:
                 mark("')' expected")
             if i < len(fp):
-                mark('too few parameters')
+                mark("too few parameters")
             elif type(y) == StdProc:
-                if y.name == 'read':
+                if y.name == "read":
                     x = CG.genRead(x)
-                elif y.name == 'write':
+                elif y.name == "write":
                     x = CG.genWrite(a)
-                elif y.name == 'writeln':
+                elif y.name == "writeln":
                     x = CG.genWriteln()
             else:
                 x = CG.genCall(xs, y, ap)
@@ -692,7 +696,7 @@ def statement():
         if x.tp == Bool:
             x = CG.genThen(x)
         else:
-            mark('boolean expected')
+            mark("boolean expected")
         if SC.sym == THEN:
             getSym()
         else:
@@ -712,7 +716,7 @@ def statement():
         if x.tp == Bool:
             x = CG.genDo(x)
         else:
-            mark('boolean expected')
+            mark("boolean expected")
         if SC.sym == DO:
             getSym()
         else:
@@ -720,7 +724,7 @@ def statement():
         y = statementSuite()
         x = CG.genWhileDo(t, x, y)
     else:
-        mark('statement expected')
+        mark("statement expected")
     return x
 
 
@@ -738,11 +742,11 @@ def statement():
 def adtKind(index, adtName):
     name = SC.val
     getSym()
-    
+
     record = None
     if SC.sym == LPAREN:
         record = typ(adtName=adtName)
-    
+
     x = CG.genADTKind(ADTKind(name=name, record=record))
     newDecl(name, x)
     return x
@@ -757,22 +761,22 @@ def typ(adtName=None, parsingTypedIds=False):
                 x = Type(x.val)
                 getSym()
             else:
-                mark('type identifier expected')
+                mark("type identifier expected")
         elif adtName is not None:
             if parsingTypedIds and SC.val == adtName:
                 getSym()
                 return Type(CG.genADTSelfRef(ADTSelfRef()))
-            
+
             i = 1
             kinds = [adtKind(index=i, adtName=adtName)]
             while SC.sym == ADT_SEP:
                 getSym()
                 i += 1
                 kinds.append(adtKind(index=i, adtName=adtName))
-            
+
             x = Type(CG.genADT(ADT(kinds=kinds)))
         else:
-            mark('type identifier expected')
+            mark("type identifier expected")
     elif SC.sym == LBRAK:
         getSym()
         x = expression()
@@ -791,9 +795,9 @@ def typ(adtName=None, parsingTypedIds=False):
             mark("'→' expected")
         z = typ().val
         if type(x) != Const or x.val < 0:
-            mark('bad lower bound')
+            mark("bad lower bound")
         elif type(y) != Const or y.val < x.val:
-            mark('bad upper bound')
+            mark("bad upper bound")
         else:
             x = Type(CG.genArray(Array(z, x.val, y.val - x.val + 1)))
     elif SC.sym == LPAREN:
@@ -824,13 +828,13 @@ def typ(adtName=None, parsingTypedIds=False):
         else:
             mark("']' expected")
         if type(x) != Const:
-            mark('bad lower bound')
+            mark("bad lower bound")
         elif type(y) != Const or y.val < x.val:
-            mark('bad upper bound')
+            mark("bad upper bound")
         else:
             x = Type(CG.genSet(Set(x.val, y.val - x.val + 1)))
     else:
-        mark('type expected')
+        mark("type expected")
     return x
 
 
@@ -853,7 +857,7 @@ def typedIds(adtName=None):
             tid.append(SC.val)
             getSym()
         else:
-            mark('identifier expected')
+            mark("identifier expected")
     if SC.sym == COLON:
         getSym()
     else:
@@ -874,7 +878,7 @@ def typedIds(adtName=None):
                 tid.append(SC.val)
                 getSym()
             else:
-                mark('identifier expected')
+                mark("identifier expected")
         if SC.sym == COLON:
             getSym()
         else:
@@ -911,7 +915,7 @@ def declarations(allocVar):
         if type(x) == Const:
             newDecl(ident, x)
         else:
-            mark('expression not constant')
+            mark("expression not constant")
     while SC.sym == TYPE:
         getSym()
         if SC.sym == IDENT:
@@ -977,12 +981,12 @@ def declarations(allocVar):
             if SC.sym == LPAREN:
                 getSym()
             else:
-                mark('( expected')
+                mark("( expected")
             typedIds()
             if SC.sym == RPAREN:
                 getSym()
             else:
-                mark(') expected')
+                mark(") expected")
         sc[-1].par, sc[-1].res = fp[:d], fp[d:]  #  procedure parameters updated
         para = CG.genProcStart(ident, fp[:d], fp[d:])
         body(ident, para)
@@ -1001,7 +1005,7 @@ def body(ident, para):
     if SC.sym == INDENT:
         getSym()
     else:
-        mark('indent expected')
+        mark("indent expected")
     start = len(topScope())
     local = declarations(CG.genLocalVars)
     CG.genProcEntry(ident, para, local)
@@ -1013,14 +1017,14 @@ def body(ident, para):
         if SC.sym == DEDENT:
             getSym()
         else:
-            mark('dedent or new line expected')
+            mark("dedent or new line expected")
     else:
-        mark('statement expected')
+        mark("statement expected")
     CG.genProcExit(x, para, local)
     if SC.sym == DEDENT:
         getSym()
     else:
-        mark('dedent or new line expected')
+        mark("dedent or new line expected")
     return x
 
 
@@ -1032,13 +1036,13 @@ def body(ident, para):
 
 
 def program():
-    newDecl('boolean', Type(CG.genBool(Bool)))
-    newDecl('integer', Type(CG.genInt(Int)))
-    newDecl('true', Const(Bool, 1))
-    newDecl('false', Const(Bool, 0))
-    newDecl('read', StdProc([], [Var(Int)]))
-    newDecl('write', StdProc([Var(Int)], []))
-    newDecl('writeln', StdProc([], []))
+    newDecl("boolean", Type(CG.genBool(Bool)))
+    newDecl("integer", Type(CG.genInt(Int)))
+    newDecl("true", Const(Bool, 1))
+    newDecl("false", Const(Bool, 0))
+    newDecl("read", StdProc([], [Var(Int)]))
+    newDecl("write", StdProc([Var(Int)], []))
+    newDecl("writeln", StdProc([], []))
     CG.genProgStart()
     declarations(CG.genGlobalVars)
     if SC.sym == PROGRAM:
@@ -1049,7 +1053,7 @@ def program():
     if SC.sym == IDENT:
         getSym()
     else:
-        mark('program name expected')
+        mark("program name expected")
     openScope()
     CG.genProgEntry(ident)
     x = body(ident, 0)
@@ -1061,16 +1065,16 @@ def program():
 # Procedure `compileString(src, dstfn, target)` compiles the source as given by string `src`; if `dstfn` is provided, the code is written to a file by that name, otherwise printed on the screen. If `target` is omitted, MIPS code is generated.
 
 
-def compileString(src, dstfn=None, target='wat'):
+def compileString(src, dstfn=None, target="wat"):
     global CG
-    if target == 'wat':
+    if target == "wat":
         import CGwat as CG
-    elif target == 'mips':
+    elif target == "mips":
         import CGmips as CG
-    elif target == 'ast':
+    elif target == "ast":
         import CGast as CG
     else:
-        print('unknown target')
+        print("unknown target")
         return
     try:
         SC.init(src)
@@ -1079,7 +1083,7 @@ def compileString(src, dstfn=None, target='wat'):
         if dstfn == None:
             print(p)
         else:
-            with open(dstfn, 'w') as f:
+            with open(dstfn, "w") as f:
                 f.write(p)
     except Exception as msg:
         # raise Exception(str(msg))
@@ -1089,11 +1093,11 @@ def compileString(src, dstfn=None, target='wat'):
 # Procedure `compileFile(srcfn, target)` compiles the file named `scrfn`, which must have the extension `.p`, and generates assembly code in a file with extension `.s`. If `target` is omitted, MIPS code is generated.
 
 
-def compileFile(srcfn, target='wat'):
-    if srcfn.endswith('.p'):
-        with open(srcfn, 'r') as f:
+def compileFile(srcfn, target="wat"):
+    if srcfn.endswith(".p"):
+        with open(srcfn, "r") as f:
             src = f.read()
-        dstfn = srcfn[:-2] + '.s'
+        dstfn = srcfn[:-2] + ".s"
         compileString(src, dstfn, target)
     else:
         print("'.p' file extension expected")

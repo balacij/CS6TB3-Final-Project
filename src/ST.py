@@ -11,7 +11,7 @@ from SC import mark
 
 
 def indent(n):
-    return textwrap.indent(str(n), '  ')
+    return textwrap.indent(str(n), "  ")
 
 
 # Symbol table entries are objects of following classes:
@@ -31,13 +31,13 @@ class Var:
 
     def __str__(self):
         return (
-            'Var(name = '
-            + str(getattr(self, 'name', ''))
-            + ', lev = '
-            + str(getattr(self, 'lev', ''))
-            + ', tp = '
+            "Var(name = "
+            + str(getattr(self, "name", ""))
+            + ", lev = "
+            + str(getattr(self, "lev", ""))
+            + ", tp = "
             + str(self.tp)
-            + ')'
+            + ")"
         )
 
     def __eq__(self, other):
@@ -53,13 +53,13 @@ class Ref:
 
     def __str__(self):
         return (
-            'Ref(name = '
-            + str(getattr(self, 'name', ''))
-            + ', lev = '
-            + str(getattr(self, 'lev', ''))
-            + ', tp = '
+            "Ref(name = "
+            + str(getattr(self, "name", ""))
+            + ", lev = "
+            + str(getattr(self, "lev", ""))
+            + ", tp = "
             + str(self.tp)
-            + ')'
+            + ")"
         )
 
 
@@ -69,13 +69,13 @@ class Res:
 
     def __str__(self):
         return (
-            'Res(name = '
-            + str(getattr(self, 'name', ''))
-            + ', lev = '
-            + str(getattr(self, 'lev', ''))
-            + ', tp = '
+            "Res(name = "
+            + str(getattr(self, "name", ""))
+            + ", lev = "
+            + str(getattr(self, "lev", ""))
+            + ", tp = "
             + str(self.tp)
-            + ')'
+            + ")"
         )
 
 
@@ -85,13 +85,13 @@ class Const:
 
     def __str__(self):
         return (
-            'Const(name = '
-            + str(getattr(self, 'name', ''))
-            + ', tp = '
+            "Const(name = "
+            + str(getattr(self, "name", ""))
+            + ", tp = "
             + str(self.tp)
-            + ', val = '
+            + ", val = "
             + str(self.val)
-            + ')'
+            + ")"
         )
 
     def __eq__(self, other):
@@ -106,7 +106,13 @@ class Type:
         self.tp, self.val = None, tp
 
     def __str__(self):
-        return 'Type(name = ' + str(getattr(self, 'name', '')) + ', val = ' + str(self.val) + ')'
+        return (
+            "Type(name = "
+            + str(getattr(self, "name", ""))
+            + ", val = "
+            + str(self.val)
+            + ")"
+        )
 
 
 class Proc:
@@ -115,16 +121,16 @@ class Proc:
 
     def __str__(self):
         return (
-            'Proc(name = '
+            "Proc(name = "
             + self.name
-            + ', lev = '
+            + ", lev = "
             + str(self.lev)
-            + ', par = ['
-            + ', '.join(str(s) for s in self.par)
-            + ']'
-            + ', res = ['
-            + ', '.join(str(s) for s in self.res)
-            + '])'
+            + ", par = ["
+            + ", ".join(str(s) for s in self.par)
+            + "]"
+            + ", res = ["
+            + ", ".join(str(s) for s in self.res)
+            + "])"
         )
 
 
@@ -134,16 +140,16 @@ class StdProc:
 
     def __str__(self):
         return (
-            'StdProc(name = '
+            "StdProc(name = "
             + self.name
-            + ', lev = '
+            + ", lev = "
             + str(self.lev)
-            + ', par = ['
-            + ', '.join(str(s) for s in self.par)
-            + ']'
-            + ', res = ['
-            + ', '.join(str(s) for s in self.res)
-            + '])'
+            + ", par = ["
+            + ", ".join(str(s) for s in self.par)
+            + "]"
+            + ", res = ["
+            + ", ".join(str(s) for s in self.res)
+            + "])"
         )
 
 
@@ -164,7 +170,7 @@ class Record:
         self.fields = fields
 
     def __str__(self):
-        return 'Record(fields = [' + ', '.join(str(f) for f in self.fields) + '])'
+        return "Record(fields = [" + ", ".join(str(f) for f in self.fields) + "])"
 
 
 class Array:
@@ -173,7 +179,13 @@ class Array:
 
     def __str__(self):
         return (
-            'Array(lower = ' + str(self.lower) + ', length = ' + str(self.length) + ', base = ' + str(self.base) + ')'
+            "Array(lower = "
+            + str(self.lower)
+            + ", length = "
+            + str(self.length)
+            + ", base = "
+            + str(self.base)
+            + ")"
         )
 
 
@@ -182,32 +194,37 @@ class Set:
         self.lower, self.length = lower, length
 
     def __str__(self):
-        return 'Set(lower = ' + str(self.lower) + ', length = ' + str(self.length) + ')'
+        return "Set(lower = " + str(self.lower) + ", length = " + str(self.length) + ")"
 
 
 # TODO: ADT
 class ADT:
     def __init__(self, kinds):
         self.kinds = kinds
-    
+
     def __str__(self):
         return f"ADT(name = {getattr(self, 'name', '')}, kinds = [{ ', '.join(str(kind) for kind in self.kinds) }])"
+
 
 class ADTKind:
     def __init__(self, name, record=None):
         self.name = name
         self.record = record
-    
+
     def __str__(self):
-        return f"ADTKind(name = {getattr(self, 'name', '')}, record = {str(self.record)})"
+        return (
+            f"ADTKind(name = {getattr(self, 'name', '')}, record = {str(self.record)})"
+        )
+
 
 # TODO: ADTSelfRef
 class ADTSelfRef:
     def __init__(self):
         pass
-    
+
     def __str__(self):
         return f"ADTSelfRef()"
+
 
 # The symbol table is represented by a list of scopes. Each scope is a list of entries. Each entry has a name, which is assumed to be a string, and the level at which it is declared; the entries on the outermost scope are on level 0 and the level increases with each inner scope.
 
@@ -218,7 +235,7 @@ def init():
 
 
 def printSymTab():
-    print('symbol table:')
+    print("symbol table:")
     for l in symTab:
         for e in l:
             print(e)
@@ -247,7 +264,7 @@ def find(name):
         for e in l:
             if name == e.name:
                 return e
-    mark('undefined identifier ' + name)
+    mark("undefined identifier " + name)
     return Const(None, 0)
 
 

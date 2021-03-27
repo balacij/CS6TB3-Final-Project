@@ -9,12 +9,14 @@ def runpywasm(wasmfile):
         print(i)
 
     def writeln(s):
-        print('\n')
+        print("\n")
 
     def read(s):
         return int(input())
 
-    vm = pywasm.load(wasmfile, {'P0lib': {'write': write, 'writeln': writeln, 'read': read}})
+    vm = pywasm.load(
+        wasmfile, {"P0lib": {"write": write, "writeln": writeln, "read": read}}
+    )
 
 
 def main(targetName=None, run=False):
@@ -40,13 +42,13 @@ program potato
     if run and targetName is not None:
         import os
 
-        ec = os.system(f'wat2wasm {target}')
+        ec = os.system(f"wat2wasm {target}")
         if ec == 0:
             runpywasm(f"{targetName}.wasm")
         else:
-            print('failed to compile to wasm')
+            print("failed to compile to wasm")
             print(ec)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(run=False)

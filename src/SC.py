@@ -84,7 +84,7 @@ def init(src):
     global ch, sym, val, source, index, indents
     line, lastline = 0, 1
     pos, lastpos = 1, 1
-    ch, sym, val, source, index = '\n', None, None, src, 0
+    ch, sym, val, source, index = "\n", None, None, src, 0
     indents = [1]
     getChar()
     getSym()
@@ -99,7 +99,7 @@ def getChar():
         ch, index, pos = chr(0), index + 1, 1
     else:
         lastpos = pos
-        if ch == '\n':
+        if ch == "\n":
             pos, line = 1, line + 1
         else:
             lastline, pos = line, pos + 1
@@ -110,7 +110,7 @@ def getChar():
 
 
 def mark(msg):
-    raise Exception('line ' + str(lastline) + ' pos ' + str(lastpos) + ' ' + msg)
+    raise Exception("line " + str(lastline) + " pos " + str(lastpos) + " " + msg)
 
 
 # Procedure `number()` parses
@@ -124,11 +124,11 @@ def mark(msg):
 def number():
     global sym, val
     sym, val = NUMBER, 0
-    while '0' <= ch <= '9':
+    while "0" <= ch <= "9":
         val = 10 * val + int(ch)
         getChar()
     if val >= 2 ** 31:
-        mark('number too large')
+        mark("number too large")
 
 
 # Procedure `identKW()` parses
@@ -143,28 +143,28 @@ def number():
 
 
 KEYWORDS = {
-    'div': DIV,
-    'mod': MOD,
-    'and': AND,
-    'or': OR,
-    'then': THEN,
-    'do': DO,
-    'else': ELSE,
-    'if': IF,
-    'while': WHILE,
-    'const': CONST,
-    'type': TYPE,
-    'var': VAR,
-    'set': SET,
-    'procedure': PROCEDURE,
-    'program': PROGRAM,
+    "div": DIV,
+    "mod": MOD,
+    "and": AND,
+    "or": OR,
+    "then": THEN,
+    "do": DO,
+    "else": ELSE,
+    "if": IF,
+    "while": WHILE,
+    "const": CONST,
+    "type": TYPE,
+    "var": VAR,
+    "set": SET,
+    "procedure": PROCEDURE,
+    "program": PROGRAM,
 }
 
 
 def identKW():
     global sym, val
     start = index - 1
-    while ('A' <= ch <= 'Z') or ('a' <= ch <= 'z') or ('0' <= ch <= '9'):
+    while ("A" <= ch <= "Z") or ("a" <= ch <= "z") or ("0" <= ch <= "9"):
         getChar()
     val = source[start : index - 1]
     sym = KEYWORDS[val] if val in KEYWORDS else IDENT
@@ -178,11 +178,11 @@ def identKW():
 
 
 def comment():
-    if ch == '/':
+    if ch == "/":
         getChar()
     else:
-        mark('// expected')
-    while chr(0) != ch != '\n':
+        mark("// expected")
+    while chr(0) != ch != "\n":
         getChar()
 
 
@@ -201,16 +201,16 @@ def getSym():
         indents = indents[1:]
         sym = DEDENT
     else:
-        while ch in ' /':
-            if ch == ' ':
+        while ch in " /":
+            if ch == " ":
                 getChar()  # skip blanks between symbols
             else:
                 comment()
-        if ch == '\n':  # possibly INDENT, DEDENT
-            while ch == '\n':  # skip blank lines
+        if ch == "\n":  # possibly INDENT, DEDENT
+            while ch == "\n":  # skip blank lines
                 getChar()
-                while ch in ' /':
-                    if ch == ' ':
+                while ch in " /":
+                    if ch == " ":
                         getChar()  # skip indentation
                     else:
                         comment()
@@ -221,109 +221,109 @@ def getSym():
                 sym, indents = INDENT, [pos] + indents
                 return
         newline = pos == indents[0]
-        if 'A' <= ch <= 'Z' or 'a' <= ch <= 'z':
+        if "A" <= ch <= "Z" or "a" <= ch <= "z":
             identKW()
-        elif '0' <= ch <= '9':
+        elif "0" <= ch <= "9":
             number()
-        elif ch == '×':
+        elif ch == "×":
             getChar()
             sym = TIMES
-        elif ch == '+':
+        elif ch == "+":
             getChar()
             sym = PLUS
-        elif ch == '-':
+        elif ch == "-":
             getChar()
             sym = MINUS
-        elif ch == '=':
+        elif ch == "=":
             getChar()
             sym = EQ
-        elif ch == '≠':
+        elif ch == "≠":
             getChar()
             sym = NE
-        elif ch == '<':
+        elif ch == "<":
             getChar()
             sym = LT
-        elif ch == '≤':
+        elif ch == "≤":
             getChar()
             sym = LE
-        elif ch == '>':
+        elif ch == ">":
             getChar()
             sym = GT
-        elif ch == '≥':
+        elif ch == "≥":
             getChar()
             sym = GE
-        elif ch == ';':
+        elif ch == ";":
             getChar()
             sym = SEMICOLON
-        elif ch == ',':
+        elif ch == ",":
             getChar()
             sym = COMMA
-        elif ch == ':':
+        elif ch == ":":
             getChar()
-            if ch == '=':
+            if ch == "=":
                 getChar()
                 sym = BECOMES
             else:
                 sym = COLON
-        elif ch == '.':
+        elif ch == ".":
             getChar()
-            if ch == '.':
+            if ch == ".":
                 getChar()
                 sym = DOTDOT
             else:
                 sym = PERIOD
-        elif ch == '¬':
+        elif ch == "¬":
             getChar()
             sym = NOT
-        elif ch == '(':
+        elif ch == "(":
             getChar()
             sym = LPAREN
-        elif ch == ')':
+        elif ch == ")":
             getChar()
             sym = RPAREN
-        elif ch == '[':
+        elif ch == "[":
             getChar()
             sym = LBRAK
-        elif ch == ']':
+        elif ch == "]":
             getChar()
             sym = RBRAK
-        elif ch == '←':
+        elif ch == "←":
             getChar()
             sym = LARROW
-        elif ch == '→':
+        elif ch == "→":
             getChar()
             sym = RARROW
-        elif ch == '{':
+        elif ch == "{":
             getChar()
             sym = LBRACE
-        elif ch == '}':
+        elif ch == "}":
             getChar()
             sym = RBRACE
-        elif ch == '#':
+        elif ch == "#":
             getChar()
             sym = CARD
-        elif ch == '∁':
+        elif ch == "∁":
             getChar()
             sym = COMPLEMENT
-        elif ch == '∪':
+        elif ch == "∪":
             getChar()
             sym = UNION
-        elif ch == '∩':
+        elif ch == "∩":
             getChar()
             sym = INTERSECTION
-        elif ch == '∈':
+        elif ch == "∈":
             getChar()
             sym = ELEMENT
-        elif ch == '⊆':
+        elif ch == "⊆":
             getChar()
             sym = SUBSET
-        elif ch == '⊇':
+        elif ch == "⊇":
             getChar()
             sym = SUPERSET
-        elif ch == '|':
+        elif ch == "|":
             getChar()
             sym = ADT_SEP
         elif ch == chr(0):
             sym = EOF
         else:
-            mark('illegal character')
+            mark("illegal character")
