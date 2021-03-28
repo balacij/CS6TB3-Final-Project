@@ -106,13 +106,7 @@ class Type:
         self.tp, self.val = None, tp
 
     def __str__(self):
-        return (
-            "Type(name = "
-            + str(getattr(self, "name", ""))
-            + ", val = "
-            + str(self.val)
-            + ")"
-        )
+        return "Type(name = " + str(getattr(self, "name", "")) + ", val = " + str(self.val) + ")"
 
 
 class Proc:
@@ -122,9 +116,9 @@ class Proc:
     def __str__(self):
         return (
             "Proc(name = "
-            + getattr(self, 'name', '')   ## TODO: Were these 2 lines a bug in P0?
+            + getattr(self, 'name', '')  ## TODO: Were these 2 lines a bug in P0?
             + ", lev = "
-            + str(getattr(self, 'lev', ''))    ## TODO: Second line
+            + str(getattr(self, 'lev', ''))  ## TODO: Second line
             + ", par = ["
             + ", ".join(str(s) for s in self.par)
             + "]"
@@ -179,13 +173,7 @@ class Array:
 
     def __str__(self):
         return (
-            "Array(lower = "
-            + str(self.lower)
-            + ", length = "
-            + str(self.length)
-            + ", base = "
-            + str(self.base)
-            + ")"
+            "Array(lower = " + str(self.lower) + ", length = " + str(self.length) + ", base = " + str(self.base) + ")"
         )
 
 
@@ -213,9 +201,7 @@ class ADTKind:
         self.record = record
 
     def __str__(self):
-        return (
-            f"ADTKind(index = {self.index}, name = {self.name}, record = {str(self.record)})"
-        )
+        return f"ADTKind(index = {self.index}, name = {self.name}, record = {str(self.record)})"
 
 
 class ADTSelfRef:
@@ -248,8 +234,8 @@ def newDecl(name, entry):
         if e.name == name:
             mark("multiple definition of " + str(name))
             return
-    if type(entry) == Proc:
-        print(str(entry))
+    # if type(entry) == Proc:
+    # print(str(entry))
     top.append(entry)
 
 
@@ -277,7 +263,6 @@ def getAllADTKinds():
             if type(e) == ADTKind:
                 kinds.append(e)
     return kinds
-
 
 
 def openScope():

@@ -161,7 +161,7 @@ KEYWORDS = {
     "procedure": PROCEDURE,
     "program": PROGRAM,
     "case": CASE,
-    "of": OF
+    "of": OF,
 }
 
 

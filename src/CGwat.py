@@ -124,7 +124,7 @@ def genADTKind(adtKind: ADTKind):
         adtKind.size = 0
     else:
         adtKind.size = 4 + adtKind.record.val.size
-    
+
         # offset all by the kind
         for field in adtKind.record.val.fields:
             field.offset += 4
@@ -142,33 +142,41 @@ def genADTKindMkFuncs(adtKinds):
     for kind in adtKinds:
         params = "" if kind.record is None else ' '.join([f'(param ${f.name} i32)' for f in kind.record.val.fields])
         if len(params) > 0:
-            params += " " # add a single space to make the params...results look prettier
-        
+            params += " "  # add a single space to make the params...results look prettier
+
         setparams = ""
         if kind.record is not None:
-            setparams = '\n'.join([
-f"""global.get $_memsize     ;; get current memory size
+            setparams = '\n'.join(
+                [
+                    f"""global.get $_memsize     ;; get current memory size
 i32.const {f.offset}         ;; get offset of the next type
 i32.add                      ;; impose offset from memory sie
 local.get ${f.name}          ;; get the param
-i32.store                    ;; store it in it's area""" for f in kind.record.val.fields])
+i32.store                    ;; store it in it's area"""
+                    for f in kind.record.val.fields
+                ]
+            )
             setparams += "\n"
 
-        f = \
-f"""(func $__mk_{kind.name} """ + params + f"""(result i32)
+        f = (
+            f"""(func $__mk_{kind.name} """
+            + params
+            + f"""(result i32)
 global.get $_memsize         ;; get last placed memory (global memsize)
 i32.const {kind.index}       ;; get {kind.name}'s kind index
 i32.store                    ;; store it
-""" + setparams + \
-f"""global.get $_memsize     ;; push memsize up, by the size of this adt
+"""
+            + setparams
+            + f"""global.get $_memsize     ;; push memsize up, by the size of this adt
 i32.const {kind.tp.val.size} ;; get size of parent type ({kind.tp.val.name})
 i32.add                      ;; add to memory size
-global.tee $_memsize         ;; set, and then get the new memory size
+global.set $_memsize         ;; set, and then get the new memory size
+global.get $_memsize
 i32.const {kind.tp.val.size} ;; get size of parent type ({kind.tp.val.name})
 i32.sub                      ;; leftover entry is the pointer to the generated thing
 )"""
+        )  # TODO: Figure out why I can't use global.tee here? up 3 lines, I have a SET immediately followed by a GET that I think I can reduce to a single TEE but it seems to cause an error?!
         asm.append(f)
-
 
 
 # The symbol table assigns to each entry the level of declaration in the field `lev: int`. Variables are assigned a `name: str` field by the symbol table and an `adr: int` field by the code generator. The use of the `lev` field is extended:
@@ -332,9 +340,7 @@ def genBinaryOp(op, x, y):
     elif op in {UNION, INTERSECTION}:
         loadItem(x)
         loadItem(y)
-        asm.append(
-            "i32.or" if op == UNION else "i32.and" if op == INTERSECTION else "?"
-        )
+        asm.append("i32.or" if op == UNION else "i32.and" if op == INTERSECTION else "?")
         x = Var(x.tp)
         x.lev = Stack
     elif op == AND:

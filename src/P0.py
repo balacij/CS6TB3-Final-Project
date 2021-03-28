@@ -200,7 +200,7 @@ from SC import (
     mark,
     ADT_SEP,
     CASE,
-    OF
+    OF,
 )
 
 import ST  #  used for ST.init
@@ -233,17 +233,14 @@ from ST import (
 
 
 def compatible(xt, yt):
-    print('checking compatibility between')
-    print(xt)
-    print(yt)
+    # print('checking compatibility between')
+    # print(xt)
+    # print(yt)
     return (
         xt == yt
         or type(xt) == Set == type(yt)
-        or (type(xt) == Array == type(yt)
-        and xt.length == yt.length
-        and compatible(xt.base, yt.base))
-        or (type(xt) == Record == type(yt)
-        and all(compatible(xf.tp, yf.tp) for xf, yf in zip(xt.fields, yt.fields)))
+        or (type(xt) == Array == type(yt) and xt.length == yt.length and compatible(xt.base, yt.base))
+        or (type(xt) == Record == type(yt) and all(compatible(xf.tp, yf.tp) for xf, yf in zip(xt.fields, yt.fields)))
         or (type(xt) == ADT == type(yt) and xt.name == yt.name)
         or (type(xt) == ADTSelfRef and compatible(xt.tp.val, yt))
     )
@@ -274,9 +271,7 @@ def selector(x):
             y = expression()
             if type(x.tp) == Array:
                 if y.tp == Int:
-                    if type(y) == Const and (
-                        y.val < x.tp.lower or y.val >= x.tp.lower + x.tp.length
-                    ):
+                    if type(y) == Const and (y.val < x.tp.lower or y.val >= x.tp.lower + x.tp.length):
                         mark("index out of bounds")
                     else:
                         x = CG.genIndex(x, y)
@@ -504,9 +499,7 @@ def expression():
                     x = CG.genRelation(op, x, y)
             else:
                 mark("bad type")
-        elif (op == ELEMENT and x.tp == Int) or (
-            op in (SUBSET, SUPERSET) and type(x.tp) == Set
-        ):
+        elif (op == ELEMENT and x.tp == Int) or (op in (SUBSET, SUPERSET) and type(x.tp) == Set):
             x = CG.genUnaryOp(op, x)
             y = simpleExpression()
             if type(y.tp) == Set:
@@ -635,7 +628,7 @@ def statement():
                             mark("incompatible assignment")
                 else:
                     mark("unbalanced assignment")
-            elif SC.sym == LARROW: # x ← y(...)
+            elif SC.sym == LARROW:  # x ← y(...)
                 getSym()
                 if SC.sym == IDENT:
                     y = find(SC.val)
@@ -647,8 +640,7 @@ def statement():
                 # JASON: Added "ADTKind" function helper lookup
                 if type(y) == ADTKind:
                     y = find(f"__mk_{y.name}")
-                    print(xs, y.res)
-                
+
                 if type(y) in {Proc, StdProc}:
                     if len(xs) == len(y.res):
                         for x, r in zip(xs, y.res):
@@ -743,27 +735,33 @@ def statement():
         x = expression()
         if type(x.tp) == ADT:
             print('got an ADT :)', x.tp)
-        else: mark('ADT expected in case expression')
+        else:
+            mark('ADT expected in case expression')
         if SC.sym == OF:
             getSym()
-        else: mark("'of' expected")
+        else:
+            mark("'of' expected")
         if SC.sym == LBRACE:
             print('looking for cases :)')
-        else: mark("'{' expected")
+        else:
+            mark("'{' expected")
         print('parsing ')
-        # TODO: we can probably set some global variable to "currentCaseADT"
-        # and then set some local variable to the old one, then set it,
-        # and then we can restore it once we've finished parsing a case..of..,
-        # and then when we are checking our cases in the below TODO note,
-        # we will be able to verify that the ADTKind is one of the allowed
-        # kinds of the "currentCaseADT" -- NOTE: This makes our language context-sensitive!
-        # 
-        # 
-        # TODO: scan a "case suite" where it's of the form:      -- parsing the "cases" :)
-        #       "<ADTKind>: <statementSuite>
-        #       {<ADTKind>: <statementSuite> \n}" 
+        """
+        TODO: we can probably set some global variable to "currentCaseADT"
+        and then set some local variable to the old one, then set it,
+        and then we can restore it once we've finished parsing a case..of..,
+        and then when we are checking our cases in the below TODO note,
+        we will be able to verify that the ADTKind is one of the allowed
+        kinds of the "currentCaseADT" -- NOTE: This makes our language context-sensitive!
+        
+        TODO: scan a "case suite" where it's of the form:      -- parsing the "cases" :)
+              "<ADTKind>: <statementSuite>
+              {<ADTKind>: <statementSuite> \n}"
+        """
         if SC.sym == RBRACE:
-        else: mark("'}' expected")
+            getSym()
+        else:
+            mark("'}' expected")
         exit(0)
     else:
         mark("statement expected")
@@ -824,7 +822,19 @@ def typ(adtName=None, parsingTypedIds=False):
                     for field in kind.record.val.fields:
                         field = field.tp
                         if type(field) == ADTSelfRef:
-                            field.tp = x            
+                            field.tp = x
+
+            # JASON: generate helper functions for ADT Kind generation, and register them all as functions
+            adtKinds = kinds  # getAllADTKinds()
+            CG.genADTKindMkFuncs(adtKinds)
+            for kind in adtKinds:
+                print(kind.name, kind.tp)
+                newDecl(
+                    f"__mk_{kind.name}",
+                    Proc(
+                        [] if kind.record is None else [field for field in kind.record.val.fields], [Var(kind.tp.val)]
+                    ),
+                )  # TODO: Add 1 param -- the result!
         else:
             mark("type identifier expected")
     elif SC.sym == LBRAK:
@@ -1095,14 +1105,17 @@ def program():
     newDecl("writeln", StdProc([], []))
     CG.genProgStart()
     declarations(CG.genGlobalVars)
-    
+
     # JASON: generate helper functions for ADT Kind generation, and register them all as functions
-    adtKinds = getAllADTKinds()
-    CG.genADTKindMkFuncs(adtKinds)
-    for kind in adtKinds:
-        print(kind.name, kind.tp)
-        newDecl(f"__mk_{kind.name}", Proc([] if kind.record is None else [field for field in kind.record.val.fields], [Var(kind.tp.val)]))  # TODO: Add 1 param -- the result!
-    
+    # adtKinds = getAllADTKinds()
+    # CG.genADTKindMkFuncs(adtKinds)
+    # for kind in adtKinds:
+    #     print(kind.name, kind.tp)
+    #     newDecl(
+    #         f"__mk_{kind.name}",
+    #         Proc([] if kind.record is None else [field for field in kind.record.val.fields], [Var(kind.tp.val)]),
+    #     )  # TODO: Add 1 param -- the result!
+
     if SC.sym == PROGRAM:
         getSym()
     else:

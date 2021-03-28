@@ -14,9 +14,7 @@ def runpywasm(wasmfile):
     def read(s):
         return int(input())
 
-    vm = pywasm.load(
-        wasmfile, {"P0lib": {"write": write, "writeln": writeln, "read": read}}
-    )
+    vm = pywasm.load(wasmfile, {"P0lib": {"write": write, "writeln": writeln, "read": read}})
 
 
 def main(targetName=None, run=False):
@@ -25,8 +23,8 @@ def main(targetName=None, run=False):
     compileString(
         """
 type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
-
 type Maybe = Just(v: integer) | Nothing
+type List = Cons(head: integer, tail: List) | Nil
 
 type q = (a: boolean, b: integer, c: integer)
 // type f = (a: q, b: boolean, c: integer)
@@ -44,19 +42,29 @@ procedure weird(n: q)
     r.c := 10000
     if r.b > 1 then write(n.b) else n.b := n.b - 1; weird(r)
 
+procedure uptoList(n: integer) → (l: List)
+    var tail: List
+    if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
+
+// procedure uptoList2(n: integer) → (l: List)
+//     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
+
+
 program potato
+    var left, right: Tree
+    var mylist: List
     mq.a := true
     mq.b := 10
     write(mq.b)
     mq.c := 1000
     maybe ← Just(10)
     maybe ← Nothing()
-    tree ← Leaf(10)
+    left ← Leaf(1)
+    right ← Leaf(2)
     tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...
-    case maybe of {
-        Just:
-            write(maybe.value)
-    }
+    tree ← Branch(left, right)
+
+    mylist ← uptoList(10)
     """,
         dstfn=target,
     )
@@ -78,7 +86,7 @@ program potato
     #          Just:
     #             y := x.value
     #       }
-    # 
+    #
 
     # TODO: Figure out how we're going to handle un-initialized ADTs!
 
