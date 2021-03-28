@@ -460,7 +460,7 @@ def simpleExpression():
             else:
                 x = CG.genBinaryOp(OR, x, y)
         else:
-            print(x, y)
+            # print(x, y)
             mark("bad type")
     return x
 
@@ -828,7 +828,6 @@ def typ(adtName=None, parsingTypedIds=False):
             adtKinds = kinds  # getAllADTKinds()
             CG.genADTKindMkFuncs(adtKinds)
             for kind in adtKinds:
-                print(kind.name, kind.tp)
                 newDecl(
                     f"__mk_{kind.name}",
                     Proc(

@@ -102,5 +102,5 @@ program potato
 
 
 if __name__ == "__main__":
-    # main(targetName='potato', run=True)
-    main()
+    main(targetName='potato', run=True)
+    # main()
