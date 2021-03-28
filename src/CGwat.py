@@ -115,18 +115,60 @@ def genSet(s: Set):
 
 
 def genADT(adt: ADT):
-    adt.size = 4 + max([kind.size for kind in adt.kinds])
+    adt.size = max([kind.size for kind in adt.kinds])
     return adt
 
 
 def genADTKind(adtKind: ADTKind):
-    adtKind.size = 0 if adtKind.record is None else adtKind.record.val.size
+    if adtKind.record is None:
+        adtKind.size = 0
+    else:
+        adtKind.size = 4 + adtKind.record.val.size
+    
+        # offset all by the kind
+        for field in adtKind.record.val.fields:
+            field.offset += 4
+
     return adtKind
 
 
 def genADTSelfRef(adtSelfRef: ADTSelfRef):
     adtSelfRef.size = 4
     return adtSelfRef
+
+
+def genADTKindMkFuncs(adtKinds):
+    # TODO: add params stuff for the records
+    # TODO: if memsize increases past 1024, we should grow the memory page
+    for kind in adtKinds:
+        params = "" if kind.record is None else ' '.join([f'(param ${f.name} i32)' for f in kind.record.val.fields])
+        if len(params) > 0:
+            params += " " # add a single space to make the params...results look prettier
+        
+        setparams = ""
+        if kind.record is not None:
+            setparams = '\n'.join([
+f"""global.get $_memsize     ;; get current memory size
+i32.const {f.offset}         ;; get offset of the next type
+i32.add                      ;; impose offset from memory sie
+local.get ${f.name}          ;; get the param
+i32.store                    ;; store it in it's area""" for f in kind.record.val.fields])
+            setparams += "\n"
+
+        f = \
+f"""(func $__mk_{kind.name} """ + params + f"""(result i32)
+global.get $_memsize         ;; get last placed memory (global memsize)
+i32.const {kind.index}       ;; get {kind.name}'s kind index
+i32.store                    ;; store it
+""" + setparams + \
+f"""global.get $_memsize     ;; push memsize up, by the size of this adt
+i32.const {kind.tp.val.size} ;; get size of parent type ({kind.tp.val.name})
+i32.add                      ;; add to memory size
+global.tee $_memsize         ;; set, and then get the new memory size
+i32.const {kind.tp.val.size} ;; get size of parent type ({kind.tp.val.name})
+i32.sub                      ;; leftover entry is the pointer to the generated thing
+)"""
+        asm.append(f)
 
 
 # The symbol table assigns to each entry the level of declaration in the field `lev: int`. Variables are assigned a `name: str` field by the symbol table and an `adr: int` field by the code generator. The use of the `lev` field is extended:
@@ -423,6 +465,7 @@ def genAssign(x, y):
     if x.lev == Global:
         asm.append("global.set $" + x.name)
     elif x.lev > 0:
+        # TODO: Add ADTs here
         if type(x.tp) in (Array, Record):
             asm.append("i32.const " + str(x.tp.size))
             asm.append("memory.copy")

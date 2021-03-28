@@ -20,7 +20,7 @@ def runpywasm(wasmfile):
 
 
 def main(targetName=None, run=False):
-    target = None if targetName is None else f"{target}.wat"
+    target = None if targetName is None else f"{targetName}.wat"
 
     compileString(
         """
@@ -28,13 +28,19 @@ type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
 
 type Maybe = Just(v: integer) | Nothing
 
-// type q = (a: integer)
+type q = (a: boolean, b: integer, c: integer)
 // type f = (a: q, b: boolean, c: integer)
 
-var tree: Tree
+// var tree: Tree
+var mq: q
+
+var maybe: Maybe
 
 program potato
-    write(1)
+    mq.a := true
+    mq.b := 10
+    write(mq.b)
+    mq.c := 1000
     """,
         dstfn=target,
     )
@@ -51,4 +57,5 @@ program potato
 
 
 if __name__ == "__main__":
-    main(run=False)
+    # main(targetName='potato', run=True)
+    main()

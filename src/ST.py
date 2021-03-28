@@ -199,21 +199,23 @@ class Set:
 
 # TODO: ADT
 class ADT:
-    def __init__(self, kinds):
+    def __init__(self, name, kinds):
+        self.name = name
         self.kinds = kinds
 
     def __str__(self):
-        return f"ADT(name = {getattr(self, 'name', '')}, kinds = [{ ', '.join(str(kind) for kind in self.kinds) }])"
+        return f"ADT(name = {self.name}, kinds = [{ ', '.join(str(kind) for kind in self.kinds) }])"
 
 
 class ADTKind:
-    def __init__(self, name, record=None):
+    def __init__(self, index, name, record=None):
+        self.index = index
         self.name = name
         self.record = record
 
     def __str__(self):
         return (
-            f"ADTKind(name = {getattr(self, 'name', '')}, record = {str(self.record)})"
+            f"ADTKind(index = {self.index}, name = {self.name}, record = {str(self.record)})"
         )
 
 
@@ -266,6 +268,16 @@ def find(name):
                 return e
     mark("undefined identifier " + name)
     return Const(None, 0)
+
+
+def getAllADTKinds():
+    kinds = []
+    for l in symTab:
+        for e in l:
+            if type(e) == ADTKind:
+                kinds.append(e)
+    return kinds
+
 
 
 def openScope():

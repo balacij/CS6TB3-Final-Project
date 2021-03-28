@@ -220,6 +220,7 @@ from ST import (
     newDecl,
     safeFind,
     find,
+    getAllADTKinds,
     openScope,
     topScope,
     closeScope,
@@ -747,7 +748,7 @@ def adtKind(index, adtName):
     if SC.sym == LPAREN:
         record = typ(adtName=adtName)
 
-    x = CG.genADTKind(ADTKind(name=name, record=record))
+    x = CG.genADTKind(ADTKind(index=index, name=name, record=record))
     newDecl(name, x)
     return x
 
@@ -774,7 +775,10 @@ def typ(adtName=None, parsingTypedIds=False):
                 i += 1
                 kinds.append(adtKind(index=i, adtName=adtName))
 
-            x = Type(CG.genADT(ADT(kinds=kinds)))
+            x = Type(CG.genADT(ADT(name=adtName, kinds=kinds)))
+
+            for kind in kinds:
+                kind.tp = x
         else:
             mark("type identifier expected")
     elif SC.sym == LBRAK:
@@ -1045,6 +1049,7 @@ def program():
     newDecl("writeln", StdProc([], []))
     CG.genProgStart()
     declarations(CG.genGlobalVars)
+    CG.genADTKindMkFuncs(getAllADTKinds())
     if SC.sym == PROGRAM:
         getSym()
     else:
@@ -1069,8 +1074,6 @@ def compileString(src, dstfn=None, target="wat"):
     global CG
     if target == "wat":
         import CGwat as CG
-    elif target == "mips":
-        import CGmips as CG
     elif target == "ast":
         import CGast as CG
     else:
