@@ -61,6 +61,8 @@ DEDENT = 50
 EOF = 51
 
 ADT_SEP = 100
+CASE = 101
+OF = 102
 
 
 # Following variables determine the state of the scanner:
@@ -158,6 +160,8 @@ KEYWORDS = {
     "set": SET,
     "procedure": PROCEDURE,
     "program": PROGRAM,
+    "case": CASE,
+    "of": OF
 }
 
 

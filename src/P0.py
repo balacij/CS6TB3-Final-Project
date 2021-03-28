@@ -199,6 +199,8 @@ from SC import (
     getSym,
     mark,
     ADT_SEP,
+    CASE,
+    OF
 )
 
 import ST  #  used for ST.init
@@ -243,6 +245,7 @@ def compatible(xt, yt):
         or (type(xt) == Record == type(yt)
         and all(compatible(xf.tp, yf.tp) for xf, yf in zip(xt.fields, yt.fields)))
         or (type(xt) == ADT == type(yt) and xt.name == yt.name)
+        or (type(xt) == ADTSelfRef and compatible(xt.tp.val, yt))
     )
 
 
@@ -252,7 +255,7 @@ def compatible(xt, yt):
 FIRSTSELECTOR = {LBRAK, PERIOD}
 FIRSTFACTOR = {IDENT, NUMBER, LPAREN, NOT, CARD, COMPLEMENT}
 FIRSTEXPRESSION = {PLUS, MINUS, IDENT, NUMBER, LPAREN, NOT, CARD, COMPLEMENT}
-FIRSTSTATEMENT = {IDENT, IF, WHILE}
+FIRSTSTATEMENT = {IDENT, IF, WHILE, CASE}
 FIRSTTYPE = {IDENT, LPAREN}
 FIRSTDECL = {CONST, TYPE, VAR, PROCEDURE}
 
@@ -734,6 +737,34 @@ def statement():
             mark("'do' expected")
         y = statementSuite()
         x = CG.genWhileDo(t, x, y)
+    elif SC.sym == CASE:
+        print('CASING!!!!!!')
+        getSym()
+        x = expression()
+        if type(x.tp) == ADT:
+            print('got an ADT :)', x.tp)
+        else: mark('ADT expected in case expression')
+        if SC.sym == OF:
+            getSym()
+        else: mark("'of' expected")
+        if SC.sym == LBRACE:
+            print('looking for cases :)')
+        else: mark("'{' expected")
+        print('parsing ')
+        # we can probably set some global variable to "currentCaseADT"
+        # and then set some local variable to the old one, then set it,
+        # and then we can restore it once we've finished parsing a case..of..,
+        # and then when we are checking our cases in the below TODO note,
+        # we will be able to verify that the ADTKind is one of the allowed
+        # kinds of the "currentCaseADT" -- NOTE: This makes our language context-sensitive!
+        # 
+        # 
+        # TODO: scan a "case suite" where it's of the form -- parsing the "cases" :)
+        # "<ADTKind>: <statementSuite>
+        # {<ADTKind>: <statementSuite> \n}" 
+        if SC.sym == RBRACE:
+        else: mark("'}' expected")
+        exit(0)
     else:
         mark("statement expected")
     return x
@@ -789,6 +820,11 @@ def typ(adtName=None, parsingTypedIds=False):
 
             for kind in kinds:
                 kind.tp = x
+                if kind.record is not None:
+                    for field in kind.record.val.fields:
+                        field = field.tp
+                        if type(field) == ADTSelfRef:
+                            field.tp = x            
         else:
             mark("type identifier expected")
     elif SC.sym == LBRAK:

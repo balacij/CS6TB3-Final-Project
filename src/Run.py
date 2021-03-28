@@ -35,6 +35,7 @@ type q = (a: boolean, b: integer, c: integer)
 var mq: q
 
 var maybe: Maybe
+var tree: Tree
 
 procedure weird(n: q)
     var r: q
@@ -50,6 +51,12 @@ program potato
     mq.c := 1000
     maybe ← Just(10)
     maybe ← Nothing()
+    tree ← Leaf(10)
+    tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...
+    case maybe of {
+        Just:
+            write(maybe.value)
+    }
     """,
         dstfn=target,
     )
@@ -61,6 +68,18 @@ program potato
     #       "Maybe" but when you want to set some variable to
     #       "Maybe", you have to type in "x ← Nothing()"
     #                 -- hence, the inconsistency
+
+    # TODO: Figure out where procedure calls can occur, and allow
+    #       the same kind of mkADTKind generation in the same areas
+
+    # TODO: "case"-like statements of the form:
+    # case x of {
+    #    Just:
+    #       y := x.value
+    # }
+    # 
+
+    # TODO: Figure out how we're going to handle un-initialized ADTs!
 
     if run and targetName is not None:
         import os
