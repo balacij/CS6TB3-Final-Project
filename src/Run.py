@@ -20,16 +20,22 @@ def runpywasm(wasmfile):
 def runwasmer(wasmfile):
     from wasmer import engine, Store, Module, Instance, ImportObject, Function
     from wasmer_compiler_cranelift import Compiler
-    
-    def write(i: int): print(i)
-    def writeln(): print('\n')
-    def read() -> int: return int(input())
+
+    def write(i: int):
+        print(i)
+
+    def writeln():
+        print('\n')
+
+    def read() -> int:
+        return int(input())
 
     store = Store(engine.JIT(Compiler))
     module = Module(store, open(wasmfile, 'rb').read())
     import_object = ImportObject()
-    import_object.register("P0lib", {"write": Function(store, write),
-                                     "writeln": Function(store, writeln),"read": Function(store, read)})
+    import_object.register(
+        "P0lib", {"write": Function(store, write), "writeln": Function(store, writeln), "read": Function(store, read)}
+    )
     instance = Instance(module, import_object)
 
 
@@ -130,5 +136,5 @@ program potato
 
 
 if __name__ == "__main__":
-    main(targetName='potato', run=True, runtime='wasmer')
-    # main()
+    # main(targetName='potato', run=True, runtime='wasmer')
+    main()
