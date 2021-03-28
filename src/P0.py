@@ -751,7 +751,7 @@ def statement():
             print('looking for cases :)')
         else: mark("'{' expected")
         print('parsing ')
-        # we can probably set some global variable to "currentCaseADT"
+        # TODO: we can probably set some global variable to "currentCaseADT"
         # and then set some local variable to the old one, then set it,
         # and then we can restore it once we've finished parsing a case..of..,
         # and then when we are checking our cases in the below TODO note,
@@ -759,9 +759,9 @@ def statement():
         # kinds of the "currentCaseADT" -- NOTE: This makes our language context-sensitive!
         # 
         # 
-        # TODO: scan a "case suite" where it's of the form -- parsing the "cases" :)
-        # "<ADTKind>: <statementSuite>
-        # {<ADTKind>: <statementSuite> \n}" 
+        # TODO: scan a "case suite" where it's of the form:      -- parsing the "cases" :)
+        #       "<ADTKind>: <statementSuite>
+        #       {<ADTKind>: <statementSuite> \n}" 
         if SC.sym == RBRACE:
         else: mark("'}' expected")
         exit(0)

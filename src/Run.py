@@ -73,10 +73,11 @@ program potato
     #       the same kind of mkADTKind generation in the same areas
 
     # TODO: "case"-like statements of the form:
-    # case x of {
-    #    Just:
-    #       y := x.value
-    # }
+    #
+    #       case x of {
+    #          Just:
+    #             y := x.value
+    #       }
     # 
 
     # TODO: Figure out how we're going to handle un-initialized ADTs!
