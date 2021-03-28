@@ -319,7 +319,9 @@ def factor():
             x = CG.genConst(x)
             getSym()
         else:
-            mark("variable or constant identifier expected")
+            # TODO: Figure out if there's any particular reason we're not allowed to
+            #       have procedure calls here.
+            mark(f"variable or constant identifier expected; got {str(type(x))}")
         x = selector(x)
     elif SC.sym == NUMBER:
         x = Const(Int, SC.val)

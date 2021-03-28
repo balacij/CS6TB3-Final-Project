@@ -49,6 +49,12 @@ procedure uptoList(n: integer) → (l: List)
 // procedure uptoList2(n: integer) → (l: List)
 //     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
 
+// TODO: "uptoList2" and this below "weird2" have the same issue! In the current
+// P0 implementation, we are not able to call functions in expressions!
+
+// procedure weird2(n: integer) → (r: integer)
+//     if n < 1 then r := 0 else r ← weird2(weird2(n-2))
+
 
 program potato
     var left, right: Tree
@@ -102,5 +108,5 @@ program potato
 
 
 if __name__ == "__main__":
-    main(targetName='potato', run=True)
-    # main()
+    # main(targetName='potato', run=True)
+    main()
