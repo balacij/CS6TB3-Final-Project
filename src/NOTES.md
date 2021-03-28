@@ -1,0 +1,3 @@
+# Disjoint Union Types Project Notes
+
+* `pywasm` has a _very small_ "call stack size" limit! This constrains the project in a rather odd way, but I can confidently say that pywasm is not "to spec" since WebAssembly does not actually have a call stack size limit (see [this discussion on GitHub](https://github.com/WebAssembly/design/issues/1163)). As such, the `pywasm` environment is not suitable for production usage. In particular, since we are converting `ADTKind` "constructors" into functions that actually do the magic behind the scenes, we can quickly run into problems with `pywasm`. Thankfully, it appears that `wasmer` is closer to spec with regards to this specific issue as it seems to have no apparent maximum "call stack size".

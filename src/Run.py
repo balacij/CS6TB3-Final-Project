@@ -17,7 +17,23 @@ def runpywasm(wasmfile):
     vm = pywasm.load(wasmfile, {"P0lib": {"write": write, "writeln": writeln, "read": read}})
 
 
-def main(targetName=None, run=False):
+def runwasmer(wasmfile):
+    from wasmer import engine, Store, Module, Instance, ImportObject, Function
+    from wasmer_compiler_cranelift import Compiler
+    
+    def write(i: int): print(i)
+    def writeln(): print('\n')
+    def read() -> int: return int(input())
+
+    store = Store(engine.JIT(Compiler))
+    module = Module(store, open(wasmfile, 'rb').read())
+    import_object = ImportObject()
+    import_object.register("P0lib", {"write": Function(store, write),
+                                     "writeln": Function(store, writeln),"read": Function(store, read)})
+    instance = Instance(module, import_object)
+
+
+def main(targetName=None, run=False, runtime='wasmer'):
     target = None if targetName is None else f"{targetName}.wat"
 
     compileString(
@@ -70,7 +86,7 @@ program potato
     tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...
     tree ← Branch(left, right)
 
-    mylist ← uptoList(10)
+    mylist ← uptoList(1000)
     """,
         dstfn=target,
     )
@@ -101,12 +117,18 @@ program potato
 
         ec = os.system(f"wat2wasm {target}")
         if ec == 0:
-            runpywasm(f"{targetName}.wasm")
+            if runtime == 'wasmer':
+                runwasmer(f"{targetName}.wasm")
+            elif runtime == 'pywasm':
+                runpywasm(f"{targetName}.wasm")
+            else:
+                print('invalid runtime selected; only currently supporting `pywasm` and `wasmer`')
+                exit(0)
         else:
             print("failed to compile to wasm")
             print(ec)
 
 
 if __name__ == "__main__":
-    # main(targetName='potato', run=True)
-    main()
+    main(targetName='potato', run=True, runtime='wasmer')
+    # main()
