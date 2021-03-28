@@ -197,7 +197,6 @@ class Set:
         return "Set(lower = " + str(self.lower) + ", length = " + str(self.length) + ")"
 
 
-# TODO: ADT
 class ADT:
     def __init__(self, name, kinds):
         self.name = name
@@ -219,7 +218,6 @@ class ADTKind:
         )
 
 
-# TODO: ADTSelfRef
 class ADTSelfRef:
     def __init__(self):
         pass
