@@ -88,7 +88,7 @@ program potato
     #       }
     #
 
-    # TODO: Figure out how we're going to handle un-initialized ADTs!
+    # TODO: Figure out how we're going to handle un-initialized ADTs!!!
 
     if run and targetName is not None:
         import os

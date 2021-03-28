@@ -1115,6 +1115,7 @@ def program():
     #         f"__mk_{kind.name}",
     #         Proc([] if kind.record is None else [field for field in kind.record.val.fields], [Var(kind.tp.val)]),
     #     )  # TODO: Add 1 param -- the result!
+    # TODO: I moved this above a bit, when finding the ADTKinds, I auto-generate them there instead of doing it en-masse here because functions that rely on constructing new types will fail since they would rely on functions that have not been generated yet, I think it's safe to remove this but we'll wait until tomorrow to really figure it out and make sure :)
 
     if SC.sym == PROGRAM:
         getSym()
