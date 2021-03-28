@@ -231,14 +231,18 @@ from ST import (
 
 
 def compatible(xt, yt):
+    print('checking compatibility between')
+    print(xt)
+    print(yt)
     return (
         xt == yt
         or type(xt) == Set == type(yt)
-        or type(xt) == Array == type(yt)
+        or (type(xt) == Array == type(yt)
         and xt.length == yt.length
-        and compatible(xt.base, yt.base)
-        or type(xt) == Record == type(yt)
-        and all(compatible(xf.tp, yf.tp) for xf, yf in zip(xt.fields, yt.fields))
+        and compatible(xt.base, yt.base))
+        or (type(xt) == Record == type(yt)
+        and all(compatible(xf.tp, yf.tp) for xf, yf in zip(xt.fields, yt.fields)))
+        or (type(xt) == ADT == type(yt) and xt.name == yt.name)
     )
 
 
@@ -628,7 +632,7 @@ def statement():
                             mark("incompatible assignment")
                 else:
                     mark("unbalanced assignment")
-            elif SC.sym == LARROW:
+            elif SC.sym == LARROW: # x ← y(...)
                 getSym()
                 if SC.sym == IDENT:
                     y = find(SC.val)
@@ -636,6 +640,12 @@ def statement():
                     call = True
                 else:
                     mark("procedure identifier expected")
+
+                # JASON: Added "ADTKind" function helper lookup
+                if type(y) == ADTKind:
+                    y = find(f"__mk_{y.name}")
+                    print(xs, y.res)
+                
                 if type(y) in {Proc, StdProc}:
                     if len(xs) == len(y.res):
                         for x, r in zip(xs, y.res):
@@ -1049,7 +1059,14 @@ def program():
     newDecl("writeln", StdProc([], []))
     CG.genProgStart()
     declarations(CG.genGlobalVars)
-    CG.genADTKindMkFuncs(getAllADTKinds())
+    
+    # JASON: generate helper functions for ADT Kind generation, and register them all as functions
+    adtKinds = getAllADTKinds()
+    CG.genADTKindMkFuncs(adtKinds)
+    for kind in adtKinds:
+        print(kind.name, kind.tp)
+        newDecl(f"__mk_{kind.name}", Proc([] if kind.record is None else [field for field in kind.record.val.fields], [Var(kind.tp.val)]))  # TODO: Add 1 param -- the result!
+    
     if SC.sym == PROGRAM:
         getSym()
     else:

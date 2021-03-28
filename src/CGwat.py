@@ -170,6 +170,7 @@ i32.sub                      ;; leftover entry is the pointer to the generated t
         asm.append(f)
 
 
+
 # The symbol table assigns to each entry the level of declaration in the field `lev: int`. Variables are assigned a `name: str` field by the symbol table and an `adr: int` field by the code generator. The use of the `lev` field is extended:
 
 

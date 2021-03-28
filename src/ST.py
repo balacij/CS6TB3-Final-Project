@@ -122,9 +122,9 @@ class Proc:
     def __str__(self):
         return (
             "Proc(name = "
-            + self.name
+            + getattr(self, 'name', '')   ## TODO: Were these 2 lines a bug in P0?
             + ", lev = "
-            + str(self.lev)
+            + str(getattr(self, 'lev', ''))    ## TODO: Second line
             + ", par = ["
             + ", ".join(str(s) for s in self.par)
             + "]"
@@ -248,6 +248,8 @@ def newDecl(name, entry):
         if e.name == name:
             mark("multiple definition of " + str(name))
             return
+    if type(entry) == Proc:
+        print(str(entry))
     top.append(entry)
 
 

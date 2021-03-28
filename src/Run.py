@@ -36,14 +36,31 @@ var mq: q
 
 var maybe: Maybe
 
+procedure weird(n: q)
+    var r: q
+    r.a := true
+    r.b := 100
+    r.c := 10000
+    if r.b > 1 then write(n.b) else n.b := n.b - 1; weird(r)
+
 program potato
     mq.a := true
     mq.b := 10
     write(mq.b)
     mq.c := 1000
+    maybe ← Just(10)
+    maybe ← Nothing()
     """,
         dstfn=target,
     )
+    # TODO: Right now, I'm being a little bit inconsistent
+    #       with how I define the types and how I instantiate
+    #       them, I should use parantheses both when defining and
+    #       when creating it, because it's currently allowing you
+    #       to write "Nothing" to define Nothing tag as part of
+    #       "Maybe" but when you want to set some variable to
+    #       "Maybe", you have to type in "x ← Nothing()"
+    #                 -- hence, the inconsistency
 
     if run and targetName is not None:
         import os
