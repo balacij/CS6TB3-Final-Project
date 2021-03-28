@@ -586,7 +586,7 @@ def statement():
         # type(x) == Proc, StdProc: check no result parameters needed; call, y := true, x
         # type(x) ≠ Proc, StdProc: x := selector():
         #   sym == BECOMES: assignment; call := false
-        #   sym == LARROW: check result paramter match, type(y) is Proc, StdProc,
+        #   sym == LARROW: check result parameter match, type(y) is Proc, StdProc,
         x = find(SC.val)
         if type(x) in {Proc, StdProc}:  # procedure call without result
             if x.res != []:
@@ -744,10 +744,9 @@ def statement():
         else:
             mark("'of' expected")
         if SC.sym == LBRACE:
-            print('looking for cases :)')
+            getSym()
         else:
             mark("'{' expected")
-        print('parsing ')
         """
         TODO: we can probably set some global variable to "currentCaseADT"
         and then set some local variable to the old one, then set it,
@@ -760,10 +759,34 @@ def statement():
               "<ADTKind>: <statementSuite>
               {<ADTKind>: <statementSuite> \n}"
         """
+        if SC.sym == INDENT:
+            getSym()
+        else:
+            mark('indent expected when casing')
+        while SC.sym == IDENT:
+            kind = SC.val
+            y = find(kind)
+            if type(y) != ADTKind:
+                mark(f"'{SC.val}' is not an ADT Kind identifier name")
+            if y not in x.tp.kinds:
+                mark(f"'{SC.val}' is not an ADT Kind that belongs to ADT '{x.tp.name}'")
+            getSym()
+            if SC.sym == COLON:
+                getSym()
+            else:
+                mark("':' expected after ADT kind identifier")
+            # TODO: if...else...end setup for this...
+            sts = statementSuite()  # TODO: this always returns None because it generates the code on the fly...
+        if SC.sym == DEDENT:
+            getSym()
+        else:
+            mark('dedent expected when cases exhausted')
         if SC.sym == RBRACE:
             getSym()
         else:
+            print(SC.sym, SC.val)
             mark("'}' expected")
+        print("CASEing code isn't yet complete, not yet ready for production :(")
         exit(0)
     else:
         mark("statement expected")

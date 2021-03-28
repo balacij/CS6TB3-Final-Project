@@ -81,6 +81,7 @@ procedure uptoList(n: integer) → (l: List)
 program potato
     var left, right: Tree
     var mylist: List
+    var x: integer
     mq.a := true
     mq.b := 10
     write(mq.b)
@@ -93,6 +94,12 @@ program potato
     tree ← Branch(left, right)
 
     mylist ← uptoList(1000)
+
+    case maybe of {
+        Just: x := 100; x := 10
+        Nothing: x := 0
+    }
+
     """,
         dstfn=target,
     )
