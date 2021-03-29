@@ -78,6 +78,12 @@ procedure uptoList(n: integer) → (l: List)
 //     if n < 1 then r := 0 else r ← weird2(weird2(n-2))
 
 
+procedure weird2Working(n: integer) → (r: integer)
+    var q: integer
+    q ← weird2Working(n-2)
+    if n < 1 then r := 0 else r ← weird2Working(q)
+
+
 program potato
     var left, right: Tree
     var mylist: List
@@ -96,8 +102,11 @@ program potato
     mylist ← uptoList(1000)
 
     case maybe of {
-        Just: x := 100; x := 10
-        Nothing: x := 0
+        Just: 
+            x := 100; x := 10
+            x := 100000
+        Nothing:
+            x := 0
     }
 
     """,

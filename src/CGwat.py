@@ -175,7 +175,7 @@ global.get $_memsize
 i32.const {kind.tp.val.size} ;; get size of parent type ({kind.tp.val.name})
 i32.sub                      ;; leftover entry is the pointer to the generated thing
 )"""
-        )  # TODO: Figure out why I can't use global.tee here? up 3 lines, I have a SET immediately followed by a GET that I think I can reduce to a single TEE but it seems to cause an error?!
+        )
         asm.append(f)
 
 

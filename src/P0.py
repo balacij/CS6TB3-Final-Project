@@ -788,6 +788,24 @@ def statement():
             mark("'}' expected")
         print("CASEing code isn't yet complete, not yet ready for production :(")
         exit(0)
+        """
+        TODO: GENERAL IDEA
+        .. expression ..
+        local.set $_case_0
+        local.get $_case_0
+        i32.const 1
+        i32.eqz
+        if
+        ...
+        else
+            local.get $_case_0
+            i32.const 2
+            i32.eqz
+            if
+            ...
+            end
+        end
+        """
     else:
         mark("statement expected")
     return x
