@@ -244,7 +244,7 @@ def newDecl(name, entry, overwriteLev=True, errOnDup=True):
             if e.name == name:
                 mark("multiple definition of " + str(name))
                 return
-    
+
     top.append(entry)
 
 

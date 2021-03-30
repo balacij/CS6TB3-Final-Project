@@ -784,7 +784,7 @@ def statement():
             #     print(str(overwriteVar))
             #     print(str(x))
             #     newDecl(x.name, overwriteVar, errOnDup=False)
-            # statementSuite()  # TODO: this returns None... we need to wrap around the code it generates nicely 
+            # statementSuite()  # TODO: this returns None... we need to wrap around the code it generates nicely
             openScope()
             oldXTp = None
             if y.record is not None:
