@@ -44,31 +44,31 @@ def main(targetName=None, run=False, runtime='wasmer'):
 
     compileString(
         """
-type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
-type Maybe = Just(v: integer) | Nothing
-type List = Cons(head: integer, tail: List) | Nil
+// type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
+type Maybe = Just(value: integer) | Nothing
+// type List = Cons(head: integer, tail: List) | Nil
 
-type RGB = Red | Green | Blue
+// type RGB = Red | Green | Blue
 
-type q = (a: boolean, b: integer, c: integer)
+// type q = (a: boolean, b: integer, c: integer)
 // type f = (a: q, b: boolean, c: integer)
 
 // var tree: Tree
-var mq: q
+// var mq: q
 
-var maybe: Maybe
-var tree: Tree
+// var maybe: Maybe
+// var tree: Tree
 
-procedure weird(n: q)
-    var r: q
-    r.a := true
-    r.b := 100
-    r.c := 10000
-    if r.b > 1 then write(n.b) else n.b := n.b - 1; weird(r)
+// procedure weird(n: q)
+//     var r: q
+//     r.a := true
+//     r.b := 100
+//     r.c := 10000
+//     if r.b > 1 then write(n.b) else n.b := n.b - 1; weird(r)
 
-procedure uptoList(n: integer) → (l: List)
-    var tail: List
-    if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
+// procedure uptoList(n: integer) → (l: List)
+//     var tail: List
+//     if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
 
 // procedure uptoList2(n: integer) → (l: List)
 //     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
@@ -80,35 +80,36 @@ procedure uptoList(n: integer) → (l: List)
 //     if n < 1 then r := 0 else r ← weird2(weird2(n-2))
 
 
-procedure weird2Working(n: integer) → (r: integer)
-    var q: integer
-    q ← weird2Working(n-2)
-    if n < 1 then r := 0 else r ← weird2Working(q)
+// procedure weird2Working(n: integer) → (r: integer)
+//     var q: integer
+//     q ← weird2Working(n-2)
+//     if n < 1 then r := 0 else r ← weird2Working(q)
 
 
 program potato
-    var left, right: Tree
-    var mylist: List
+    // var left, right: Tree
+    // var mylist: List
+    var maybe: Maybe
     var x: integer
-    mq.a := true
-    mq.b := 10
-    write(mq.b)
-    mq.c := 1000
-    maybe ← Just(10)
+    // mq.a := true
+    // mq.b := 10
+    // write(mq.b)
+    // mq.c := 1000
     maybe ← Nothing()
-    left ← Leaf(1)
-    right ← Leaf(2)
-    tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...
-    tree ← Branch(left, right)
+    maybe ← Just(14)
+    // left ← Leaf(1)
+    // right ← Leaf(2)
+    // tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...
+    // tree ← Branch(left, right)
 
-    mylist ← uptoList(1000)
+    // mylist ← uptoList(1000)
 
     case maybe of {
         Just: 
-            x := 100; x := 10
-            x := 100000
-        Nothing:
-            x := 0
+            x := maybe.value
+            write(maybe.value)
+            write(x)
+        Nothing: x := 1000
     }
 
     """,
@@ -153,6 +154,25 @@ program potato
             print(ec)
 
 
+def run(targetName, runtime='wasmer'):
+    import os
+
+    ec = os.system(f"wat2wasm {targetName}.wat")
+
+    if ec == 0:
+        if runtime == 'wasmer':
+            runwasmer(f"{targetName}.wasm")
+        elif runtime == 'pywasm':
+            runpywasm(f"{targetName}.wasm")
+        else:
+            print('invalid runtime selected; only currently supporting `pywasm` and `wasmer`')
+            exit(0)
+    else:
+        print("failed to compile to wasm")
+        print(ec)
+
+
 if __name__ == "__main__":
-    # main(targetName='potato', run=True, runtime='wasmer')
-    main()
+    main(targetName='potato', run=True, runtime='wasmer')
+    # main()
+    # run("potato", runtime='wasmer')

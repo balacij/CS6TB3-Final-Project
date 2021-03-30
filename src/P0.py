@@ -295,6 +295,7 @@ def selector(x):
                         mark("not a field")
                     getSym()
                 else:
+                    print(str(x))
                     mark("not a record")
             else:
                 mark("identifier expected")
@@ -735,6 +736,7 @@ def statement():
         print('CASING!!!!!!')
         getSym()
         x = expression()
+        # TODO: should we force this to be a variable? I think we should...
         if type(x.tp) == ADT:
             print('got an ADT :)', x.tp)
         else:
@@ -748,13 +750,6 @@ def statement():
         else:
             mark("'{' expected")
         """
-        TODO: we can probably set some global variable to "currentCaseADT"
-        and then set some local variable to the old one, then set it,
-        and then we can restore it once we've finished parsing a case..of..,
-        and then when we are checking our cases in the below TODO note,
-        we will be able to verify that the ADTKind is one of the allowed
-        kinds of the "currentCaseADT" -- NOTE: This makes our language context-sensitive!
-        
         TODO: scan a "case suite" where it's of the form:      -- parsing the "cases" :)
               "<ADTKind>: <statementSuite>
               {<ADTKind>: <statementSuite> \n}"
@@ -776,7 +771,33 @@ def statement():
             else:
                 mark("':' expected after ADT kind identifier")
             # TODO: if...else...end setup for this...
-            sts = statementSuite()  # TODO: this always returns None because it generates the code on the fly...
+            # openScope()
+            # if y.record is not None:
+            #     overwriteVar = Var(y.record.val)
+            #     overwriteVar.name = x.name
+            #     if hasattr(x, 'lev'):
+            #         overwriteVar.lev = x.lev
+            #     if hasattr(x, 'adr'):
+            #         overwriteVar.adr = x.adr
+            #     if hasattr(x, 'reg'):
+            #         overwriteVar.reg = x.reg
+            #     print(str(overwriteVar))
+            #     print(str(x))
+            #     newDecl(x.name, overwriteVar, errOnDup=False)
+            # statementSuite()  # TODO: this returns None... we need to wrap around the code it generates nicely 
+            openScope()
+            oldXTp = None
+            if y.record is not None:
+                oldXTp = x.tp
+                x.tp = y.record.val
+            newDecl(x.name, x, overwriteLev=False, errOnDup=False)
+            # TODO: rather disappoint results... if a var is a global variable, this simply does not work nicely...
+            statementSuite()
+            if y.record is not None:
+                x.tp = oldXTp
+            closeScope()
+
+            # closeScope()
         if SC.sym == DEDENT:
             getSym()
         else:
@@ -787,10 +808,9 @@ def statement():
             print(SC.sym, SC.val)
             mark("'}' expected")
         print("CASEing code isn't yet complete, not yet ready for production :(")
-        exit(0)
         # TODO: Need to define a new fake ADT Kind that can always be matched against for uninitialized ADTs
-        # TODO: newDecl('uninitialized', ...)
-        # TODO: newDecl('default', ...) <-- should be the VERY LAST item
+        # TODO: newDecl('uninitialized', ...) ?
+        # TODO: newDecl('default', ...)         <-- should be the VERY LAST item
         # TODO: stop users from generating redundant cases
         """
         TODO: GENERAL IDEA
@@ -880,7 +900,7 @@ def typ(adtName=None, parsingTypedIds=False):
                     Proc(
                         [] if kind.record is None else [field for field in kind.record.val.fields], [Var(kind.tp.val)]
                     ),
-                )  # TODO: Add 1 param -- the result!
+                )
         else:
             mark("type identifier expected")
     elif SC.sym == LBRAK:

@@ -116,9 +116,9 @@ class Proc:
     def __str__(self):
         return (
             "Proc(name = "
-            + getattr(self, 'name', '')  ## TODO: Were these 2 lines a bug in P0?
+            + getattr(self, 'name', '')
             + ", lev = "
-            + str(getattr(self, 'lev', ''))  ## TODO: Second line
+            + str(getattr(self, 'lev', ''))
             + ", par = ["
             + ", ".join(str(s) for s in self.par)
             + "]"
@@ -135,9 +135,9 @@ class StdProc:
     def __str__(self):
         return (
             "StdProc(name = "
-            + self.name
+            + getattr(self, 'name', '')
             + ", lev = "
-            + str(self.lev)
+            + str(getattr(self, 'lev', ''))
             + ", par = ["
             + ", ".join(str(s) for s in self.par)
             + "]"
@@ -212,6 +212,10 @@ class ADTSelfRef:
         return f"ADTSelfRef()"
 
 
+class ADTCaseDefaultCase:
+    pass
+
+
 # The symbol table is represented by a list of scopes. Each scope is a list of entries. Each entry has a name, which is assumed to be a string, and the level at which it is declared; the entries on the outermost scope are on level 0 and the level increases with each inner scope.
 
 
@@ -228,14 +232,19 @@ def printSymTab():
         print()
 
 
-def newDecl(name, entry):
-    top, entry.lev, entry.name = symTab[0], len(symTab) - 1, name
-    for e in top:
-        if e.name == name:
-            mark("multiple definition of " + str(name))
-            return
-    # if type(entry) == Proc:
-    # print(str(entry))
+def newDecl(name, entry, overwriteLev=True, errOnDup=True):
+    top = symTab[0]
+    if overwriteLev:
+        entry.lev = len(symTab) - 1
+    entry.name = name
+
+    # top, entry.lev, entry.name = symTab[0], len(symTab) - 1, name
+    if errOnDup:
+        for e in top:
+            if e.name == name:
+                mark("multiple definition of " + str(name))
+                return
+    
     top.append(entry)
 
 
