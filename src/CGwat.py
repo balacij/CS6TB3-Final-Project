@@ -119,17 +119,17 @@ def genADT(adt: ADT):
     return adt
 
 
-def genADTKind(adtKind: ADTKind):
-    if adtKind.record is None:
-        adtKind.size = 0
+def genADTKind(kind: ADTKind):
+    if kind.record is None:
+        kind.size = 4
     else:
-        adtKind.size = 4 + adtKind.record.val.size
+        kind.size = 4 + kind.record.val.size
 
         # offset all by the kind
-        for field in adtKind.record.val.fields:
+        for field in kind.record.val.fields:
             field.offset += 4
 
-    return adtKind
+    return kind
 
 
 def genADTSelfRef(adtSelfRef: ADTSelfRef):

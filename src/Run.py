@@ -48,6 +48,8 @@ type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
 type Maybe = Just(v: integer) | Nothing
 type List = Cons(head: integer, tail: List) | Nil
 
+type RGB = Red | Green | Blue
+
 type q = (a: boolean, b: integer, c: integer)
 // type f = (a: q, b: boolean, c: integer)
 
