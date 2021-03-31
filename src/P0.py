@@ -790,14 +790,14 @@ def statement():
             if y.record is not None:
                 oldXTp = x.tp
                 x.tp = y.record.val
+            x.isAdtSelector = True
             newDecl(x.name, x, overwriteLev=False, errOnDup=False)
-            # TODO: rather disappoint results... if a var is a global variable, this simply does not work nicely...
+            # TODO: rather disappointing results... if a var is a global variable, this simply does not work nicely...
             statementSuite()
             if y.record is not None:
                 x.tp = oldXTp
             closeScope()
-
-            # closeScope()
+            x.isAdtSelector = False
         if SC.sym == DEDENT:
             getSym()
         else:
@@ -808,6 +808,7 @@ def statement():
             print(SC.sym, SC.val)
             mark("'}' expected")
         print("CASEing code isn't yet complete, not yet ready for production :(")
+        exit(0)
         # TODO: Need to define a new fake ADT Kind that can always be matched against for uninitialized ADTs
         # TODO: newDecl('uninitialized', ...) ?
         # TODO: newDecl('default', ...)         <-- should be the VERY LAST item

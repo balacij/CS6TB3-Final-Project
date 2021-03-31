@@ -50,7 +50,7 @@ type Maybe = Just(value: integer) | Nothing
 
 // type RGB = Red | Green | Blue
 
-// type q = (a: boolean, b: integer, c: integer)
+type q = (a: boolean, b: integer, c: integer)
 // type f = (a: q, b: boolean, c: integer)
 
 // var tree: Tree
@@ -91,12 +91,18 @@ program potato
     // var mylist: List
     var maybe: Maybe
     var x: integer
+    var w: (a: boolean, b: integer, c: integer)
+    w.a := true
+    w.b := 88
+    write(w.b)
+    w.c := 10000
+    write(w.c)
     // mq.a := true
     // mq.b := 10
     // write(mq.b)
     // mq.c := 1000
     maybe ← Nothing()
-    maybe ← Just(14)
+    maybe ← Just(1111)
     // left ← Leaf(1)
     // right ← Leaf(2)
     // tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...

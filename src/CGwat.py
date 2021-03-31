@@ -439,6 +439,8 @@ def genSelect(x, f):
     else:
         mark("WASM: select?")
     x.tp = f.tp
+    # TODO: I need to add this below line whenever it's type is
+    # asm.append('i32.load')
     return x
 
 
