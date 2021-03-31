@@ -201,6 +201,8 @@ from SC import (
     ADT_SEP,
     CASE,
     OF,
+    DEFAULT,
+    NIL,
 )
 
 import ST  #  used for ST.init
@@ -750,9 +752,8 @@ def statement():
         else:
             mark("'{' expected")
         """
-        TODO: scan a "case suite" where it's of the form:      -- parsing the "cases" :)
-              "<ADTKind>: <statementSuite>
-              {<ADTKind>: <statementSuite> \n}"
+        "<ADTKind>: <statementSuite>
+        {<ADTKind>: <statementSuite> \n}"
         """
         if SC.sym == INDENT:
             getSym()
@@ -760,6 +761,8 @@ def statement():
             mark('indent expected when casing')
         while SC.sym == IDENT:
             kind = SC.val
+            # TODO: if kind == DEFAULT... (default case)
+            # TODO: if kind == NIL... (uninitialized case)
             y = find(kind)
             if type(y) != ADTKind:
                 mark(f"'{SC.val}' is not an ADT Kind identifier name")
@@ -810,8 +813,6 @@ def statement():
         print("CASEing code isn't yet complete, not yet ready for production :(")
         exit(0)
         # TODO: Need to define a new fake ADT Kind that can always be matched against for uninitialized ADTs
-        # TODO: newDecl('uninitialized', ...) ?
-        # TODO: newDecl('default', ...)         <-- should be the VERY LAST item
         # TODO: stop users from generating redundant cases
         """
         TODO: GENERAL IDEA

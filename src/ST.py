@@ -212,10 +212,6 @@ class ADTSelfRef:
         return f"ADTSelfRef()"
 
 
-class ADTCaseDefaultCase:
-    pass
-
-
 # The symbol table is represented by a list of scopes. Each scope is a list of entries. Each entry has a name, which is assumed to be a string, and the level at which it is declared; the entries on the outermost scope are on level 0 and the level increases with each inner scope.
 
 

@@ -63,6 +63,8 @@ EOF = 51
 ADT_SEP = 100
 CASE = 101
 OF = 102
+DEFAULT = 103
+NIL = 104
 
 
 # Following variables determine the state of the scanner:
@@ -162,6 +164,8 @@ KEYWORDS = {
     "program": PROGRAM,
     "case": CASE,
     "of": OF,
+    "default": DEFAULT,
+    "nil": NIL,
 }
 
 
