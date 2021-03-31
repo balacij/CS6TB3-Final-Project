@@ -73,10 +73,13 @@ def genProgStart():
         0,
         4,
     )  # JASON: We _always_ offset by 4 so that whenever someone creates a new "ADT" var, it's always pointing to 0 which coincidentally is always this blocked out first 4 bytes with all 0s :)
-    asm = [
+    asm = [  # TODO: These shouldn't be hardcoded
         "(module",
         '(import "P0lib" "write" (func $write (param i32)))',
-        '(import "P0lib" "writeln" (func $writeln))',
+        '(import "P0lib" "writeAscii" (func $writeAscii (param i32)))',
+        '(import "P0lib" "writeAsciiLn" (func $writeAsciiLn (param i32)))',
+        '(import "P0lib" "writeln" (func $writeln (param i32)))',
+        '(import "P0lib" "writeNewLine" (func $writeNewLine))',
         '(import "P0lib" "read" (func $read (result i32)))',
     ]
 
@@ -605,6 +608,18 @@ def genWrite(x):
 
 def genWriteln():
     asm.append("call $writeln")
+
+
+def genWriteAscii():
+    asm.append("call $writeAscii")
+
+
+def genWriteAsciiLn():
+    asm.append("call $writeAsciiLn")
+
+
+def genWriteNewLine():
+    asm.append("call $writeNewLine")
 
 
 def genSeq(x, y):

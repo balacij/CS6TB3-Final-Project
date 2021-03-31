@@ -739,6 +739,14 @@ def statement():
                     x = CG.genWrite(a)
                 elif y.name == "writeln":
                     x = CG.genWriteln()
+                elif y.name == "writeAscii":
+                    x = CG.genWriteAscii()
+                elif y.name == "writeAsciiLn":
+                    x = CG.genWriteAsciiLn()
+                elif y.name == "writeNewLine":
+                    x = CG.genWriteNewLine()
+                else:
+                    mark(f'unknown StdProc; {y.name}')
             else:
                 x = CG.genCall(xs, y, ap)
     elif SC.sym == IF:
@@ -1164,7 +1172,10 @@ def program():
     newDecl("false", Const(Bool, 0))
     newDecl("read", StdProc([], [Var(Int)]))
     newDecl("write", StdProc([Var(Int)], []))
-    newDecl("writeln", StdProc([], []))
+    newDecl("writeAscii", StdProc([Var(Int)], []))
+    newDecl("writeAsciiLn", StdProc([Var(Int)], []))
+    newDecl("writeln", StdProc([Var(Int)], []))
+    newDecl("writeNewLine", StdProc([], []))
     CG.genProgStart()
     declarations(CG.genGlobalVars)
 

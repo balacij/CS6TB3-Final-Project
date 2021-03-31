@@ -6,15 +6,35 @@ def runpywasm(wasmfile):
     import pywasm
 
     def write(s, i):
+        print(i, end='')
+
+    def writeAscii(s, i):
+        print(chr(i), end='')
+
+    def writeAsciiLn(s, i):
+        print(chr(i))
+
+    def writeln(s, i):
         print(i)
 
-    def writeln(s):
-        print("\n")
+    def writeNewLine(s):
+        print()
 
     def read(s):
         return int(input())
 
-    vm = pywasm.load(wasmfile, {"P0lib": {"write": write, "writeln": writeln, "read": read}})
+    vm = pywasm.load(
+        wasmfile,
+        {
+            "P0lib": {
+                "write": write,
+                "writeAscii": writeAscii,
+                "writeln": writeln,
+                "writeNewLine": writeNewLine,
+                "read": read,
+            }
+        },
+    )
 
 
 def runwasmer(wasmfile):
@@ -22,10 +42,19 @@ def runwasmer(wasmfile):
     from wasmer_compiler_cranelift import Compiler
 
     def write(i: int):
+        print(i, end='')
+
+    def writeAscii(i: int):
+        print(chr(i), end='')
+
+    def writeAsciiLn(i: int):
+        print(chr(i))
+
+    def writeln(i: int):
         print(i)
 
-    def writeln():
-        print('\n')
+    def writeNewLine():
+        print()
 
     def read() -> int:
         return int(input())
@@ -34,7 +63,15 @@ def runwasmer(wasmfile):
     module = Module(store, open(wasmfile, 'rb').read())
     import_object = ImportObject()
     import_object.register(
-        "P0lib", {"write": Function(store, write), "writeln": Function(store, writeln), "read": Function(store, read)}
+        "P0lib",
+        {
+            "write": Function(store, write),
+            "writeAscii": Function(store, writeAscii),
+            "writeAsciiLn": Function(store, writeAsciiLn),
+            "writeln": Function(store, writeln),
+            "writeNewLine": Function(store, writeNewLine),
+            "read": Function(store, read),
+        },
     )
     instance = Instance(module, import_object)
 
@@ -83,10 +120,10 @@ procedure valOr(v: Maybe, n: integer) → (r: integer)
 
 procedure uptoList(n: integer) → (l: List)
     var tail: List
-    if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
+    if n < 1 then l ← Nil() else tail ← uptoList(n-1); writeln(n); l ← Cons(n, tail)
 
 // procedure uptoList2(n: integer) → (l: List)
-//     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
+//     if n < 1 then l ← Nil() else writeln(n); l ← Cons(n, uptoList2(n-1))
 
 // TODO: "uptoList2" and this below "weird2" have the same issue! In the current
 // P0 implementation, we are not able to call functions in expressions!
@@ -95,7 +132,7 @@ procedure consumeList(l: List)
     var r: List
     case l of {
         Cons:
-            write(l.head)
+            writeln(l.head)
             r := l.tail
             consumeList(r)
     }
@@ -128,14 +165,14 @@ program potato
     var w: q
     w.a := true
     w.b := 88
-    write(w.b)
+    writeln(w.b)
     w.c := 10000
-    write(w.c)
+    writeln(w.c)
     mq.a := true
     mq.b := 10
-    write(mq.b)
+    writeln(mq.b)
     mq.c := 1000
-    write(mq.c)
+    writeln(mq.c)
     maybe ← Nothing()
     maybe ← Just(1111)
     // left ← Leaf(1)
@@ -150,34 +187,40 @@ program potato
             x := maybe.value
             // maybe.value := 100
             maybe.value ← five()
-            write(maybe.value)
-            write(x)
+            writeln(maybe.value)
+            writeln(x)
         Nothing: x := 1000
     }
 
     consumeList(mylist)
     x ← sumList(mylist)
-    write(x)
+    writeln(x)
 
     colour ← Red()
     x ← rgbToHex(colour)
-    write(x)
+    writeln(x)
 
     colour ← Green()
     x ← rgbToHex(colour)
-    write(x)
+    writeln(x)
 
     colour ← Blue()
     x ← rgbToHex(colour)
-    write(x)
+    writeln(x)
 
     maybe ← Just(999)
     x ← valOr(maybe, 10000)
-    write(x)
+    writeln(x)
 
     maybe ← Nothing()
     x ← valOr(maybe, 10000)
-    write(x)
+    writeln(x)
+
+    writeAscii(100)
+    writeAsciiLn(101)
+    writeAsciiLn(102)
+
+    writeln(100)
 
     """,
         dstfn=target,
