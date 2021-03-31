@@ -266,7 +266,7 @@ FIRSTDECL = {CONST, TYPE, VAR, PROCEDURE}
 # and generates code for the selector if not error is reported.
 
 
-def selector(x):
+def selector(x, right=True):
     while SC.sym in {LBRAK, PERIOD}:
         if SC.sym == LBRAK:  #  x[y]
             getSym()
@@ -291,7 +291,7 @@ def selector(x):
                 if type(x.tp) == Record:
                     for f in x.tp.fields:
                         if f.name == SC.val:
-                            x = CG.genSelect(x, f)
+                            x = CG.genSelect(x, f, right=right)
                             break
                     else:
                         mark("not a field")
@@ -584,6 +584,45 @@ def statementSuite():
 # and generates code for the statement if no error is reported.
 
 
+def cases(x):
+    """
+    "<ADTKind>: <statementSuite>
+    {<ADTKind>: <statementSuite> \n}"
+    """
+    # if SC.sym == DEFAULT
+    # if SC.sym == NIL
+    if SC.sym == IDENT:
+        kind = SC.val
+        y = find(kind)
+        if type(y) != ADTKind:
+            mark(f"'{SC.val}' is not an ADT Kind identifier name")
+        if y not in x.tp.kinds:
+            mark(f"'{SC.val}' is not an ADT Kind that belongs to ADT '{x.tp.name}'")
+        getSym()
+        CG.genCaseStart(x, y.index)
+        if SC.sym == COLON:
+            getSym()
+        else:
+            mark("':' expected after ADT kind identifier")
+        openScope()
+        oldXTp = None
+        if y.record is not None:
+            oldXTp = x.tp
+            x.tp = y.record.val
+        x.isAdtSelector = True
+        newDecl(x.name, x, overwriteLev=False, errOnDup=False)
+        # TODO: rather disappointing results... if a var is a global variable, this simply does not work nicely...
+        statementSuite()
+        if y.record is not None:
+            x.tp = oldXTp
+        closeScope()
+        x.isAdtSelector = False
+        if SC.sym in {IDENT, NIL, DEFAULT}:
+            CG.genCaseElse()
+            cases(x)
+        CG.genCaseEnd()
+
+
 def statement():
     if SC.sym == IDENT:  # x := y, y(...), x ← y(...)
         # type(x) == Proc, StdProc: check no result parameters needed; call, y := true, x
@@ -601,7 +640,7 @@ def statement():
             x = CG.genVar(x)
             getSym()
             if SC.sym in FIRSTSELECTOR:
-                xs = [CG.genLeftAssign(selector(x))]  # array or field update
+                xs = [CG.genLeftAssign(selector(x, False))]  # array or field update
             else:  # multiple assignment or procedure call with result
                 xs = [CG.genLeftAssign(x)]
                 while SC.sym == COMMA:
@@ -735,72 +774,28 @@ def statement():
         y = statementSuite()
         x = CG.genWhileDo(t, x, y)
     elif SC.sym == CASE:
-        print('CASING!!!!!!')
         getSym()
         x = expression()
-        # TODO: should we force this to be a variable? I think we should...
-        if type(x.tp) == ADT:
-            print('got an ADT :)', x.tp)
-        else:
-            mark('ADT expected in case expression')
+        if type(x) != Var and len(x.name) == 0:
+            mark('expected variable name to `case` on')
+
+        if type(x.tp) != ADT:
+            mark('ADT variable expected in `case`')
+
         if SC.sym == OF:
             getSym()
         else:
             mark("'of' expected")
+
         if SC.sym == LBRACE:
             getSym()
         else:
             mark("'{' expected")
-        """
-        "<ADTKind>: <statementSuite>
-        {<ADTKind>: <statementSuite> \n}"
-        """
         if SC.sym == INDENT:
             getSym()
         else:
             mark('indent expected when casing')
-        while SC.sym == IDENT:
-            kind = SC.val
-            # TODO: if kind == DEFAULT... (default case)
-            # TODO: if kind == NIL... (uninitialized case)
-            y = find(kind)
-            if type(y) != ADTKind:
-                mark(f"'{SC.val}' is not an ADT Kind identifier name")
-            if y not in x.tp.kinds:
-                mark(f"'{SC.val}' is not an ADT Kind that belongs to ADT '{x.tp.name}'")
-            getSym()
-            if SC.sym == COLON:
-                getSym()
-            else:
-                mark("':' expected after ADT kind identifier")
-            # TODO: if...else...end setup for this...
-            # openScope()
-            # if y.record is not None:
-            #     overwriteVar = Var(y.record.val)
-            #     overwriteVar.name = x.name
-            #     if hasattr(x, 'lev'):
-            #         overwriteVar.lev = x.lev
-            #     if hasattr(x, 'adr'):
-            #         overwriteVar.adr = x.adr
-            #     if hasattr(x, 'reg'):
-            #         overwriteVar.reg = x.reg
-            #     print(str(overwriteVar))
-            #     print(str(x))
-            #     newDecl(x.name, overwriteVar, errOnDup=False)
-            # statementSuite()  # TODO: this returns None... we need to wrap around the code it generates nicely
-            openScope()
-            oldXTp = None
-            if y.record is not None:
-                oldXTp = x.tp
-                x.tp = y.record.val
-            x.isAdtSelector = True
-            newDecl(x.name, x, overwriteLev=False, errOnDup=False)
-            # TODO: rather disappointing results... if a var is a global variable, this simply does not work nicely...
-            statementSuite()
-            if y.record is not None:
-                x.tp = oldXTp
-            closeScope()
-            x.isAdtSelector = False
+        cases(x)
         if SC.sym == DEDENT:
             getSym()
         else:
@@ -808,10 +803,8 @@ def statement():
         if SC.sym == RBRACE:
             getSym()
         else:
-            print(SC.sym, SC.val)
             mark("'}' expected")
         print("CASEing code isn't yet complete, not yet ready for production :(")
-        exit(0)
         # TODO: Need to define a new fake ADT Kind that can always be matched against for uninitialized ADTs
         # TODO: stop users from generating redundant cases
         """

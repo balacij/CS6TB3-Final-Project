@@ -179,6 +179,21 @@ i32.sub                      ;; leftover entry is the pointer to the generated t
         asm.append(f)
 
 
+def genCaseStart(x, k):
+    loadItem(x)
+    asm.append(f"i32.const {str(k)}")
+    asm.append('i32.eq')
+    asm.append('if')
+
+
+def genCaseElse():
+    asm.append('else')
+
+
+def genCaseEnd():
+    asm.append('end')
+
+
 # The symbol table assigns to each entry the level of declaration in the field `lev: int`. Variables are assigned a `name: str` field by the symbol table and an `adr: int` field by the code generator. The use of the `lev` field is extended:
 
 
@@ -226,6 +241,9 @@ def loadItem(x):
             asm.append("global.get $" + x.name)  # global Var
         elif x.lev == curlev:
             asm.append("local.get $" + x.name)  # local Var
+            # JASON ADDED
+            if type(x.tp) == ADT:
+                asm.append('i32.load')
         elif x.lev == MemInd:
             asm.append("i32.load")
         elif x.lev == MemAbs:
@@ -424,7 +442,7 @@ def genIndex(x, y):
 # Procedure `genSelect(x, f)` generates code for `x.f`, provided `f` is in `x.fields`. If `x` is `Var`, i.e. allocated in memory, only `x.adr` is updated and no code is generated. If `x` is `Ref`, i.e. a reference to memory, code for adding the offset of `f` is generated. An updated item is returned.
 
 
-def genSelect(x, f):
+def genSelect(x, f, right=True):
     # x.f, assuming x.tp is Record, f is Field, and x.lev is Stack, MemInd or is > 0
     if x.lev == MemAbs:
         x.adr += f.offset
@@ -438,9 +456,12 @@ def genSelect(x, f):
         x.lev = Stack
     else:
         mark("WASM: select?")
+
+    if right:
+        asm.append('i32.load')
+
     x.tp = f.tp
     # TODO: I need to add this below line whenever it's type is
-    # asm.append('i32.load')
     return x
 
 

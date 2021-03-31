@@ -46,7 +46,7 @@ def main(targetName=None, run=False, runtime='wasmer'):
         """
 // type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
 type Maybe = Just(value: integer) | Nothing
-// type List = Cons(head: integer, tail: List) | Nil
+type List = Cons(head: integer, tail: List) | Nil
 
 // type RGB = Red | Green | Blue
 
@@ -59,6 +59,7 @@ type q = (a: boolean, b: integer, c: integer)
 // var maybe: Maybe
 // var tree: Tree
 
+
 // procedure weird(n: q)
 //     var r: q
 //     r.a := true
@@ -66,9 +67,12 @@ type q = (a: boolean, b: integer, c: integer)
 //     r.c := 10000
 //     if r.b > 1 then write(n.b) else n.b := n.b - 1; weird(r)
 
-// procedure uptoList(n: integer) → (l: List)
-//     var tail: List
-//     if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
+procedure five() → (n: integer)
+    n := 5
+
+procedure uptoList(n: integer) → (l: List)
+    var tail: List
+    if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
 
 // procedure uptoList2(n: integer) → (l: List)
 //     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
@@ -91,12 +95,12 @@ program potato
     // var mylist: List
     var maybe: Maybe
     var x: integer
-    var w: (a: boolean, b: integer, c: integer)
-    w.a := true
-    w.b := 88
-    write(w.b)
-    w.c := 10000
-    write(w.c)
+    // var w: (a: boolean, b: integer, c: integer)
+    // w.a := true
+    // w.b := 88
+    // write(w.b)
+    // w.c := 10000
+    // write(w.c)
     // mq.a := true
     // mq.b := 10
     // write(mq.b)
@@ -113,6 +117,8 @@ program potato
     case maybe of {
         Just: 
             x := maybe.value
+            // maybe.value := 100
+            maybe.value ← five()
             write(maybe.value)
             write(x)
         Nothing: x := 1000
@@ -144,23 +150,10 @@ program potato
     # TODO: Figure out how we're going to handle un-initialized ADTs!!!
 
     if run and targetName is not None:
-        import os
-
-        ec = os.system(f"wat2wasm {target}")
-        if ec == 0:
-            if runtime == 'wasmer':
-                runwasmer(f"{targetName}.wasm")
-            elif runtime == 'pywasm':
-                runpywasm(f"{targetName}.wasm")
-            else:
-                print('invalid runtime selected; only currently supporting `pywasm` and `wasmer`')
-                exit(0)
-        else:
-            print("failed to compile to wasm")
-            print(ec)
+        compileAndRun(targetName, runtime=runtime)
 
 
-def run(targetName, runtime='wasmer'):
+def compileAndRun(targetName, runtime='wasmer'):
     import os
 
     ec = os.system(f"wat2wasm {targetName}.wat")
@@ -181,4 +174,4 @@ def run(targetName, runtime='wasmer'):
 if __name__ == "__main__":
     main(targetName='potato', run=True, runtime='wasmer')
     # main()
-    # run("potato", runtime='wasmer')
+    # compileAndRun("potato", runtime='wasmer')
