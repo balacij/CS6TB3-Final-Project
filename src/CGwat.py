@@ -69,7 +69,10 @@ from ST import (
 
 def genProgStart():
     global curlev, memsize, asm
-    curlev, memsize = 0, 0
+    curlev, memsize = (
+        0,
+        4,
+    )  # JASON: We _always_ offset by 4 so that whenever someone creates a new "ADT" var, it's always pointing to 0 which coincidentally is always this blocked out first 4 bytes with all 0s :)
     asm = [
         "(module",
         '(import "P0lib" "write" (func $write (param i32)))',
