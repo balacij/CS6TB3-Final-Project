@@ -502,7 +502,6 @@ def genAssign(x, y):
     if x.lev == Global:
         asm.append("global.set $" + x.name)
     elif x.lev > 0:
-        # TODO: Add ADTs here
         if type(x.tp) in (Array, Record):
             asm.append("i32.const " + str(x.tp.size))
             asm.append("memory.copy")

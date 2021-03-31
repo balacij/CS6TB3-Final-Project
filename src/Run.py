@@ -139,12 +139,12 @@ procedure consumeList(l: List)
 
 procedure rgbToHex(rgb: RGB) → (n: integer)
     case rgb of {
-        Red:         // TODO: Where did the hex go?
-            n := 100 // 0xff0000
+        Red:         // apparently we lost hex codes for integer representations :(
+            n := 16711680    // 0xff0000
         Green:
-            n := 10  // 0x00ff00
+            n := 65280       // 0x00ff00
         Blue:
-            n := 1   // 0x0000ff
+            n := 255         // 0x0000ff
     }
 
 procedure sumList(l: List) → (n: integer)
@@ -177,7 +177,7 @@ program potato
     maybe ← Just(1111)
     // left ← Leaf(1)
     // right ← Leaf(2)
-    // tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...
+    // tree ← Branch(tree, tree)
     // tree ← Branch(left, right)
 
     mylist ← uptoList(5)
@@ -187,8 +187,10 @@ program potato
             x := maybe.value
             // maybe.value := 100
             maybe.value ← five()
+            writeNewLine()
             writeln(maybe.value)
             writeln(x)
+            writeNewLine()
         Nothing: x := 1000
     }
 
@@ -220,32 +222,13 @@ program potato
     writeAsciiLn(101)
     writeAsciiLn(102)
 
+    writeNewLine()
+
     writeln(100)
 
     """,
         dstfn=target,
     )
-    # TODO: Right now, I'm being a little bit inconsistent
-    #       with how I define the types and how I instantiate
-    #       them, I should use parantheses both when defining and
-    #       when creating it, because it's currently allowing you
-    #       to write "Nothing" to define Nothing tag as part of
-    #       "Maybe" but when you want to set some variable to
-    #       "Maybe", you have to type in "x ← Nothing()"
-    #                 -- hence, the inconsistency
-
-    # TODO: Figure out where procedure calls can occur, and allow
-    #       the same kind of mkADTKind generation in the same areas
-
-    # TODO: "case"-like statements of the form:
-    #
-    #       case x of {
-    #          Just:
-    #             y := x.value
-    #       }
-    #
-
-    # TODO: Figure out how we're going to handle un-initialized ADTs!!!
 
     if run and targetName is not None:
         compileAndRun(targetName, runtime=runtime)

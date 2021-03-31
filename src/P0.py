@@ -590,8 +590,9 @@ def cases(x):
     "<ADTKind>: <statementSuite>
     {<ADTKind>: <statementSuite> \n}"
     """
-    # if SC.sym == DEFAULT
-    # if SC.sym == NIL
+    # TODO: if SC.sym == DEFAULT  -- "catch all"
+    # TODO: if SC.sym == NIL      -- uninitialized ones
+    # TODO: stop users from generating redundant cases
     if SC.sym == IDENT:
         kind = SC.val
         y = find(kind)
@@ -813,27 +814,6 @@ def statement():
             getSym()
         else:
             mark("'}' expected")
-        print("CASEing code isn't yet complete, not yet ready for production :(")
-        # TODO: Need to define a new fake ADT Kind that can always be matched against for uninitialized ADTs
-        # TODO: stop users from generating redundant cases
-        """
-        TODO: GENERAL IDEA
-        .. expression ..
-        local.set $_case_0
-        local.get $_case_0
-        i32.const 1
-        i32.eqz
-        if
-        ...
-        else
-            local.get $_case_0
-            i32.const 2
-            i32.eqz
-            if
-            ...
-            end
-        end
-        """
     else:
         mark("statement expected")
     return x
@@ -1178,18 +1158,6 @@ def program():
     newDecl("writeNewLine", StdProc([], []))
     CG.genProgStart()
     declarations(CG.genGlobalVars)
-
-    # JASON: generate helper functions for ADT Kind generation, and register them all as functions
-    # adtKinds = getAllADTKinds()
-    # CG.genADTKindMkFuncs(adtKinds)
-    # for kind in adtKinds:
-    #     print(kind.name, kind.tp)
-    #     newDecl(
-    #         f"__mk_{kind.name}",
-    #         Proc([] if kind.record is None else [field for field in kind.record.val.fields], [Var(kind.tp.val)]),
-    #     )  # TODO: Add 1 param -- the result!
-    # TODO: I moved this above a bit, when finding the ADTKinds, I auto-generate them there instead of doing it en-masse here because functions that rely on constructing new types will fail since they would rely on functions that have not been generated yet, I think it's safe to remove this but we'll wait until tomorrow to really figure it out and make sure :)
-
     if SC.sym == PROGRAM:
         getSym()
     else:
