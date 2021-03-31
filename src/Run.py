@@ -44,11 +44,14 @@ def main(targetName=None, run=False, runtime='wasmer'):
 
     compileString(
         """
-// type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
+type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
 type Maybe = Just(value: integer) | Nothing
+type Either = Left(value: integer) | Right(value: boolean)
 type List = Cons(head: integer, tail: List) | Nil
 
 type RGB = Red | Green | Blue
+
+type Expr = Add(left: Expr, right: Expr) | Sub(left: Expr, right: Expr) | Mul(left: Expr, right: Expr) | Div(num: Expr, den: Expr) | Pow(base: Expr, exponent: Expr) | Int(value: integer)
 
 type q = (a: boolean, b: integer, c: integer)
 // type f = (a: q, b: boolean, c: integer)
