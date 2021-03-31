@@ -14,7 +14,6 @@
 # Errors in the code generator are reported by calling `mark` of the scanner. The data types of the symbol table are used to specify the P0 constructs for which code is to be generated.
 
 
-# import nbimporter; nbimporter.options["only_defs"] = False
 from SC import (
     TIMES,
     DIV,

@@ -2,7 +2,7 @@ from P0 import compileString
 from ST import printSymTab
 
 
-def runpywasm(wasmfile):
+def runpywasm(wasmFile):
     import pywasm
 
     def write(s, i):
@@ -24,7 +24,7 @@ def runpywasm(wasmfile):
         return int(input())
 
     vm = pywasm.load(
-        wasmfile,
+        wasmFile,
         {
             "P0lib": {
                 "write": write,
@@ -37,7 +37,7 @@ def runpywasm(wasmfile):
     )
 
 
-def runwasmer(wasmfile):
+def runwasmer(wasmFile):
     from wasmer import engine, Store, Module, Instance, ImportObject, Function
     from wasmer_compiler_cranelift import Compiler
 
@@ -60,7 +60,7 @@ def runwasmer(wasmfile):
         return int(input())
 
     store = Store(engine.JIT(Compiler))
-    module = Module(store, open(wasmfile, 'rb').read())
+    module = Module(store, open(wasmFile, 'rb').read())
     import_object = ImportObject()
     import_object.register(
         "P0lib",

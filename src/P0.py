@@ -2,7 +2,7 @@
 # #### COMP SCI 4TB3/6TB3, McMaster University
 # #### Original Author: Emil Sekerinski, revised March 2021
 #
-# This collection of _Jupyter notebooks_ develops a compiler for P0, a programming langauge inspired by Pascal, a language designed for ease of compilation. The compiler currently generates WebAssebmbly and MIPS code, but is modularized to facilitate other targets. WebAssembly is representive of stack-based virtual machines while the MIPS architecture is representative of Reduced Instruction Set Computing (RISC) processors.
+# This collection of _Jupyter notebooks_ develops a compiler for P0, a programming langauge inspired by Pascal, a language designed for ease of compilation. The compiler currently generates WebAssembly and MIPS code, but is modularized to facilitate other targets. WebAssembly is representative of stack-based virtual machines while the MIPS architecture is representative of Reduced Instruction Set Computing (RISC) processors.
 #
 # ### The P0 Language
 # The main syntactic elements of P0 are *statements*, *declarations*, *types*, and *expressions*.
@@ -142,7 +142,6 @@
 # The scanner and symbol table are always imported. Depending on the selected target, a different code generator is imported when compilation starts.
 
 
-# import nbimporter; nbimporter.options["only_defs"] = False
 import SC  #  used for SC.init, SC.sym, SC.val, SC.error
 from SC import (
     TIMES,
@@ -1201,7 +1200,7 @@ def compileString(src, dstfn=None, target="wat"):
         print(msg)
 
 
-# Procedure `compileFile(srcfn, target)` compiles the file named `scrfn`, which must have the extension `.p`, and generates assembly code in a file with extension `.s`. If `target` is omitted, MIPS code is generated.
+# Procedure `compileFile(srcfn, target)` compiles the file named `srcfn`, which must have the extension `.p`, and generates assembly code in a file with extension `.s`. If `target` is omitted, MIPS code is generated.
 
 
 def compileFile(srcfn, target="wat"):
