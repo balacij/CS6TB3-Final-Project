@@ -247,7 +247,6 @@ def compatible(xt, yt):
         or (type(xt) == ADTSelfRef and compatible(xt.tp.val, yt))
         or (type(yt) == ADTSelfRef and compatible(yt.tp.val, xt))
     )
-        
 
 
 # The first sets for recursive descent parsing are:

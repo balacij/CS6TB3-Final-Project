@@ -48,7 +48,7 @@ def main(targetName=None, run=False, runtime='wasmer'):
 type Maybe = Just(value: integer) | Nothing
 type List = Cons(head: integer, tail: List) | Nil
 
-// type RGB = Red | Green | Blue
+type RGB = Red | Green | Blue
 
 type q = (a: boolean, b: integer, c: integer)
 // type f = (a: q, b: boolean, c: integer)
@@ -83,6 +83,25 @@ procedure consumeList(l: List)
             consumeList(r)
     }
 
+procedure rgbToHex(rgb: RGB) → (n: integer)
+    case rgb of {
+        Red:         // TODO: Where did the hex go?
+            n := 100 // 0xff0000
+        Green:
+            n := 10  // 0x00ff00
+        Blue:
+            n := 1   // 0x0000ff
+    }
+
+procedure sumList(l: List) → (n: integer)
+    case l of {
+        Cons:
+            n ← sumList(l.tail)
+            n := n + l.head
+        Nil:
+            n := 0
+    }
+
 // procedure uptoList2(n: integer) → (l: List)
 //     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
 
@@ -104,6 +123,7 @@ program potato
     var mylist: List
     var maybe: Maybe
     var x: integer
+    var colour: RGB
     // var w: (a: boolean, b: integer, c: integer)
     // w.a := true
     // w.b := 88
@@ -134,6 +154,20 @@ program potato
     }
 
     consumeList(mylist)
+    x ← sumList(mylist)
+    write(x)
+
+    colour ← Red()
+    x ← rgbToHex(colour)
+    write(x)
+
+    colour ← Green()
+    x ← rgbToHex(colour)
+    write(x)
+
+    colour ← Blue()
+    x ← rgbToHex(colour)
+    write(x)
 
     """,
         dstfn=target,
