@@ -70,6 +70,14 @@ type q = (a: boolean, b: integer, c: integer)
 procedure five() → (n: integer)
     n := 5
 
+procedure valOr(v: Maybe, n: integer) → (r: integer)
+    case v of {
+        Just:
+            r := v.value
+        Nothing:
+            r := n
+    }
+
 procedure uptoList(n: integer) → (l: List)
     var tail: List
     if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
@@ -167,6 +175,14 @@ program potato
 
     colour ← Blue()
     x ← rgbToHex(colour)
+    write(x)
+
+    maybe ← Just(999)
+    x ← valOr(maybe, 10000)
+    write(x)
+
+    maybe ← Nothing()
+    x ← valOr(maybe, 10000)
     write(x)
 
     """,
