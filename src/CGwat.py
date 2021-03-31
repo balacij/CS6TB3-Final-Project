@@ -452,19 +452,21 @@ def genSelect(x, f, right=True):
     elif x.lev == Stack:
         asm.append("i32.const " + str(f.offset))
         asm.append("i32.add")
+
+        if right:
+            asm.append('i32.load')
     elif x.lev > 0:
         asm.append("local.get $" + x.name)  # parameter or local reference
         asm.append("i32.const " + str(f.offset))
         asm.append("i32.add")
         x.lev = Stack
+
+        if right:
+            asm.append('i32.load')
     else:
         mark("WASM: select?")
 
-    if right:
-        asm.append('i32.load')
-
     x.tp = f.tp
-    # TODO: I need to add this below line whenever it's type is
     return x
 
 

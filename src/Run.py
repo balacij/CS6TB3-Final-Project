@@ -57,7 +57,7 @@ type q = (a: boolean, b: integer, c: integer)
 // type f = (a: q, b: boolean, c: integer)
 
 // var tree: Tree
-// var mq: q
+var mq: q
 
 // var maybe: Maybe
 // var tree: Tree
@@ -84,6 +84,12 @@ procedure valOr(v: Maybe, n: integer) → (r: integer)
 procedure uptoList(n: integer) → (l: List)
     var tail: List
     if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
+
+// procedure uptoList2(n: integer) → (l: List)
+//     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
+
+// TODO: "uptoList2" and this below "weird2" have the same issue! In the current
+// P0 implementation, we are not able to call functions in expressions!
 
 procedure consumeList(l: List)
     var r: List
@@ -113,38 +119,23 @@ procedure sumList(l: List) → (n: integer)
             n := 0
     }
 
-// procedure uptoList2(n: integer) → (l: List)
-//     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
-
-// TODO: "uptoList2" and this below "weird2" have the same issue! In the current
-// P0 implementation, we are not able to call functions in expressions!
-
-// procedure weird2(n: integer) → (r: integer)
-//     if n < 1 then r := 0 else r ← weird2(weird2(n-2))
-
-
-// procedure weird2Working(n: integer) → (r: integer)
-//     var q: integer
-//     q ← weird2Working(n-2)
-//     if n < 1 then r := 0 else r ← weird2Working(q)
-
-
 program potato
     // var left, right: Tree
     var mylist: List
     var maybe: Maybe
     var x: integer
     var colour: RGB
-    // var w: (a: boolean, b: integer, c: integer)
-    // w.a := true
-    // w.b := 88
-    // write(w.b)
-    // w.c := 10000
-    // write(w.c)
-    // mq.a := true
-    // mq.b := 10
-    // write(mq.b)
-    // mq.c := 1000
+    var w: q
+    w.a := true
+    w.b := 88
+    write(w.b)
+    w.c := 10000
+    write(w.c)
+    mq.a := true
+    mq.b := 10
+    write(mq.b)
+    mq.c := 1000
+    write(mq.c)
     maybe ← Nothing()
     maybe ← Just(1111)
     // left ← Leaf(1)
@@ -152,7 +143,7 @@ program potato
     // tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...
     // tree ← Branch(left, right)
 
-    mylist ← uptoList(10)
+    mylist ← uptoList(5)
 
     case maybe of {
         Just: 
