@@ -74,6 +74,15 @@ procedure uptoList(n: integer) → (l: List)
     var tail: List
     if n < 1 then l ← Nil() else tail ← uptoList(n-1); write(n); l ← Cons(n, tail)
 
+procedure consumeList(l: List)
+    var r: List
+    case l of {
+        Cons:
+            write(l.head)
+            r := l.tail
+            consumeList(r)
+    }
+
 // procedure uptoList2(n: integer) → (l: List)
 //     if n < 1 then l ← Nil() else write(n); l ← Cons(n, uptoList2(n-1))
 
@@ -92,7 +101,7 @@ procedure uptoList(n: integer) → (l: List)
 
 program potato
     // var left, right: Tree
-    // var mylist: List
+    var mylist: List
     var maybe: Maybe
     var x: integer
     // var w: (a: boolean, b: integer, c: integer)
@@ -112,7 +121,7 @@ program potato
     // tree ← Branch(tree, tree)  // TODO: while this is weird, I will consider the impacts of allowing it, since we are playing with pointers...
     // tree ← Branch(left, right)
 
-    // mylist ← uptoList(1000)
+    mylist ← uptoList(10)
 
     case maybe of {
         Just: 
@@ -123,6 +132,8 @@ program potato
             write(x)
         Nothing: x := 1000
     }
+
+    consumeList(mylist)
 
     """,
         dstfn=target,

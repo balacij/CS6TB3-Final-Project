@@ -245,7 +245,9 @@ def compatible(xt, yt):
         or (type(xt) == Record == type(yt) and all(compatible(xf.tp, yf.tp) for xf, yf in zip(xt.fields, yt.fields)))
         or (type(xt) == ADT == type(yt) and xt.name == yt.name)
         or (type(xt) == ADTSelfRef and compatible(xt.tp.val, yt))
+        or (type(yt) == ADTSelfRef and compatible(yt.tp.val, xt))
     )
+        
 
 
 # The first sets for recursive descent parsing are:
