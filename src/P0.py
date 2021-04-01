@@ -866,8 +866,12 @@ def typ(adtName=None, parsingTypedIds=False):
             if type(x) == Type:
                 x = Type(x.val)
                 getSym()
+            elif type(x) == ADTKind:
+                mark(
+                    f"type identifier may not be an ADTKind; got '{x.name}' -- possible duplicate naming of '{x.name}'?"
+                )
             else:
-                mark("type identifier expected")
+                mark(f"type identifier expected; got '{x.name}'")
         elif adtName is not None:
             if parsingTypedIds and SC.val == adtName:
                 getSym()

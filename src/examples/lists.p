@@ -23,6 +23,18 @@ procedure sumList(l: List) → (n: integer)
             n := 0
     }
 
+procedure mulList(l: List) -> (n: integer)
+    case l of {
+        Cons:
+            n := l.head * mulList(l.tail)
+        Nil:
+            n := 1
+    }
+
+procedure factorial(n: integer) -> (r: integer)
+    r := mulList(uptoList(n))
+
+
 program Main
     var x: integer
     var mylist: List
@@ -37,3 +49,8 @@ program Main
     mylist := Cons(1, Cons(2, Cons(3, Cons(4, Nil()))))
     x := sumList(mylist)
     writeln(x)
+
+    x := mulList(mylist)
+    writeln(x)
+
+    writeln(factorial(6))
