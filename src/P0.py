@@ -1169,16 +1169,17 @@ def body(ident, para):
 
 
 def program():
+    lib = "P0lib"
     newDecl("boolean", Type(CG.genBool(Bool)))
     newDecl("integer", Type(CG.genInt(Int)))
     newDecl("true", Const(Bool, 1))
     newDecl("false", Const(Bool, 0))
-    newDecl("read", StdProc("P0lib", [], [Var(Int)]))
-    newDecl("write", StdProc("P0lib", [Var(Int)], []))
-    newDecl("writeChar", StdProc("P0lib", [Var(Int)], []))
-    newDecl("writeCharLn", StdProc("P0lib", [Var(Int)], []))
-    newDecl("writeln", StdProc("P0lib", [Var(Int)], []))
-    newDecl("writeNewLine", StdProc("P0lib", [], []))
+    newDecl("read", StdProc(lib, [], [Var(Int)]))
+    newDecl("write", StdProc(lib, [Var(Int)], []))
+    newDecl("writeChar", StdProc(lib, [Var(Int)], []))
+    newDecl("writeCharLn", StdProc(lib, [Var(Int)], []))
+    newDecl("writeln", StdProc(lib, [Var(Int)], []))
+    newDecl("writeNewLine", StdProc(lib, [], []))
     CG.genProgStart(getAllDeclsOfType(StdProc))
     declarations(CG.genGlobalVars)
     if SC.sym == PROGRAM:
