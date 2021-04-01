@@ -5,6 +5,9 @@ type Something = A
   | E
   | F
 
+type Maybe = Just(value: integer)
+           | Nothing
+
 program Main
     var a: Something
     
