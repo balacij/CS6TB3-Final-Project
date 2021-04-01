@@ -202,6 +202,7 @@ from SC import (
     OF,
     DEFAULT,
     NIL,
+    CHAR,
 )
 
 import ST  #  used for ST.init
@@ -252,8 +253,8 @@ def compatible(xt, yt):
 
 
 FIRSTSELECTOR = {LBRAK, PERIOD}
-FIRSTFACTOR = {IDENT, NUMBER, LPAREN, NOT, CARD, COMPLEMENT}
-FIRSTEXPRESSION = {PLUS, MINUS, IDENT, NUMBER, LPAREN, NOT, CARD, COMPLEMENT}
+FIRSTFACTOR = {IDENT, NUMBER, CHAR, LPAREN, NOT, CARD, COMPLEMENT}
+FIRSTEXPRESSION = {PLUS, MINUS, IDENT, NUMBER, CHAR, LPAREN, NOT, CARD, COMPLEMENT}
 FIRSTSTATEMENT = {IDENT, IF, WHILE, CASE}
 FIRSTTYPE = {IDENT, LPAREN}
 FIRSTDECL = {CONST, TYPE, VAR, PROCEDURE}
@@ -338,6 +339,10 @@ def factor():
         else:
             mark(f"variable or constant identifier expected; got '{SC.val}' of type '{str(type(x))}'")
         x = selector(x)
+    elif SC.sym == CHAR:
+        x = Const(Int, SC.val)
+        X = CG.genConst(x)
+        getSym()
     elif SC.sym == NUMBER:
         x = Const(Int, SC.val)
         x = CG.genConst(x)
@@ -390,6 +395,7 @@ def factor():
         else:
             mark("set expected")
     else:
+        print(SC.sym)
         mark("expression expected")
     return x
 
@@ -668,6 +674,7 @@ def funcCall(xs, x, y):  # call y(ap) or xs ← y(ap)
     if SC.sym == RPAREN:
         getSym()
     else:
+        print(SC.sym)
         mark("')' expected")
     if i < len(fp):
         print(i, fp, x)

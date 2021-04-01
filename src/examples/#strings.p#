@@ -37,6 +37,6 @@ program Main
     printStr(genAlphabetsBetween('a', 'z'), true)       // print lowercase letters
     printStr(genAlphabetsBetween('0', '9'), true)       // print numbers 0-9
 
+    printStr(genAlphabetsBetween('𐡀', '𐡟'), true)       // print Aramaic letters
+
     printStr(genAlphabetsBetween(67648, 67679), true)   // print Aramaic letters
-    printStr(genAlphabetsBetween('𐡀','𐡟'), true)       // print Aramaic letters again
-                                                        // Aramaic is R->L and it looks like VSCode tries to accomodate this... nice! :)

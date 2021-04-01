@@ -66,6 +66,8 @@ OF = 102
 DEFAULT = 103
 NIL = 104
 
+CHAR = 110
+
 
 # Following variables determine the state of the scanner:
 #
@@ -134,6 +136,16 @@ def number():
     if val >= 2 ** 31:
         mark("number too large")
 
+
+def char():
+    global sym, val
+    sym, val = CHAR, ord(ch)
+    getChar()
+
+    if ch == "'":
+        getChar()
+    else:
+        mark("expected closing '")
 
 # Procedure `identKW()` parses
 #
@@ -233,6 +245,9 @@ def getSym():
             identKW()
         elif "0" <= ch <= "9":
             number()
+        elif ch == "'":
+            getChar()
+            char()
         elif ch == "×":
             getChar()
             sym = TIMES
@@ -260,12 +275,18 @@ def getSym():
             if ch == "-":
                 getChar()
                 sym = LARROW
+            elif ch == '=':
+                getChar()
+                sym = LE
         elif ch == "≤":
             getChar()
             sym = LE
         elif ch == ">":
             getChar()
             sym = GT
+            if ch == '=':
+                getChar()
+                sym = GE
         elif ch == "≥":
             getChar()
             sym = GE
