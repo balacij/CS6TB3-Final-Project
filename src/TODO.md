@@ -7,3 +7,12 @@
 6. Create presentation
 7. `grep -E "TODO" -r *` -- go through all file TODOs and handle them accordingly
 8. Allow multi-line ADTKind definitions for an ADT
+9. Fix globals
+10. Figure out what the goal is for issue when casing and wanting to reference ADT as it is, not with selector...
+11. Improve code generation for `case`s... maybe we can cache the kind locally somehow?
+12. Allow `<-` and `->` as well in addition to the existing inaccessible LARROW and RARROW
+
+# MAYBEs?
+1. Create more standard built-in procedures for better working with Strings?
+2. Make lists a built-in construction?
+3. Allow ADT type parameterization?
