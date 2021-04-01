@@ -326,11 +326,15 @@ def factor():
             x = Const(x.tp, x.val)
             x = CG.genConst(x)
             getSym()
-        elif (
-            type(x) in {Proc, StdProc} and len(x.res) == 1
-        ):  # JASON: allow procedure in-place IF it has a single return value only!!!
-            getSym()
-            x = funcCall([], x, x)
+        elif type(x) in {Proc, StdProc}:
+            # JASON: allow procedure in-place IF it has a single return value only!!!
+            if len(x.res) == 1:
+                getSym()
+                x = funcCall([], x, x)
+            else:
+                mark(
+                    f"'{x.name}' may not be used as an expression -- must have exactly 1 return value but '{x.name}' has {len(x.res)}"
+                )
         else:
             mark(f"variable or constant identifier expected; got '{SC.val}' of type '{str(type(x))}'")
         x = selector(x)

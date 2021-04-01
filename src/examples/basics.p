@@ -11,6 +11,9 @@ type Maybe = Just(value: integer)
 procedure doubler(x: integer) -> (r: integer)
     r := x * 2
 
+procedure doubler2(x: integer) -> (y: integer, z: integer)
+    y, z := x, x
+
 program Main
     var a: Something
     var x: integer
