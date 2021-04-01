@@ -20,13 +20,12 @@ Please carefully read and follow these instructions:
 4. If you haven't previously installed the project required libraries, please do so using:<br>`pip install -r requirements.txt`
 
 ### Run
-Before running, please ensure that your environment is in working order.
+Before running, please ensure that your environment is in working order and that you have a `.p` suffixed P0 program nearby and ready for compilation.
 
-<----------------------------------------------------------------------------->
-
-TODO
-
-<----------------------------------------------------------------------------->
+Using one of my pre-made examples, you may run the following commands:
+1. Move into the `src` directory (if not already)<br>`cd src`
+2. Open up the Python virtual environment (if not already)<br>`source .venv/bin/activate`
+3. Compile the file<br>`python Run.py examples/lists.py` (or, you may designate another example or another file for it to compile)
 
 ## Members
 * [Jason Balaci (balacij)](mailto:balacij@mcmaster.ca)

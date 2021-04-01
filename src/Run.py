@@ -113,6 +113,8 @@ def wat2wasmAndRun(targetName, runtime='wasmer'):
 
 if __name__ == "__main__":
     # TODO: add --clean option
+    # TODO: add --runtime option
+    # TODO: add --run option
     import sys
 
     if len(sys.argv) != 2:
