@@ -22,4 +22,3 @@
     * Whenever referring to some type `X a b ...` (it should be FULLY filled in), it should find an existing definition for this ADT or generate a new one (putting in the new type into an extra list for later in-placing into the `ADTTYPESDECLARATIONS`!)
 3. Create `is<Kind>` functions automatically?
 4. Improve code generation for `case`s... maybe we can cache the kind locally somehow?
-5. Figure out what the goal is for the "casing reference ADT issue" (when casing and wanting to reference ADT as it is, not with selector...)?
