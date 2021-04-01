@@ -7,4 +7,4 @@
 * You may define ADTs using multiple lines to separate the ADT Kinds.
 * We allow single-return valued procedures to be used in-place in expressions.
 * When in scope of a case, when you're _inside_ of an actual ADT Kind's statement suite, the variable being _cased_ on is typed as if it were the ADT Kind, not just the ADT itself!
-* Chars are native conversions to integers
+* Single quoted characterss are native conversions to integers.
