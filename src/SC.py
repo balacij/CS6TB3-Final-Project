@@ -236,6 +236,9 @@ def getSym():
         elif ch == "×":
             getChar()
             sym = TIMES
+        elif ch == "*":
+            getChar()
+            sym = TIMES
         elif ch == "+":
             getChar()
             sym = PLUS
@@ -340,4 +343,4 @@ def getSym():
         elif ch == chr(0):
             sym = EOF
         else:
-            mark("illegal character")
+            mark(f"illegal character; '{ch}'")

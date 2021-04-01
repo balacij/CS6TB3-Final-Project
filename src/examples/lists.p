@@ -25,9 +25,14 @@ procedure sumList(l: List) → (n: integer)
 program Main
     var x: integer
     var mylist: List
+    var a, b, c: integer
 
     mylist ← uptoList(5)
 
     consumeList(mylist)
     x ← sumList(mylist)
+    writeln(x)
+
+    mylist := Cons(1, Cons(2, Cons(3, Cons(4, Nil()))))
+    x := sumList(mylist)
     writeln(x)

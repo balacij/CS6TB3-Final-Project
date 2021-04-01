@@ -1,4 +1,4 @@
-type Something = A
+type Something = A(value: integer)
   | B
   | C
   | D
@@ -8,14 +8,18 @@ type Something = A
 type Maybe = Just(value: integer)
            | Nothing
 
+procedure doubler(x: integer) -> (r: integer)
+    r := x * 2
+
 program Main
     var a: Something
-    
-    a <- A()
+    var x: integer
+
+    a <- A(doubler(4))
 
     case a of {
         A:
-            writeln(0)
+            writeln(a.value)
         B:
             writeln(1)
         C:

@@ -314,6 +314,11 @@ def selector(x, right=True):
 def factor():
     if SC.sym == IDENT:
         x = find(SC.val)
+
+        # Jason: if we find an ADTKind, it's likely a constructor, so we find it's related procedure
+        if type(x) == ADTKind:
+            x = find(f"__mk_{x.name}")
+
         if type(x) == Var:
             x = CG.genVar(x)
             getSym()
@@ -321,10 +326,13 @@ def factor():
             x = Const(x.tp, x.val)
             x = CG.genConst(x)
             getSym()
+        elif (
+            type(x) in {Proc, StdProc} and len(x.res) == 1
+        ):  # JASON: allow procedure in-place IF it has a single return value only!!!
+            getSym()
+            x = funcCall([], x, x)
         else:
-            # TODO: Figure out if there's any particular reason we're not allowed to
-            #       have procedure calls here.
-            mark(f"variable or constant identifier expected; got {str(type(x))}")
+            mark(f"variable or constant identifier expected; got '{SC.val}' of type '{str(type(x))}'")
         x = selector(x)
     elif SC.sym == NUMBER:
         x = Const(Int, SC.val)
@@ -621,9 +629,62 @@ def cases(x, casedOn=[]):
         x.isAdtSelector = False
         if SC.sym in {IDENT, NIL, DEFAULT}:
             CG.genCaseElse()
-            casedOn.append(y.name) # TODO: for default, nil, this needs to be different :)
+            casedOn.append(y.name)  # TODO: for default, nil, this needs to be different :)
             cases(x, casedOn=casedOn)
         CG.genCaseEnd()
+
+
+def funcCall(xs, x, y):  # call y(ap) or xs ← y(ap)
+    fp, ap, i = y.par, [], 0  #  list of formals, list of actuals
+    if SC.sym == LPAREN:
+        getSym()
+    else:
+        mark(f"'(' expected; got {SC.sym}")
+    if SC.sym in FIRSTEXPRESSION:
+        a = expression()
+        if i < len(fp):
+            if compatible(fp[i].tp, a.tp):
+                ap.append(CG.genActualPara(a, fp[i], i))
+            else:
+                mark("incompatible parameter")
+        else:
+            mark("extra parameter")
+        i = i + 1
+        while SC.sym == COMMA:
+            getSym()
+            a = expression()
+            if i < len(fp):
+                if compatible(fp[i].tp, a.tp):
+                    ap.append(CG.genActualPara(a, fp[i], i))
+                else:
+                    mark("incompatible parameter")
+            else:
+                mark("extra parameter")
+            i = i + 1
+    if SC.sym == RPAREN:
+        getSym()
+    else:
+        mark("')' expected")
+    if i < len(fp):
+        mark("too few parameters")
+    elif type(y) == StdProc:
+        if y.name == "read":
+            x = CG.genRead(x)
+        elif y.name == "write":
+            x = CG.genWrite(a)
+        elif y.name == "writeln":
+            x = CG.genWriteln()
+        elif y.name == "writeAscii":
+            x = CG.genWriteAscii()
+        elif y.name == "writeAsciiLn":
+            x = CG.genWriteAsciiLn()
+        elif y.name == "writeNewLine":
+            x = CG.genWriteNewLine()
+        else:
+            mark(f'unknown StdProc; {y.name}')
+    else:
+        x = CG.genCall(xs, y, ap)
+    return x
 
 
 def statement():
@@ -701,56 +762,8 @@ def statement():
                 mark(":= or ← expected")
         else:
             mark("variable or procedure expected")
-        if call:  # call y(ap) or xs ← y(ap)
-            fp, ap, i = y.par, [], 0  #  list of formals, list of actuals
-            if SC.sym == LPAREN:
-                getSym()
-            else:
-                mark("'(' expected")
-            if SC.sym in FIRSTEXPRESSION:
-                a = expression()
-                if i < len(fp):
-                    if compatible(fp[i].tp, a.tp):
-                        ap.append(CG.genActualPara(a, fp[i], i))
-                    else:
-                        mark("incompatible parameter")
-                else:
-                    mark("extra parameter")
-                i = i + 1
-                while SC.sym == COMMA:
-                    getSym()
-                    a = expression()
-                    if i < len(fp):
-                        if compatible(fp[i].tp, a.tp):
-                            ap.append(CG.genActualPara(a, fp[i], i))
-                        else:
-                            mark("incompatible parameter")
-                    else:
-                        mark("extra parameter")
-                    i = i + 1
-            if SC.sym == RPAREN:
-                getSym()
-            else:
-                mark("')' expected")
-            if i < len(fp):
-                mark("too few parameters")
-            elif type(y) == StdProc:
-                if y.name == "read":
-                    x = CG.genRead(x)
-                elif y.name == "write":
-                    x = CG.genWrite(a)
-                elif y.name == "writeln":
-                    x = CG.genWriteln()
-                elif y.name == "writeAscii":
-                    x = CG.genWriteAscii()
-                elif y.name == "writeAsciiLn":
-                    x = CG.genWriteAsciiLn()
-                elif y.name == "writeNewLine":
-                    x = CG.genWriteNewLine()
-                else:
-                    mark(f'unknown StdProc; {y.name}')
-            else:
-                x = CG.genCall(xs, y, ap)
+        if call:
+            x = funcCall(xs, x, y)  # TODO
     elif SC.sym == IF:
         getSym()
         x = expression()

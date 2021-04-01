@@ -592,6 +592,12 @@ def genCall(rp, pr, ap):  # result (or None), procedure, actual parameters
         y.lev = Stack
         genAssign(r, y)
 
+    # JASON: this should _most_ definitely be returning things otherwise too...
+    if len(pr.res) == 1:
+        r = Var(pr.res[0].tp)
+        r.lev = Stack
+        return r
+
 
 def genRead(x):
     asm.append("call $read")
