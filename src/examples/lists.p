@@ -54,3 +54,5 @@ program Main
     writeln(x)
 
     writeln(factorial(6))
+    // writeln(factorial(14)) // `i32`s aren't large enough for this one... 14! = 87178291200, but this prints out `1278945280` (because of `i32` max size)
+ 
