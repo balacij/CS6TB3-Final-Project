@@ -184,6 +184,7 @@ i32.sub                      ;; leftover entry is the pointer to the generated t
 
 def genCaseStart(x, k):
     loadItem(x)
+    asm.append('i32.load')
     asm.append(f"i32.const {str(k)}")
     asm.append('i32.eq')
     asm.append('if')
@@ -245,8 +246,9 @@ def loadItem(x):
         elif x.lev == curlev:
             asm.append("local.get $" + x.name)  # local Var
             # JASON ADDED
-            if type(x.tp) == ADT:
-                asm.append('i32.load')
+            # if type(x.tp) == ADT:  # TODO: there's a glitch here... check out trees.p
+            #     # print('adding load for: ', x.name, x)
+            #     asm.append('i32.load')
         elif x.lev == MemInd:
             asm.append("i32.load")
         elif x.lev == MemAbs:
