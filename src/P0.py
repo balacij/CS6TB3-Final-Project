@@ -666,6 +666,7 @@ def funcCall(xs, x, y):  # call y(ap) or xs ← y(ap)
     else:
         mark("')' expected")
     if i < len(fp):
+        print(i, fp, x)
         mark("too few parameters")
     elif type(y) == StdProc:
         if y.name == "read":
