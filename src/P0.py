@@ -584,16 +584,17 @@ def statementSuite():
 # and generates code for the statement if no error is reported.
 
 
-def cases(x):
+def cases(x, casedOn=[]):
     """
     "<ADTKind>: <statementSuite>
     {<ADTKind>: <statementSuite> \n}"
     """
     # TODO: if SC.sym == DEFAULT  -- "catch all"
     # TODO: if SC.sym == NIL      -- uninitialized ones
-    # TODO: stop users from generating redundant cases
     if SC.sym == IDENT:
         kind = SC.val
+        if SC.val in casedOn:
+            mark(f"duplicate cases for '{SC.val}'")
         y = find(kind)
         if type(y) != ADTKind:
             mark(f"'{SC.val}' is not an ADT Kind identifier name")
@@ -620,7 +621,8 @@ def cases(x):
         x.isAdtSelector = False
         if SC.sym in {IDENT, NIL, DEFAULT}:
             CG.genCaseElse()
-            cases(x)
+            casedOn.append(y.name) # TODO: for default, nil, this needs to be different :)
+            cases(x, casedOn=casedOn)
         CG.genCaseEnd()
 
 
