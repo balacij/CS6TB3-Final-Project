@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) != 2:
         print('P0 Compiler usage:')
-        print('python Run.py <file>')
+        print('python Compile.py <file>')
         exit()
 
     main(targetName=sys.argv[1], run=True, runtime='wasmer')

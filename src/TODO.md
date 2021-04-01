@@ -3,8 +3,7 @@
 2. Clean up program entry -- get a nice `getopts` Python setup going
    1. `--clean` to get rid of leftover `.wat` and `.wasm` files (default to `false`)
    2. `--runtime` option to select between `pywasm` and `wasmer` (defaulting to `wasmer`, warning on `pywasm` usage that it's unsuitable)
-   3. `--memory-size` option to set page size of the program (default to `1` page)
-   4. `--run` option to automatically run the program (default to `true`)
+   3. `--run` option to automatically run the program (default to `false`)
 3. Add parsing tests (though I realistically already did them, just need to re-write them again...)
 4. Create presentation
 5. `grep -E "TODO" -r *` -- go through all file TODOs and handle them accordingly
