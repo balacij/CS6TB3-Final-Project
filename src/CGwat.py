@@ -619,7 +619,7 @@ def genWriteChar():
 
 
 def genWriteCharLn():
-    asm.append("call $writeChar")
+    asm.append("call $writeCharLn")
 
 
 def genWriteNewLine():

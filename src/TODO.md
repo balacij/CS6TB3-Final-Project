@@ -14,7 +14,6 @@
 9.  Update grammar in separate file
 10. Build and test `default` cases
 11. Build and test `nil` cases
-12. Create `strings` example :^)
 
 # MAYBEs?
 1. Create more standard built-in procedures for better working with Strings? It might help to make Strings a built-in construction really if we choose to do this.
