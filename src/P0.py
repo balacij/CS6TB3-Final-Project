@@ -764,7 +764,7 @@ def statement():
         else:
             mark("variable or procedure expected")
         if call:
-            x = funcCall(xs, x, y)  # TODO
+            x = funcCall(xs, x, y)  # Jason: moved this code out into a function so I can re-use it elsewhere :^)
     elif SC.sym == IF:
         getSym()
         x = expression()
