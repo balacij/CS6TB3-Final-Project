@@ -10,13 +10,12 @@
 9. Fix globals
 10. Figure out what the goal is for the "issue" (when casing and wanting to reference ADT as it is, not with selector...)
 11. Improve code generation for `case`s... maybe we can cache the kind locally somehow?
-12. Allow `<-` and `->` as well in addition to the existing inaccessible LARROW and RARROW
-13. Make sure I'm not allowing poorly formed names for ADT Kind identifiers
-14. Check on memory growing issue
-15. Update grammar in separate file
-16. Build and test `default` cases
-17. Build and test `nil` cases
-18. Create `strings` example :^)
+12. Make sure I'm not allowing poorly formed names for ADT Kind identifiers
+13. Check on memory growing issue
+14. Update grammar in separate file
+15. Build and test `default` cases
+16. Build and test `nil` cases
+17. Create `strings` example :^)
 
 # MAYBEs?
 1. Create more standard built-in procedures for better working with Strings?

@@ -1,6 +1,6 @@
 type Maybe = Just(value: integer) | Nothing
 
-procedure valOr(v: Maybe, n: integer) → (r: integer)
+procedure valOr(v: Maybe, n: integer) -> (r: integer)
     case v of {
         Just:
             r := v.value
@@ -13,8 +13,8 @@ program Main
 
     var x: integer
 
-    maybe ← Nothing()
-    maybe ← Just(1111)
+    maybe <- Nothing()
+    maybe <- Just(1111)
 
     case maybe of {
         Just: 

@@ -242,6 +242,9 @@ def getSym():
         elif ch == "-":
             getChar()
             sym = MINUS
+            if ch == ">":
+                getChar()
+                sym = RARROW
         elif ch == "=":
             getChar()
             sym = EQ
@@ -251,6 +254,9 @@ def getSym():
         elif ch == "<":
             getChar()
             sym = LT
+            if ch == "-":
+                getChar()
+                sym = LARROW
         elif ch == "≤":
             getChar()
             sym = LE
