@@ -1,4 +1,5 @@
-type Maybe = Just(value: integer) | Nothing
+type Maybe = Just(value: integer)
+           | Nothing
 
 procedure valOr(v: Maybe, n: integer) -> (r: integer)
     case v of {

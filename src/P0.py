@@ -592,7 +592,7 @@ def statementSuite():
 # and generates code for the statement if no error is reported.
 
 
-def cases(x, casedOn=[]):
+def cases(x, casedOn):
     """
     "<ADTKind>: <statementSuite>
     {<ADTKind>: <statementSuite> \n}"
@@ -630,7 +630,7 @@ def cases(x, casedOn=[]):
         if SC.sym in {IDENT, NIL, DEFAULT}:
             CG.genCaseElse()
             casedOn.append(y.name)  # TODO: for default, nil, this needs to be different :)
-            cases(x, casedOn=casedOn)
+            cases(x, casedOn)
         CG.genCaseEnd()
 
 
@@ -819,7 +819,7 @@ def statement():
             getSym()
         else:
             mark('indent expected when casing')
-        cases(x)
+        cases(x, [])
         if SC.sym == DEDENT:
             getSym()
         else:

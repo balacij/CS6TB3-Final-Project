@@ -1,9 +1,9 @@
 type Something = A(value: integer)
-  | B
-  | C
-  | D
-  | E
-  | F
+               | B
+               | C
+               | D
+               | E
+               | F
 
 type Maybe = Just(value: integer)
            | Nothing

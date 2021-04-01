@@ -1,4 +1,5 @@
-type List = Cons(head: integer, tail: List) | Nil
+type List = Cons(head: integer, tail: List)
+          | Nil
 
 procedure uptoList(n: integer) → (l: List)
     var tail: List
