@@ -14,6 +14,7 @@
 9.  Update grammar in separate file
 10. Build and test `default` cases
 11. Build and test `nil` cases
+12. Memory management -- if memory size nears `2 ^ 16` (near being defined modulo `2 ^ 16` and within ~`X` of `2 ^ 16`, where `X` is the size of the largest construction [ADT or record!] in the program), we should grow the memory size by 1 page (at a time!)
 
 # MAYBEs?
 1. Create more standard built-in procedures for better working with Strings? It might help to make Strings a built-in construction really if we choose to do this.
