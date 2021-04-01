@@ -6,3 +6,4 @@
 5. Add parsing tests (though I realistically already did them, just need to re-write them again...)
 6. Create presentation
 7. `grep -E "TODO" -r *` -- go through all file TODOs and handle them accordingly
+8. Allow multi-line ADTKind definitions for an ADT
