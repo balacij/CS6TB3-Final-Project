@@ -223,7 +223,6 @@ from ST import (
     newDecl,
     safeFind,
     find,
-    getAllADTKinds,
     openScope,
     topScope,
     closeScope,
@@ -900,7 +899,7 @@ def typ(adtName=None, parsingTypedIds=False):
                             field.tp = x
 
             # JASON: generate helper functions for ADT Kind generation, and register them all as functions
-            adtKinds = kinds  # getAllADTKinds()
+            adtKinds = kinds
             CG.genADTKindMkFuncs(adtKinds)
             for kind in adtKinds:
                 newDecl(

@@ -263,15 +263,6 @@ def find(name):
     return Const(None, 0)
 
 
-def getAllADTKinds():
-    kinds = []
-    for l in symTab:
-        for e in l:
-            if type(e) == ADTKind:
-                kinds.append(e)
-    return kinds
-
-
 def openScope():
     symTab.insert(0, [])
 

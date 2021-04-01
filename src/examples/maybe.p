@@ -21,9 +21,7 @@ program Main
         Just: 
             x := maybe.value
             maybe.value := 100
-            writeNewLine()
             writeln(maybe.value)
             writeln(x)
-            writeNewLine()
         Nothing: x := 1000
     }
