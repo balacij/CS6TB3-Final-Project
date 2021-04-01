@@ -859,10 +859,14 @@ def typ(adtName=None, parsingTypedIds=False):
 
             i = 1
             kinds = [adtKind(index=i, adtName=adtName)]
+            while SC.sym in {INDENT, DEDENT}:  # consume whitespace
+                getSym()
             while SC.sym == ADT_SEP:
                 getSym()
                 i += 1
                 kinds.append(adtKind(index=i, adtName=adtName))
+                while SC.sym in {INDENT, DEDENT}:  # consume whitespace
+                    getSym()
 
             x = Type(CG.genADT(ADT(name=adtName, kinds=kinds)))
 
@@ -1160,6 +1164,7 @@ def program():
     if SC.sym == PROGRAM:
         getSym()
     else:
+        print(SC.sym, SC.val)
         mark("'program' expected")
     ident = SC.val
     if SC.sym == IDENT:
