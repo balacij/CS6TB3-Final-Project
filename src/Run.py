@@ -8,10 +8,10 @@ def runpywasm(wasmFile):
     def write(s, i):
         print(i, end='')
 
-    def writeAscii(s, i):
+    def writeChar(s, i):
         print(chr(i), end='')
 
-    def writeAsciiLn(s, i):
+    def writeCharLn(s, i):
         print(chr(i))
 
     def writeln(s, i):
@@ -28,7 +28,7 @@ def runpywasm(wasmFile):
         {
             "P0lib": {
                 "write": write,
-                "writeAscii": writeAscii,
+                "writeChar": writeChar,
                 "writeln": writeln,
                 "writeNewLine": writeNewLine,
                 "read": read,
@@ -44,10 +44,10 @@ def runwasmer(wasmFile):
     def write(i: int):
         print(i, end='')
 
-    def writeAscii(i: int):
+    def writeChar(i: int):
         print(chr(i), end='')
 
-    def writeAsciiLn(i: int):
+    def writeCharLn(i: int):
         print(chr(i))
 
     def writeln(i: int):
@@ -66,8 +66,8 @@ def runwasmer(wasmFile):
         "P0lib",
         {
             "write": Function(store, write),
-            "writeAscii": Function(store, writeAscii),
-            "writeAsciiLn": Function(store, writeAsciiLn),
+            "writeChar": Function(store, writeChar),
+            "writeCharLn": Function(store, writeCharLn),
             "writeln": Function(store, writeln),
             "writeNewLine": Function(store, writeNewLine),
             "read": Function(store, read),

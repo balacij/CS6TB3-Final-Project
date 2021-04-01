@@ -75,8 +75,8 @@ def genProgStart():
     asm = [  # TODO: These shouldn't be hardcoded
         "(module",
         '(import "P0lib" "write" (func $write (param i32)))',
-        '(import "P0lib" "writeAscii" (func $writeAscii (param i32)))',
-        '(import "P0lib" "writeAsciiLn" (func $writeAsciiLn (param i32)))',
+        '(import "P0lib" "writeChar" (func $writeChar (param i32)))',
+        '(import "P0lib" "writeCharLn" (func $writeCharLn (param i32)))',
         '(import "P0lib" "writeln" (func $writeln (param i32)))',
         '(import "P0lib" "writeNewLine" (func $writeNewLine))',
         '(import "P0lib" "read" (func $read (result i32)))',
@@ -614,12 +614,12 @@ def genWriteln():
     asm.append("call $writeln")
 
 
-def genWriteAscii():
-    asm.append("call $writeAscii")
+def genWriteChar():
+    asm.append("call $writeChar")
 
 
-def genWriteAsciiLn():
-    asm.append("call $writeAsciiLn")
+def genWriteCharLn():
+    asm.append("call $writeChar")
 
 
 def genWriteNewLine():

@@ -675,10 +675,10 @@ def funcCall(xs, x, y):  # call y(ap) or xs ← y(ap)
             x = CG.genWrite(a)
         elif y.name == "writeln":
             x = CG.genWriteln()
-        elif y.name == "writeAscii":
-            x = CG.genWriteAscii()
-        elif y.name == "writeAsciiLn":
-            x = CG.genWriteAsciiLn()
+        elif y.name == "writeChar":
+            x = CG.genWriteChar()
+        elif y.name == "writeCharLn":
+            x = CG.genWriteCharLn()
         elif y.name == "writeNewLine":
             x = CG.genWriteNewLine()
         else:
@@ -1171,8 +1171,8 @@ def program():
     newDecl("false", Const(Bool, 0))
     newDecl("read", StdProc([], [Var(Int)]))
     newDecl("write", StdProc([Var(Int)], []))
-    newDecl("writeAscii", StdProc([Var(Int)], []))
-    newDecl("writeAsciiLn", StdProc([Var(Int)], []))
+    newDecl("writeChar", StdProc([Var(Int)], []))
+    newDecl("writeCharLn", StdProc([Var(Int)], []))
     newDecl("writeln", StdProc([Var(Int)], []))
     newDecl("writeNewLine", StdProc([], []))
     CG.genProgStart()

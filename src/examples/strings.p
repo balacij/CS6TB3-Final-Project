@@ -13,7 +13,7 @@ procedure strlen(s: String) -> (n: integer)
 procedure printStr(s: String, ln: boolean)
     case s of {
         SCons:
-            writeAscii(s.ch)
+            writeChar(s.ch)
             printStr(s.tail, ln)
         SNil:
             writeNewLine()
@@ -33,5 +33,5 @@ procedure genAlphabetsBetween(start: integer, end: integer) -> (s: String)
 program Main
     printStr(genAlphabetsBetween(65, 91), true)   // print capital letters
     printStr(genAlphabetsBetween(97, 123), true)  // print lowercase letters
-    printStr(genAlphabetsBetween(48, 58), true)
+    printStr(genAlphabetsBetween(48, 58), true)   // print numbers 0-9
 
