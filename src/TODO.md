@@ -11,11 +11,14 @@
 10. Figure out what the goal is for issue when casing and wanting to reference ADT as it is, not with selector...
 11. Improve code generation for `case`s... maybe we can cache the kind locally somehow?
 12. Allow `<-` and `->` as well in addition to the existing inaccessible LARROW and RARROW
+13. Make sure I'm not allowing poorly formed names for ADT Kind identifiers
+14. Check on memory growing issue
+15. Update grammar in separate file
 
 # MAYBEs?
 1. Create more standard built-in procedures for better working with Strings?
 2. Make lists a built-in construction?
 3. Allow ADT type parameterization?
-    * In-place a fake node for generating WebAssembly (e.g., asm.append(ADTTYPESDECLARATIONS))
+    * In-place a fake node for generating WebAssembly (e.g., `asm.append(ADTTYPESDECLARATIONS)`)
     * Allow parameterization of form: `type X a b ... = First a | Second b | ... `
-    * Whenever referring to some type `X a b ...` (it should be FULLY filled in), it should find an existing definition for this ADT or generate a new one (putting in the new type into an extra list for later in-placing into the ADTTYPESDECLARATIONS!)
+    * Whenever referring to some type `X a b ...` (it should be FULLY filled in), it should find an existing definition for this ADT or generate a new one (putting in the new type into an extra list for later in-placing into the `ADTTYPESDECLARATIONS`!)
