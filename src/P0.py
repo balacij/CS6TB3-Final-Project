@@ -227,6 +227,7 @@ from ST import (
     openScope,
     topScope,
     closeScope,
+    getAllDeclsOfType,
 )
 
 
@@ -1173,13 +1174,13 @@ def program():
     newDecl("integer", Type(CG.genInt(Int)))
     newDecl("true", Const(Bool, 1))
     newDecl("false", Const(Bool, 0))
-    newDecl("read", StdProc([], [Var(Int)]))
-    newDecl("write", StdProc([Var(Int)], []))
-    newDecl("writeChar", StdProc([Var(Int)], []))
-    newDecl("writeCharLn", StdProc([Var(Int)], []))
-    newDecl("writeln", StdProc([Var(Int)], []))
-    newDecl("writeNewLine", StdProc([], []))
-    CG.genProgStart()
+    newDecl("read", StdProc("P0lib", [], [Var(Int)]))
+    newDecl("write", StdProc("P0lib", [Var(Int)], []))
+    newDecl("writeChar", StdProc("P0lib", [Var(Int)], []))
+    newDecl("writeCharLn", StdProc("P0lib", [Var(Int)], []))
+    newDecl("writeln", StdProc("P0lib", [Var(Int)], []))
+    newDecl("writeNewLine", StdProc("P0lib", [], []))
+    CG.genProgStart(getAllDeclsOfType(StdProc))
     declarations(CG.genGlobalVars)
     if SC.sym == PROGRAM:
         getSym()

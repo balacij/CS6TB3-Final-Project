@@ -129,13 +129,15 @@ class Proc:
 
 
 class StdProc:
-    def __init__(self, par, res):
-        self.tp, self.par, self.res = None, par, res
+    def __init__(self, lib, par, res):
+        self.lib, self.tp, self.par, self.res = lib, None, par, res
 
     def __str__(self):
         return (
             "StdProc(name = "
             + getattr(self, 'name', '')
+            + ", lib = "
+            + getattr(self, 'lib', '')
             + ", lev = "
             + str(getattr(self, 'lev', ''))
             + ", par = ["
@@ -280,3 +282,12 @@ def topScope():
 
 def closeScope():
     symTab.pop(0)
+
+
+def getAllDeclsOfType(t):
+    r = []
+    for l in symTab:
+        for e in l:
+            if type(e) == t:
+                r.append(e)
+    return r

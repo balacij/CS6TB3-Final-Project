@@ -66,21 +66,19 @@ from ST import (
 # Procedure `genProgStart()` initializes these variables.
 
 
-def genProgStart():
+def genProgStart(stdProcs):
     global curlev, memsize, asm
     curlev, memsize = (
         0,
         4,
     )  # JASON: We _always_ offset by 4 so that whenever someone creates a new "ADT" var, it's always pointing to 0 which coincidentally is always this blocked out first 4 bytes with all 0s :)
-    asm = [  # TODO: These shouldn't be hardcoded
-        "(module",
-        '(import "P0lib" "write" (func $write (param i32)))',
-        '(import "P0lib" "writeChar" (func $writeChar (param i32)))',
-        '(import "P0lib" "writeCharLn" (func $writeCharLn (param i32)))',
-        '(import "P0lib" "writeln" (func $writeln (param i32)))',
-        '(import "P0lib" "writeNewLine" (func $writeNewLine))',
-        '(import "P0lib" "read" (func $read (result i32)))',
-    ]
+    asm = ["(module"]
+    asm.extend(
+        [
+            f'(import "{stdProc.lib}" "{stdProc.name}" (func ${stdProc.name}{" (param i32)" * len(stdProc.par)}{" (result i32)" * len(stdProc.res)}))'
+            for stdProc in stdProcs
+        ]
+    )
 
 
 # Following procedures "generate code" for all P0 types by determining the size of objects and store in the `size` field.
