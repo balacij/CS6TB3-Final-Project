@@ -1177,12 +1177,10 @@ def program():
 # Procedure `compileString(src, dstfn, target)` compiles the source as given by string `src`; if `dstfn` is provided, the code is written to a file by that name, otherwise printed on the screen. If `target` is omitted, MIPS code is generated.
 
 
-def compileString(src, dstfn=None, target="wat"):
+def compileString(src, dstfn=None, target="wat") -> Bool:
     global CG
     if target == "wat":
         import CGwat as CG
-    elif target == "ast":
-        import CGast as CG
     else:
         print("unknown target")
         return
@@ -1198,22 +1196,5 @@ def compileString(src, dstfn=None, target="wat"):
     except Exception as msg:
         # raise Exception(str(msg))
         print(msg)
-
-
-# Procedure `compileFile(srcfn, target)` compiles the file named `srcfn`, which must have the extension `.p`, and generates assembly code in a file with extension `.s`. If `target` is omitted, MIPS code is generated.
-
-
-def compileFile(srcfn, target="wat"):
-    if srcfn.endswith(".p"):
-        with open(srcfn, "r") as f:
-            src = f.read()
-        dstfn = srcfn[:-2] + ".s"
-        compileString(src, dstfn, target)
-    else:
-        print("'.p' file extension expected")
-
-
-# Sample usage (in code cell):
-#
-#     cd /path/to/my/prog
-#     compileFile('myprog.p')
+        return False
+    return True

@@ -76,183 +76,48 @@ def runwasmer(wasmFile):
     instance = Instance(module, import_object)
 
 
-def main(targetName=None, run=False, runtime='wasmer'):
-    target = None if targetName is None else f"{targetName}.wat"
+def main(targetName, run=False, runtime='wasmer'):
+    if not targetName.endswith('.p'):
+        print('target file must end in ".p"')
+        exit(0)
 
-    compileString(
-        """
-type Tree = Branch(left: Tree, right: Tree) | Leaf(value: integer)
-type Maybe = Just(value: integer) | Nothing
-type Either = Left(value: integer) | Right(value: boolean)
-type List = Cons(head: integer, tail: List) | Nil
+    with open(targetName, "r") as f:
+        src = f.read()
 
-type RGB = Red | Green | Blue
+    dstfn = targetName[:-2] + ".wat"
 
-type Expr = Add(left: Expr, right: Expr) | Sub(left: Expr, right: Expr) | Mul(left: Expr, right: Expr) | Div(num: Expr, den: Expr) | Pow(base: Expr, exponent: Expr) | Int(value: integer)
-
-type q = (a: boolean, b: integer, c: integer)
-// type f = (a: q, b: boolean, c: integer)
-
-// var tree: Tree
-var mq: q
-
-// var maybe: Maybe
-// var tree: Tree
+    if compileString(src, dstfn) and run:
+        wat2wasmAndRun(dstfn, runtime=runtime)
 
 
-// procedure weird(n: q)
-//     var r: q
-//     r.a := true
-//     r.b := 100
-//     r.c := 10000
-//     if r.b > 1 then write(n.b) else n.b := n.b - 1; weird(r)
-
-procedure five() → (n: integer)
-    n := 5
-
-procedure valOr(v: Maybe, n: integer) → (r: integer)
-    case v of {
-        Just:
-            r := v.value
-        Nothing:
-            r := n
-    }
-
-procedure uptoList(n: integer) → (l: List)
-    var tail: List
-    if n < 1 then l ← Nil() else tail ← uptoList(n-1); writeln(n); l ← Cons(n, tail)
-
-// procedure uptoList2(n: integer) → (l: List)
-//     if n < 1 then l ← Nil() else writeln(n); l ← Cons(n, uptoList2(n-1))
-
-// TODO: "uptoList2" and this below "weird2" have the same issue! In the current
-// P0 implementation, we are not able to call functions in expressions!
-
-procedure consumeList(l: List)
-    var r: List
-    case l of {
-        Cons:
-            writeln(l.head)
-            r := l.tail
-            consumeList(r)
-    }
-
-procedure rgbToHex(rgb: RGB) → (n: integer)
-    case rgb of {
-        Red:         // apparently we lost hex codes for integer representations :(
-            n := 16711680    // 0xff0000
-        Green:
-            n := 65280       // 0x00ff00
-        Blue:
-            n := 255         // 0x0000ff
-    }
-
-procedure sumList(l: List) → (n: integer)
-    case l of {
-        Cons:
-            n ← sumList(l.tail)
-            n := n + l.head
-        Nil:
-            n := 0
-    }
-
-program potato
-    // var left, right: Tree
-    var mylist: List
-    var maybe: Maybe
-    var x: integer
-    var colour: RGB
-    var w: q
-    w.a := true
-    w.b := 88
-    writeln(w.b)
-    w.c := 10000
-    writeln(w.c)
-    mq.a := true
-    mq.b := 10
-    writeln(mq.b)
-    mq.c := 1000
-    writeln(mq.c)
-    maybe ← Nothing()
-    maybe ← Just(1111)
-    // left ← Leaf(1)
-    // right ← Leaf(2)
-    // tree ← Branch(tree, tree)
-    // tree ← Branch(left, right)
-
-    mylist ← uptoList(5)
-
-    case maybe of {
-        Just: 
-            x := maybe.value
-            // maybe.value := 100
-            maybe.value ← five()
-            writeNewLine()
-            writeln(maybe.value)
-            writeln(x)
-            writeNewLine()
-        Nothing: x := 1000
-    }
-
-    consumeList(mylist)
-    x ← sumList(mylist)
-    writeln(x)
-
-    colour ← Red()
-    x ← rgbToHex(colour)
-    writeln(x)
-
-    colour ← Green()
-    x ← rgbToHex(colour)
-    writeln(x)
-
-    colour ← Blue()
-    x ← rgbToHex(colour)
-    writeln(x)
-
-    maybe ← Just(999)
-    x ← valOr(maybe, 10000)
-    writeln(x)
-
-    maybe ← Nothing()
-    x ← valOr(maybe, 10000)
-    writeln(x)
-
-    writeAscii(100)
-    writeAsciiLn(101)
-    writeAsciiLn(102)
-
-    writeNewLine()
-
-    writeln(100)
-
-    """,
-        dstfn=target,
-    )
-
-    if run and targetName is not None:
-        compileAndRun(targetName, runtime=runtime)
-
-
-def compileAndRun(targetName, runtime='wasmer'):
+def wat2wasmAndRun(targetName, runtime='wasmer'):
     import os
 
-    ec = os.system(f"wat2wasm {targetName}.wat")
-
+    wasmFile = targetName[:-4] + ".wasm"
+    ec = os.system(f'wat2wasm "{targetName}" --output={wasmFile}')
     if ec == 0:
+        runner = None
         if runtime == 'wasmer':
-            runwasmer(f"{targetName}.wasm")
+            runner = runwasmer
         elif runtime == 'pywasm':
-            runpywasm(f"{targetName}.wasm")
+            runner = runpywasm
         else:
             print('invalid runtime selected; only currently supporting `pywasm` and `wasmer`')
             exit(0)
+
+        runner(f"{wasmFile}")
     else:
         print("failed to compile to wasm")
         print(ec)
 
 
 if __name__ == "__main__":
-    main(targetName='potato', run=True, runtime='wasmer')
-    # main()
-    # compileAndRun("potato", runtime='wasmer')
+    # TODO: add --clean option
+    import sys
+
+    if len(sys.argv) != 2:
+        print('P0 Compiler usage:')
+        print('python Run.py <file>')
+        exit()
+
+    main(targetName=sys.argv[1], run=True, runtime='wasmer')
