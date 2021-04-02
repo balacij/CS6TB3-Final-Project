@@ -433,7 +433,7 @@ def genIndex(x, y):
             asm.append("i32.const " + str(x.adr))
         asm.append("i32.add")
         x = Var(x.tp.base)
-        if x.tp in (Int, Bool) or type(x.tp) == Set:  # TODO
+        if x.tp in (Int, Bool) or type(x.tp) == Set:
             x.lev = MemInd
         else:
             x.lev = Stack
@@ -578,7 +578,7 @@ def genProcExit(x, para, local):
 
 
 def genActualPara(ap, fp, n):
-    if ap.tp in {Int, Bool} or type(ap.tp) == Set:  # TODO
+    if ap.tp in {Int, Bool} or type(ap.tp) == Set:
         loadItem(ap)
     else:  # a.tp is Array, Record
         if ap.lev > 0:

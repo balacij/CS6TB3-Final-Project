@@ -7,9 +7,8 @@
 3. Add parsing tests (though I realistically already did them, just need to re-write them again...)
 4. Create presentation
 5. `grep -E "TODO" -r *` -- go through all file TODOs and handle them accordingly
-6. Fix globals
-7. Draw grammar in `docs/GRAMMAR.md`
-8. Memory management -- if memory size nears `2 ^ 16` (near being defined modulo `2 ^ 16` and within ~`X` of `2 ^ 16`, where `X` is the size of the largest construction [ADT or record!] in the program), we should grow the memory size by 1 page (at a time!)
+6. Draw grammar in `docs/GRAMMAR.md`
+7. Memory management -- if memory size nears `2 ^ 16` (near being defined modulo `2 ^ 16` and within ~`X` of `2 ^ 16`, where `X` is the size of the largest construction [ADT or record!] in the program), we should grow the memory size by 1 page (at a time!)
 
 # MAYBEs?
 1. Built-in String ADT? Then we can have "abcdef..." syntactic sugar for generating Strings at compile time...
