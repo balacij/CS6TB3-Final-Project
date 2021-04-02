@@ -604,10 +604,11 @@ def statementSuite():
 
 def cases(x, casedOn):
     """
-    "<ADTKind>: <statementSuite>
-    {<ADTKind>: <statementSuite> \n}"
+    [nil: <statementSuite>\n]
+    <ADTKind>: <statementSuite>\n
+    {<ADTKind>: <statementSuite> \n}
+    [default: <statementSuite>]\n
     """
-    # TODO: if SC.sym == DEFAULT  -- "catch all"
     if SC.sym == NIL:
         if 'nil' in casedOn:
             mark(f'duplicate `nil` case')
@@ -666,7 +667,7 @@ def cases(x, casedOn):
         x.isAdtSelector = False
         if SC.sym in {IDENT, NIL, DEFAULT}:
             CG.genCaseElse()
-            casedOn.append(y.name)  # TODO: for default, this needs to be different :)
+            casedOn.append(y.name)
             cases(x, casedOn)
         CG.genCaseEnd()
 
