@@ -8,4 +8,4 @@
 * We allow single-return valued procedures to be used in-place in expressions.
 * When in scope of a case, when you're _inside_ of an actual ADT Kind's statement suite, the variable being _cased_ on is typed as if it were the ADT Kind, not just the ADT itself!
 * Single quoted characterss are native conversions to integers.
-* In the `nil` and `default` cases of a `case` statement, the target variable is left untouched. However, in the other cases, they are _selectable_ records representing the ADT Kind it was read in as.
+* In the `nil` and `default` cases of a `case` statement, the target variable is left untouched. However, in the other cases, they are _selectable_ records representing the ADT Kind it was pattern matched to be.
