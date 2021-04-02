@@ -618,7 +618,7 @@ def cases(x, casedOn):
             getSym()
         else:
             mark("':' expected after `nil` case")
-        CG.genCaseStart(x, 0) # note; 0 is globally represented as `nil` kind
+        CG.genCaseStart(x, 0)  # note; 0 is globally represented as `nil` kind
         statementSuite()
         casedOn.append('nil')
         if SC.sym in {IDENT, NIL, DEFAULT}:
@@ -657,9 +657,8 @@ def cases(x, casedOn):
         if y.record is not None:
             oldXTp = x.tp
             x.tp = y.record.val
-        x.isAdtSelector = True
+        x.isAdtSelector = True  # TODO: I don't think this is actually being used really
         newDecl(x.name, x, overwriteLev=False, errOnDup=False)
-        # TODO: rather disappointing results... if a var is a global variable, this simply does not work nicely...
         statementSuite()
         if y.record is not None:
             x.tp = oldXTp
@@ -710,7 +709,7 @@ def funcCall(xs, x, y):  # call y(ap) or xs ← y(ap)
         if y.name == "read":
             x = CG.genRead(x)
         elif y.name == "write":
-            x = CG.genWrite(a)
+            x = CG.genWrite()
         elif y.name == "writeln":
             x = CG.genWriteln()
         elif y.name == "writeChar":

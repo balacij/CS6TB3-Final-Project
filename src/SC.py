@@ -153,6 +153,7 @@ def char():
     else:
         mark("expected closing '")
 
+
 # Procedure `identKW()` parses
 #
 #     identKW ::= keyword | identifier

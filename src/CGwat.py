@@ -220,7 +220,7 @@ def genGlobalVars(sc, start):
     global memsize
     for i in range(start, len(sc)):
         if type(sc[i]) == Var:
-            if sc[i].tp in (Int, Bool) or type(sc[i].tp) == Set:
+            if sc[i].tp in (Int, Bool) or type(sc[i].tp) in {Set, ADT}:
                 asm.append("(global $" + sc[i].name + " (mut i32) i32.const 0)")
             elif type(sc[i].tp) in (Array, Record, ADT):
                 sc[i].lev, sc[i].adr, memsize = MemAbs, memsize, memsize + sc[i].tp.size
@@ -245,10 +245,6 @@ def loadItem(x):
             asm.append("global.get $" + x.name)  # global Var
         elif x.lev == curlev:
             asm.append("local.get $" + x.name)  # local Var
-            # JASON ADDED
-            # if type(x.tp) == ADT:  # TODO: there's a glitch here... check out trees.p
-            #     # print('adding load for: ', x.name, x)
-            #     asm.append('i32.load')
         elif x.lev == MemInd:
             asm.append("i32.load")
         elif x.lev == MemAbs:
@@ -437,7 +433,7 @@ def genIndex(x, y):
             asm.append("i32.const " + str(x.adr))
         asm.append("i32.add")
         x = Var(x.tp.base)
-        if x.tp in (Int, Bool) or type(x.tp) == Set:
+        if x.tp in (Int, Bool) or type(x.tp) == Set:  # TODO
             x.lev = MemInd
         else:
             x.lev = Stack
@@ -454,6 +450,14 @@ def genSelect(x, f, right=True):
     elif x.lev == Stack:
         asm.append("i32.const " + str(f.offset))
         asm.append("i32.add")
+
+        if right:
+            asm.append('i32.load')
+    elif x.lev == Global:
+        asm.append("global.get $" + x.name)
+        asm.append("i32.const " + str(f.offset))
+        asm.append("i32.add")
+        x.lev = Stack
 
         if right:
             asm.append('i32.load')
@@ -574,7 +578,7 @@ def genProcExit(x, para, local):
 
 
 def genActualPara(ap, fp, n):
-    if ap.tp in {Int, Bool} or type(ap.tp) == Set:
+    if ap.tp in {Int, Bool} or type(ap.tp) == Set:  # TODO
         loadItem(ap)
     else:  # a.tp is Array, Record
         if ap.lev > 0:
@@ -606,7 +610,7 @@ def genRead(x):
     genAssign(x, y)
 
 
-def genWrite(x):
+def genWrite():
     asm.append("call $write")
 
 
