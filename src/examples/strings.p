@@ -40,3 +40,4 @@ program Main
     printStr(genAlphabetsBetween(67648, 67679), true)   // print Aramaic letters
     printStr(genAlphabetsBetween('𐡀','𐡟'), true)       // print Aramaic letters again
                                                         // Aramaic is R->L and it looks like VSCode tries to accomodate this... nice! :)
+                                                        // (note that '𐡀' is displayed in the seemingly other argument but it is really the 67648 argument -- R->L changes this in rendering)
