@@ -10,4 +10,3 @@ program Main
         C: writeCharLn('C')
     }
 
-    writeCharLn('F')

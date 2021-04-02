@@ -617,7 +617,7 @@ def cases(x, casedOn):
         if SC.sym == COLON:
             getSym()
         else:
-            mark("':' expected after ADT kind identifier")
+            mark("':' expected after `nil` case")
         CG.genCaseStart(x, 0) # note; 0 is globally represented as `nil` kind
         statementSuite()
         if SC.sym in {IDENT, NIL, DEFAULT}:
@@ -625,6 +625,17 @@ def cases(x, casedOn):
             casedOn.append('nil')
             cases(x, casedOn)
         CG.genCaseEnd()
+    elif SC.sym == DEFAULT:
+        if 'default' in casedOn:
+            mark(f'duplicate `default` case')
+        getSym()
+        if SC.sym == COLON:
+            getSym()
+        else:
+            mark("':' expected after `default` case")
+        statementSuite()
+        if SC.sym in {IDENT, NIL, DEFAULT}:
+            mark(f'`default` case should be very last case')
     elif SC.sym == IDENT:
         kind = SC.val
         if SC.val in casedOn:
