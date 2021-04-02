@@ -299,7 +299,6 @@ def selector(x, right=True):
                         mark("not a field")
                     getSym()
                 else:
-                    print(str(x))
                     mark("not a record")
             else:
                 mark("identifier expected")
@@ -396,7 +395,6 @@ def factor():
         else:
             mark("set expected")
     else:
-        print(SC.sym)
         mark("expression expected")
     return x
 
@@ -705,10 +703,8 @@ def funcCall(xs, x, y):  # call y(ap) or xs ← y(ap)
     if SC.sym == RPAREN:
         getSym()
     else:
-        print(SC.sym)
         mark("')' expected")
     if i < len(fp):
-        print(i, fp, x)
         mark("too few parameters")
     elif type(y) == StdProc:
         if y.name == "read":
@@ -1234,7 +1230,6 @@ def program():
     if SC.sym == PROGRAM:
         getSym()
     else:
-        print(SC.sym, SC.val)
         mark("'program' expected")
     ident = SC.val
     if SC.sym == IDENT:
