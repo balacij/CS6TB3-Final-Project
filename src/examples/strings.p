@@ -41,3 +41,7 @@ program Main
     printStr(genAlphabetsBetween('𐡀','𐡟'), true)       // print Aramaic letters again
                                                         // Aramaic is R->L and it looks like VSCode tries to accomodate this... nice! :)
                                                         // (note that '𐡀' is displayed in the seemingly other argument but it is really the 67648 argument -- R->L changes this in rendering)
+
+    // NOTE: If we _really_ wanted to do, we can make `""` also a syntactic sugar for a built-in String type
+    // e.g., "abcd" becomes syntactic sugar for SCons('a', SCons('b', SCons('c', SCons('d', SNil()))))
+    //       and we don't create a new `char` type on purpose (because arithmetic on characters is frequent and not harmful -- so we think of it as a positive thing)
