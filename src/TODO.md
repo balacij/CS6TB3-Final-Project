@@ -10,9 +10,8 @@
 6. Fix globals
 7. Draw grammar in `docs/GRAMMAR.md`
 8. Build and test `default` cases
-9. Build and test `nil` cases
-10. Memory management -- if memory size nears `2 ^ 16` (near being defined modulo `2 ^ 16` and within ~`X` of `2 ^ 16`, where `X` is the size of the largest construction [ADT or record!] in the program), we should grow the memory size by 1 page (at a time!)
-11. Produce warnings on non-exhaustive `case`s.
+9.  Memory management -- if memory size nears `2 ^ 16` (near being defined modulo `2 ^ 16` and within ~`X` of `2 ^ 16`, where `X` is the size of the largest construction [ADT or record!] in the program), we should grow the memory size by 1 page (at a time!)
+10. Produce warnings on non-exhaustive `case`s.
 
 # MAYBEs?
 1. Built-in String ADT? Then we can have "abcdef..." syntactic sugar for generating Strings at compile time...

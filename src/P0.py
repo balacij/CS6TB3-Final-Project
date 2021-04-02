@@ -608,8 +608,24 @@ def cases(x, casedOn):
     {<ADTKind>: <statementSuite> \n}"
     """
     # TODO: if SC.sym == DEFAULT  -- "catch all"
-    # TODO: if SC.sym == NIL      -- uninitialized ones
-    if SC.sym == IDENT:
+    if SC.sym == NIL:
+        if 'nil' in casedOn:
+            mark(f'duplicate `nil` case')
+        if len(casedOn) > 0:
+            mark(f'`nil` case should always be the first case if needed')
+        getSym()
+        if SC.sym == COLON:
+            getSym()
+        else:
+            mark("':' expected after ADT kind identifier")
+        CG.genCaseStart(x, 0) # note; 0 is globally represented as `nil` kind
+        statementSuite()
+        if SC.sym in {IDENT, NIL, DEFAULT}:
+            CG.genCaseElse()
+            casedOn.append('nil')
+            cases(x, casedOn)
+        CG.genCaseEnd()
+    elif SC.sym == IDENT:
         kind = SC.val
         if SC.val in casedOn:
             mark(f"duplicate cases for '{SC.val}'")
@@ -639,7 +655,7 @@ def cases(x, casedOn):
         x.isAdtSelector = False
         if SC.sym in {IDENT, NIL, DEFAULT}:
             CG.genCaseElse()
-            casedOn.append(y.name)  # TODO: for default, nil, this needs to be different :)
+            casedOn.append(y.name)  # TODO: for default, this needs to be different :)
             cases(x, casedOn)
         CG.genCaseEnd()
 
