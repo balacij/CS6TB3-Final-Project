@@ -203,6 +203,7 @@ from SC import (
     DEFAULT,
     NIL,
     CHAR,
+    warning,
 )
 
 import ST  #  used for ST.init
@@ -621,10 +622,10 @@ def cases(x, casedOn):
             mark("':' expected after `nil` case")
         CG.genCaseStart(x, 0) # note; 0 is globally represented as `nil` kind
         statementSuite()
+        casedOn.append('nil')
         if SC.sym in {IDENT, NIL, DEFAULT}:
             CG.genCaseElse()
-            casedOn.append('nil')
-            cases(x, casedOn)
+            casedOn = cases(x, casedOn)
         CG.genCaseEnd()
     elif SC.sym == DEFAULT:
         if 'default' in casedOn:
@@ -635,6 +636,7 @@ def cases(x, casedOn):
         else:
             mark("':' expected after `default` case")
         statementSuite()
+        casedOn.append('default')
         if SC.sym in {IDENT, NIL, DEFAULT}:
             mark(f'`default` case should be very last case')
     elif SC.sym == IDENT:
@@ -664,12 +666,13 @@ def cases(x, casedOn):
         if y.record is not None:
             x.tp = oldXTp
         closeScope()
+        casedOn.append(y.name)
         x.isAdtSelector = False
         if SC.sym in {IDENT, NIL, DEFAULT}:
             CG.genCaseElse()
-            casedOn.append(y.name)
-            cases(x, casedOn)
+            casedOn = cases(x, casedOn)
         CG.genCaseEnd()
+    return casedOn
 
 
 def funcCall(xs, x, y):  # call y(ap) or xs ← y(ap)
@@ -859,7 +862,14 @@ def statement():
             getSym()
         else:
             mark('indent expected when casing')
-        cases(x, [])
+        casedOn = cases(x, [])
+        if len(casedOn) == 1 and 'default' in casedOn:
+            warning('redundant `case`ing (only has default case, `case`ing can be removed)')
+        elif 'default' not in casedOn:
+            if 'nil' not in casedOn:
+                warning('missing explicit `nil` case')
+            if len(casedOn) != len(x.tp.kinds) + 1:
+                warning('non-exhaustive cases')
         if SC.sym == DEDENT:
             getSym()
         else:
@@ -1242,7 +1252,7 @@ def program():
 # Procedure `compileString(src, dstfn, target)` compiles the source as given by string `src`; if `dstfn` is provided, the code is written to a file by that name, otherwise printed on the screen. If `target` is omitted, MIPS code is generated.
 
 
-def compileString(src, dstfn=None, target="wat") -> Bool:
+def compileString(src, dstfn=None, target="wat", showWarnings=True) -> Bool:
     global CG
     if target == "wat":
         import CGwat as CG
@@ -1250,6 +1260,7 @@ def compileString(src, dstfn=None, target="wat") -> Bool:
         print("unknown target")
         return
     try:
+        SC.SHOW_WARNINGS = showWarnings
         SC.init(src)
         ST.init()
         p = program()

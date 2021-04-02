@@ -68,6 +68,7 @@ NIL = 104
 
 CHAR = 110
 
+SHOW_WARNINGS = False
 
 # Following variables determine the state of the scanner:
 #
@@ -117,6 +118,11 @@ def getChar():
 
 def mark(msg):
     raise Exception("line " + str(lastline) + " pos " + str(lastpos) + " " + msg)
+
+
+def warning(msg):
+    if SHOW_WARNINGS:
+        print(f'WARNING: line {str(lastline)}: {msg}')
 
 
 # Procedure `number()` parses
