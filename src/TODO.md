@@ -1,14 +1,16 @@
-# TODOs
-1. Fill out examples
-2. Clean up program entry -- get a nice `getopts` Python setup going
+# Softare-related TODOs
+1. Clean up program entry -- get a nice `getopts` Python setup going
    1. `--clean` to get rid of leftover `.wat` and `.wasm` files (default to `false`)
    2. `--runtime` option to select between `pywasm` and `wasmer` (defaulting to `wasmer`, warning on `pywasm` usage that it's unsuitable)
    3. `--run` option to automatically run the program (default to `false`)
-3. Add parsing tests (though I realistically already did them, just need to re-write them again...)
-4. Create presentation
-5. `grep -E "TODO" -r *` -- go through all file TODOs and handle them accordingly
-6. Draw grammar in `docs/GRAMMAR.md`
-7. Memory management -- if memory size nears `2 ^ 16` (near being defined modulo `2 ^ 16` and within ~`X` of `2 ^ 16`, where `X` is the size of the largest construction [ADT or record!] in the program), we should grow the memory size by 1 page (at a time!)
+2. Add parsing tests (though I realistically already did them, just need to re-write them again...)
+3. `grep -E "TODO" -r *` -- go through all file TODOs and handle them accordingly
+4. Memory management -- if memory size nears `2 ^ 16` (near being defined modulo `2 ^ 16` and within ~`X` of `2 ^ 16`, where `X` is the size of the largest construction [ADT or record!] in the program), we should grow the memory size by 1 page (at a time!)
+
+# Presentation-related TODOs
+1. Figure out if we want to use Beamer or Jupyter (leaning towards Jupyter atm)
+2. Create suitable presentable examples
+3. Draw grammar in `docs/GRAMMAR.md`
 
 # MAYBEs?
 1. Built-in String ADT? Then we can have "abcdef..." syntactic sugar for generating Strings at compile time...

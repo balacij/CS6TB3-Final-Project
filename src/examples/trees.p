@@ -41,13 +41,13 @@ procedure printList(l: List)
     case l of {
         Cons:
             write(l.value)
-            writeChar(32)      // 32 = space
-            writeChar(45)      // 45 = -
-            writeChar(62)      // 62 = >
-            writeChar(32)      // 32 = space
+            writeChar(' ')      // 32 = ' '
+            writeChar('-')      // 45 = '-'
+            writeChar('>')      // 62 = '>'
+            writeChar(' ')      // 32 = ' '
             printList(l.tail)
         Nil:
-            writeCharLn(8869)  // 8869 = ⊥
+            writeCharLn('⊥')    // 8869 = '⊥'
     }
 
 
