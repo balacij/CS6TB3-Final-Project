@@ -1,4 +1,4 @@
-# Softare-related TODOs
+# Software-related TODOs
 1. Clean up program entry -- get a nice `getopts` Python setup going
    1. `--clean` to get rid of leftover `.wat` and `.wasm` files (default to `false`)
    2. `--runtime` option to select between `pywasm` and `wasmer` (defaulting to `wasmer`, warning on `pywasm` usage that it's unsuitable)
