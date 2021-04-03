@@ -2,6 +2,10 @@ type String = SCons(ch: integer, tail: String)
             | SNil
 
 
+procedure single(ch: integer) -> (s: String)
+    s := SCons(ch, SNil())
+
+
 procedure strlen(s: String) -> (n: integer)
     case s of {
         SCons:
