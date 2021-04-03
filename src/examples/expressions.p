@@ -20,6 +20,7 @@ procedure eval(e: Expr) -> (res: integer)
         Div: res := eval(e.num) / eval(e.den)
         Pow: res := pow(eval(e.base), eval(e.exponent))
         Int: res := e.value
+        default: res := 0
     }
 
 procedure ops(e: Expr) -> (n: integer)
@@ -29,7 +30,7 @@ procedure ops(e: Expr) -> (n: integer)
         Mul: n := 1 + ops(e.left) + ops(e.right)
         Div: n := 1 + ops(e.num) + ops(e.den)
         Pow: n := 1 + ops(e.base) + ops(e.exponent)
-        Int: n := 0
+        default: n := 0
     }
 
 procedure printExpr(e: Expr)

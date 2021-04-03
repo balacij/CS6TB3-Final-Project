@@ -14,4 +14,5 @@ program Main
         Blue:   writeCharLn('B')
         Indigo: writeCharLn('I')
         Violet: writeCharLn('V')
+        default: writeCharLn('?')
     }

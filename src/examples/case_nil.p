@@ -4,7 +4,7 @@ program Main
     var s: Something
     s <- A()
     case s of {
-        nil: writeCharLn('N')
+        nil: writeCharLn('?')
         A: writeCharLn('A')
         B: writeCharLn('B')
         C: writeCharLn('C')

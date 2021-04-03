@@ -13,6 +13,6 @@ program Main
     s <- R()
     case s of {
         nil: writeCharLn('N')
-        default: writeCharLn('D'); printCol(s)
+        default: writeCharLn('F'); printCol(s)
     }
 
