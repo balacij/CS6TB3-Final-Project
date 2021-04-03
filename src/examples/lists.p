@@ -12,7 +12,7 @@ procedure consumeList(l: List)
             writeln(l.head)
             r := l.tail
             consumeList(r)
-        default:
+        default nothing
     }
 
 procedure sumList(l: List) → (n: integer)

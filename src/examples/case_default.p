@@ -5,6 +5,7 @@ procedure printCol(col: Colour)
         R: writeCharLn('R')
         G: writeCharLn('G')
         B: writeCharLn('B')
+        default nothing
     }
 
 program Main

@@ -65,6 +65,7 @@ CASE = 101
 OF = 102
 DEFAULT = 103
 NIL = 104
+NOTHING = 105
 
 CHAR = 110
 
@@ -185,6 +186,7 @@ KEYWORDS = {
     "of": OF,
     "default": DEFAULT,
     "nil": NIL,
+    "nothing": NOTHING,
 }
 
 

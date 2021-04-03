@@ -203,6 +203,7 @@ from SC import (
     DEFAULT,
     NIL,
     CHAR,
+    NOTHING,
     warning,
 )
 
@@ -606,7 +607,7 @@ def cases(x, casedOn):
     [nil: <statementSuite>\n]
     <ADTKind>: <statementSuite>\n
     {<ADTKind>: <statementSuite> \n}
-    [default: <statementSuite>]\n
+    [default(: <statementSuite>| nothing)]\n
     """
     if SC.sym == NIL:
         if 'nil' in casedOn:
@@ -631,12 +632,15 @@ def cases(x, casedOn):
         getSym()
         if SC.sym == COLON:
             getSym()
+            statementSuite()
+
+            if SC.sym in {IDENT, NIL, DEFAULT}:
+                mark(f'`default` case should be very last case')
+        elif SC.sym == NOTHING:
+            getSym()
         else:
-            mark("':' expected after `default` case")
-        statementSuite()
+            mark("':' (or ' nothing') expected after `default` case")
         casedOn.append('default')
-        if SC.sym in {IDENT, NIL, DEFAULT}:
-            mark(f'`default` case should be very last case')
     elif SC.sym == IDENT:
         kind = SC.val
         if SC.val in casedOn:

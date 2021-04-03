@@ -33,4 +33,5 @@ program Main
             writeln(4)
         F:
             writeln(5)
+        default nothing
     }

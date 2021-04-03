@@ -44,6 +44,7 @@ procedure printExpr(e: Expr)
         Div: ch := 47; left := e.num; right := e.den
         Pow: ch := 94; left := e.base; right := e.exponent
         Int: write(e.value)
+        default nothing
     }
 
     if ch > 0 then
