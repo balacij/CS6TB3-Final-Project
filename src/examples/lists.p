@@ -12,6 +12,7 @@ procedure consumeList(l: List)
             writeln(l.head)
             r := l.tail
             consumeList(r)
+        default:
     }
 
 procedure sumList(l: List) → (n: integer)
@@ -19,7 +20,7 @@ procedure sumList(l: List) → (n: integer)
         Cons:
             n ← sumList(l.tail)
             n := n + l.head
-        Nil:
+        default:
             n := 0
     }
 
@@ -29,6 +30,8 @@ procedure mulList(l: List) -> (n: integer)
             n := l.head * mulList(l.tail)
         Nil:
             n := 1
+        default:
+            n := 0
     }
 
 procedure factorial(n: integer) -> (r: integer)
