@@ -10,13 +10,15 @@ procedure sumTree(tree: Tree) -> (total: integer)
             total := sumTree(tree.left) + sumTree(tree.right)
         Leaf:
             total := tree.value
+        default:
+            total := 0
     }
 
 procedure dupList(l: List) -> (r: List)
     case l of {
         Cons:
             r := Cons(l.value, dupList(l.tail))
-        Nil:
+        default:
             r := Nil()
     }
 
@@ -24,7 +26,7 @@ procedure concatLists(l: List, r: List) -> (res: List)
     case l of {
         Cons:
             res := Cons(l.value, concatLists(l.tail, r))
-        Nil:
+        default:
             // res := r    // works but it's BAD !!!!!! We re-create the left list, as such, we should do the same with the right list!!!!
             res := dupList(r)
     }
@@ -35,6 +37,8 @@ procedure flattenTree(tree: Tree) -> (l: List)
             l := concatLists(flattenTree(tree.left), flattenTree(tree.right))
         Leaf:
             l := Cons(tree.value, Nil())
+        default:
+            l := Nil()
     }
 
 procedure printList(l: List)
@@ -46,7 +50,7 @@ procedure printList(l: List)
             writeChar('>')      // 62 = '>'
             writeChar(' ')      // 32 = ' '
             printList(l.tail)
-        Nil:
+        default:
             writeCharLn('⊥')    // 8869 = '⊥'
     }
 

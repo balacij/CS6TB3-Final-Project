@@ -5,7 +5,7 @@ procedure valOr(v: Maybe, n: integer) -> (r: integer)
     case v of {
         Just:
             r := v.value
-        Nothing:
+        default:
             r := n
     }
 
@@ -23,5 +23,5 @@ program Main
             maybe.value := 100
             writeln(maybe.value)
             writeln(x)
-        Nothing: x := 1000
+        default: x := 1000
     }
