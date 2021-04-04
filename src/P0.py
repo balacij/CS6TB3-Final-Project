@@ -661,14 +661,12 @@ def cases(x, casedOn):
         if y.record is not None:
             oldXTp = x.tp
             x.tp = y.record.val
-        x.isAdtSelector = True  # TODO: I don't think this is actually being used really
         newDecl(x.name, x, overwriteLev=False, errOnDup=False)
         statementSuite()
         if y.record is not None:
             x.tp = oldXTp
         closeScope()
         casedOn.append(y.name)
-        x.isAdtSelector = False
         if SC.sym in {IDENT, NIL, DEFAULT}:
             CG.genCaseElse()
             casedOn = cases(x, casedOn)
