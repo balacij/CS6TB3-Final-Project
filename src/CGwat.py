@@ -583,6 +583,8 @@ def genActualPara(ap, fp, n):
     else:  # a.tp is Array, Record
         if ap.lev > 0:
             asm.append("local.get $" + ap.name)
+        elif ap.lev == Global:
+            asm.append("global.get $" + ap.name)
         elif ap.lev == MemAbs:
             asm.append("i32.const " + str(ap.adr))
         elif ap.lev != Stack:
