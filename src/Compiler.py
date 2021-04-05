@@ -126,15 +126,16 @@ if __name__ == "__main__":
         exit()
     
     targetName = args[1]
+    if targetName == '--help':
+        printHelp()
+        exit(0)
+    
     args = args[2:]
     run = False
     runtime = 'wasmer'
 
     for arg in args:
-        if arg == '--help':
-            printHelp()
-            exit(0)
-        elif arg == '--run':
+        if arg == '--run':
             run = True
         elif arg.startswith('--runtime'):
             if '=' in arg:
