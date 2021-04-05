@@ -29,6 +29,7 @@ def runpywasm(wasmFile):
             "P0lib": {
                 "write": write,
                 "writeChar": writeChar,
+                "writeCharLn": writeCharLn,
                 "writeln": writeln,
                 "writeNewLine": writeNewLine,
                 "read": read,
@@ -111,15 +112,43 @@ def wat2wasmAndRun(targetName, runtime='wasmer'):
         print(ec)
 
 
+def printHelp():
+    print('P0 Compiler usage:')
+    print('python Compile.py <file> [--run] [--runtime=<pywasm/wasmer>; defaults to `wasmer`]')
+
+
 if __name__ == "__main__":
-    # TODO: add --clean option
-    # TODO: add --runtime option
-    # TODO: add --run option
     import sys
+    args = sys.argv
 
-    if len(sys.argv) != 2:
-        print('P0 Compiler usage:')
-        print('python Compile.py <file>')
+    if len(args) < 2 or len(args) > 4:
+        printHelp()
         exit()
+    
+    targetName = args[1]
+    args = args[2:]
+    run = False
+    runtime = 'wasmer'
 
-    main(targetName=sys.argv[1], run=True, runtime='wasmer')
+    for arg in args:
+        if arg == '--help':
+            printHelp()
+            exit(0)
+        elif arg == '--run':
+            run = True
+        elif arg.startswith('--runtime'):
+            if '=' in arg:
+                runtime = arg[arg.index('=')+1:]
+                if runtime not in {'pywasm', 'wasmer'}:
+                    print(f'invalid runtime: {runtime}')
+                    printHelp()
+                    exit(0)
+            else:
+                print(f'malformed runtime designation, please designate runtime using `--runtime=<pywasm/wasmer>`  (without the <>!)')
+                exit(0)
+        else:
+            print(f'invalid argument: {arg}')
+            printHelp()
+            exit()
+
+    main(targetName=targetName, run=run, runtime=runtime)
