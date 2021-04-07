@@ -5,7 +5,6 @@ Key grammar changes:
 * Cases 
 * You may define ADTs using multiple lines to separate the ADT Kinds.
 
-
 Supplementary grammar changes:
 * Single quoted characters are native conversions to integers. This, in addition to our changes to the standard procedures write, writeln, etc are purely done for improving the presentation and usability of our `strings.p` example.
 
