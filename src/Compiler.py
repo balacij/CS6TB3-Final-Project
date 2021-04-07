@@ -145,7 +145,7 @@ if __name__ == "__main__":
                     printHelp()
                     exit(0)
                 elif runtime == 'pywasm':
-                    print('*** WARNING *** Running with `pywasm` is discouraged! See NOTES.md for more information.')
+                    print('*** WARNING *** Running with `pywasm` is discouraged! See docs/RUNTIMES.md for more information.')
             else:
                 print(f'malformed runtime designation, please designate runtime using `--runtime=<pywasm/wasmer>`  (without the <>!)')
                 exit(0)

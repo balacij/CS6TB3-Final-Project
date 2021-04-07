@@ -40,6 +40,24 @@ procedure strreverse(s: String) -> (r: String)
             r := SNil()
     }
 
+procedure strequals(l: String, r: String) -> (b: boolean)
+    case l of {
+        SCons:
+            case r of {
+                SCons: 
+                    if l.ch = r.ch then b := strequals(l.tail, r.tail) 
+                    else b := false
+                default: b := false
+            }
+        SNil:
+            case r of {
+                SNil: b := true
+                default: b := false
+            }
+        
+        default: b := false
+    }
+
 
 procedure printStr(s: String, ln: boolean)
     case s of {
