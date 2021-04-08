@@ -10,6 +10,8 @@ type Maybe = Just(value: integer)
 
 type Something2 = Something
 
+type P = [0 .. 10] → Something
+
 procedure doubler(x: integer) -> (r: integer)
     r := x * 2
 
