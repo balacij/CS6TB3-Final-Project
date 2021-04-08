@@ -8,15 +8,21 @@ type Something = A(value: integer)
 type Maybe = Just(value: integer)
            | Nothing
 
+type Something2 = Something
+
 procedure doubler(x: integer) -> (r: integer)
     r := x * 2
 
 procedure doubler2(x: integer) -> (y: integer, z: integer)
-    y, z := x, x
+    const N = 10
+    y, z := x, N
 
 program Main
     var a: Something
     var x: integer
+    var y: Something2
+
+    y <- F()
 
     a <- A(doubler(4))
 
