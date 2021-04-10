@@ -1,4 +1,3 @@
-
 def runpywasm(wasmFile):
     import pywasm
 

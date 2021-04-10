@@ -23,6 +23,7 @@ def wat2wasmAndRun(targetName, runtime='wasmer'):
     ec = os.system(f'wat2wasm "{targetName}" --output={wasmFile}')
     if ec == 0:
         from Runtimes import runwasmer, runpywasm
+
         runner = None
         if runtime == 'wasmer':
             runner = runwasmer
@@ -45,17 +46,18 @@ def printHelp():
 
 if __name__ == "__main__":
     import sys
+
     args = sys.argv
 
     if len(args) < 2 or len(args) > 4:
         printHelp()
         exit()
-    
+
     targetName = args[1]
     if targetName == '--help':
         printHelp()
         exit(0)
-    
+
     args = args[2:]
     run = False
     runtime = 'wasmer'
@@ -65,15 +67,19 @@ if __name__ == "__main__":
             run = True
         elif arg.startswith('--runtime'):
             if '=' in arg:
-                runtime = arg[arg.index('=')+1:]
+                runtime = arg[arg.index('=') + 1 :]
                 if runtime not in {'pywasm', 'wasmer'}:
                     print(f'invalid runtime: {runtime}')
                     printHelp()
                     exit(0)
                 elif runtime == 'pywasm':
-                    print('*** WARNING *** Running with `pywasm` is discouraged! See docs/RUNTIMES.md for more information.')
+                    print(
+                        '*** WARNING *** Running with `pywasm` is discouraged! See docs/RUNTIMES.md for more information.'
+                    )
             else:
-                print(f'malformed runtime designation, please designate runtime using `--runtime=<pywasm/wasmer>`  (without the <>!)')
+                print(
+                    f'malformed runtime designation, please designate runtime using `--runtime=<pywasm/wasmer>`  (without the <>!)'
+                )
                 exit(0)
         else:
             print(f'invalid argument: {arg}')
