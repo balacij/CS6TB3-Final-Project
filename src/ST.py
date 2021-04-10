@@ -1,3 +1,5 @@
+# coding: utf-8
+
 # ## P0 Symbol Table
 # #### Original Author: Emil Sekerinski, revised March 2020
 # Declarations of the source program are entered into the symbol table as the source program is parsed. The symbol detects multiple definitions or missing definitions and reports those by calling procedure `mark(msg)` of the scanner.

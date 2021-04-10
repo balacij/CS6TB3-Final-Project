@@ -1,3 +1,5 @@
+# coding: utf-8
+
 # ## The P0 Compiler
 # #### COMP SCI 4TB3/6TB3, McMaster University
 # #### Original Author: Emil Sekerinski, revised March 2021

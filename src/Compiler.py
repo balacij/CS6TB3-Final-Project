@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from P0 import compileString
 from ST import printSymTab
 

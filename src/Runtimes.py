@@ -1,3 +1,6 @@
+# coding: utf-8
+
+
 def runpywasm(wasmFile):
     import pywasm
 

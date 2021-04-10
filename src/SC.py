@@ -1,3 +1,5 @@
+# coding: utf-8
+
 # ## P0 Scanner
 # #### Original Author: Emil Sekerinski, revised March 2021
 # The scanner reads the characters of the source consecutively and recognizes symbols they form:

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 # ### P0 Code Generator for WASM
 #
 # #### Emil Sekerinski, revised March 2021
