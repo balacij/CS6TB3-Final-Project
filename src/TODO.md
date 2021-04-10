@@ -6,9 +6,4 @@
 5. Make sure that we can't define new ADTs past the `type` statements
 
 # MAYBEs?
-1. Built-in String ADT? Then we can have "abcdef..." syntactic sugar for generating Strings at compile time...
-2. Allow ADT type parameterization?
-    * In-place a fake node for generating WebAssembly (e.g., `asm.append(ADTTYPESDECLARATIONS)`)
-    * Allow parameterization of form: `type X a b ... = First a | Second b | ... `
-    * Whenever referring to some type `X a b ...` (it should be FULLY filled in), it should find an existing definition for this ADT or generate a new one (putting in the new type into an extra list for later in-placing into the `ADTTYPESDECLARATIONS`!)
-3. Improve code generation for `case`s... maybe we can cache the kind locally somehow?
+1. Improve code generation for `case`s... maybe we can cache the kind locally somehow?
