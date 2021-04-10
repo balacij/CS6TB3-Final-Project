@@ -299,7 +299,7 @@ def selector(x, right=True):
                             x = CG.genSelect(x, f, right=right)
                             break
                     else:
-                        mark("not a field")
+                        mark(f"not a field; `{SC.val}`")
                     getSym()
                 else:
                     mark("not a record")
