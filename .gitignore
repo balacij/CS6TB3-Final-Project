@@ -3,3 +3,10 @@
 *.vscode/
 *.wat
 *.wasm
+*.aux
+*.log
+*.nav
+*.out
+*.synctex.gz
+*.snm
+*.toc
