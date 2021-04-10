@@ -221,7 +221,7 @@ program p
 scanString(
     """// comment 1
 program p     // comment 2
-  writeln()   // comment 3
+  writeNewLine()   // comment 3
               // comment 4
 """
 )
@@ -245,6 +245,6 @@ print('EXPECTING: illegal character error')
 compileString(
     """
 program p_
-  writeln()
+  writeNewLine()
 """
 )

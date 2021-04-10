@@ -315,7 +315,7 @@ program p
 compileString(
     """
 procedure q(x, y: integer)
-  writeln()
+  writeNewLine()
 program p
   q(3, true)
 """
@@ -350,7 +350,7 @@ program p
 compileString(
     """
 program p
-  if 5 then writeln()
+  if 5 then writeNewLine()
 """
 )
 
@@ -361,7 +361,7 @@ program p
 compileString(
     """
 program p
-  while 5 do writeln()
+  while 5 do writeNewLine()
 """
 )
 
@@ -373,7 +373,7 @@ compileString(
     """
 type T = writeln
 program p
-  writeln()
+  writeNewLine()
 """
 )
 
@@ -387,7 +387,7 @@ const l = -1
 const u = 5
 var a: [l .. u] → integer
 program p
-  writeln()
+  writeNewLine()
 """
 )
 
@@ -401,7 +401,7 @@ const l = 7
 const u = 5
 var a: [l .. u] → integer
 program p
-  writeln()
+  writeNewLine()
 """
 )
 
@@ -414,7 +414,7 @@ compileString(
 var v: integer
 program p
   const c = v
-  writeln()
+  writeNewLine()
 """
 )
 
