@@ -38,6 +38,18 @@ procedure factorial(n: integer) -> (r: integer)
     r := mulList(uptoList(n))
 
 
+procedure weird(l: List)
+    case l of {
+        Cons:
+            case l.tail of {
+                Cons:
+                    writeln(1)
+                default nothing
+            }
+        default nothing
+    }
+
+
 program Main
     var x: integer
     var mylist: List

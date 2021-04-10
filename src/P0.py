@@ -843,8 +843,12 @@ def statement():
         if type(x) != Var and len(x.name) == 0:
             mark('expected variable name to `case` on')
 
+        # if the target is a selfref, it should be treated as if it were transient
+        if type(x.tp) == ADTSelfRef:
+            x.tp = x.tp.tp.val
+
         if type(x.tp) != ADT:
-            mark('ADT variable expected in `case`')
+            mark(f'ADT variable expected in `case`; got "{x.name}" of type {type(x.tp)}')
 
         if SC.sym == OF:
             getSym()
