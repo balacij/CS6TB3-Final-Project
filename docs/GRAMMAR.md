@@ -6,7 +6,7 @@
 * `case` statements
 
 ## Supplementary grammar changes:
-* Single quoted characters (e.g., `'a'`, `'b'`, ...) are native conversions from UTF-8 characters to integers. This, in addition to our changes to the standard procedures write, writeln, etc are purely done for improving the presentation and usability of our `strings.p` example.
+* Single quoted characters (e.g., `'a'`, `'b'`, ...) are native conversions from UTF-8 characters to integers. This, in addition to our changes to the standard procedures `write`, `writeln`, etc are purely done for improving the presentation and usability of our `strings.p` example. More information on the changes to the standard procedures <a href="STANDARD_PROCEDURES.md">here</a>.
 
 ## Other grammar changes:
 * We allow single-value returning procedures to be executed 'in-place' in expressions (without first setting them to variables)
