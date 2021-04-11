@@ -1,5 +1,5 @@
-## You will need a working LaTeX + PDFLatex installation to use this script
+## You will need a working LaTeX + PDFLatex + InkScape installation to use this script
 
-pdflatex presentation.tex
+pdflatex --shell-escape presentation.tex
 
 echo 'Built!'

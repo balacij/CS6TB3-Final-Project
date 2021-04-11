@@ -1,5 +1,7 @@
 \documentclass{beamer}
 
+\usepackage{svg}
+\usepackage{amsmath}
 \usepackage{listings}
 \usepackage[utf8]{inputenc}
 \usetheme{Madrid}
@@ -63,6 +65,10 @@ This is a text in the first frame. This is a text in the first frame. This is a 
 
 \begin{frame}
 \frametitle{Example: Strings}
+
+\begin{block}{Remark}
+Sample text
+\end{block}
 \end{frame}
 
 \section{Implementation Evaluation and Notes}
@@ -73,6 +79,14 @@ This is a text in the first frame. This is a text in the first frame. This is a 
 Each instance of an ADT is located on the heap, and instances of local/global ADTs are pointers to the locations of their corresponding ADT on the heap.
 
 \end{frame}
+
+\begin{frame}
+\frametitle{Example: Lists in Memory}
+\begin{figure}
+  \includesvg[width=0.9\textwidth]{../docs/img/memory_example_list.svg}
+\end{figure}
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Notable Design Decisions}
@@ -93,13 +107,30 @@ Each instance of an ADT is located on the heap, and instances of local/global AD
 \section{Future Work}
 
 \begin{frame}
-\frametitle{Better Memory Management}
-\end{frame}
 
-\begin{frame}
-\frametitle{Built-in ADTs!}
-\end{frame}
+\begin{itemize}
+ \item<1-> Improved Memory Management
+ \begin{itemize}
+  \item<.-> Memory freeing!
+  \item Memory reuse!
+  \item Built-in disjoint union type allocation specialization!
+ \end{itemize}
 
+ \item<2-> Type variables!
+ \begin{itemize}
+  \item<.-> Polymorphic disjoint union types! No more StringLists, IntLists, BooleanLists!
+  \item More code reuse!
+ \end{itemize}
+ 
+ \item<3-> More built-in types and syntactic sugars (Strings, Lists, Maps, ``abcd..")
+ \begin{itemize}
+ \item<.-> Strings, Lists, Maps
+ \item Stronger syntactic sugar for String generation (e.g., ``abcd..." for quickly instantiating large strings)
+ \end{itemize}
+
+\end{itemize}
+
+\end{frame}
 
 \begin{frame}
 \frametitle{References}
