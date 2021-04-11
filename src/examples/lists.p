@@ -6,21 +6,17 @@ procedure uptoList(n: integer) → (l: List)
     if n < 1 then l ← Nil() else tail ← uptoList(n-1); writeln(n); l ← Cons(n, tail)
 
 procedure consumeList(l: List)
-    var r: List
     case l of {
         Cons:
             writeln(l.head)
-            r := l.tail
-            consumeList(r)
+            consumeList(l.tail)
         default nothing
     }
 
 procedure sumList(l: List) → (n: integer)
     case l of {
-        Cons:
-            n := sumList(l.tail) + l.head
-        default:
-            n := 0
+        Cons: n := sumList(l.tail) + l.head
+        default: n := 0
     }
 
 procedure mulList(l: List) -> (n: integer)
