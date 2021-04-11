@@ -11,6 +11,3 @@ To build my slideshow presentation, please simply run `pdflatex presentation.tex
 ## View
 
 To view my slideshow presentation, please open `presentation.pdf`.
-
-## Members
-* [Jason Balaci (balacij)](mailto:balacij@mcmaster.ca)
