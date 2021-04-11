@@ -76,14 +76,22 @@ Sample text
 \begin{frame}
 \frametitle{Memory Impact \& Management}
 
-Each instance of an ADT is located on the heap, and instances of local/global ADTs are pointers to the locations of their corresponding ADT on the heap.
+Each instance of a DUT is located on the heap, and instances of local/global DUTs are pointers to the locations of their corresponding DUT on the heap.
+\begin{itemize}
+ \item <1-> Size of an allocation depends on the size of the variant being instantiated
+ \item Offsets to accessing variables work similar to records, with a 4 byte offset for the variant id.
+\end{itemize}
 
+
+\begin{figure}
+  \includesvg[width=0.9\textwidth]{../docs/img/memory_compressed.svg}
+\end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{Example: Lists in Memory}
 \begin{figure}
-  \includesvg[width=0.9\textwidth]{../docs/img/memory_example_list.svg}
+  \includesvg[width=0.9\textwidth]{../docs/img/memory_example_list_compressed.svg}
 \end{figure}
 \end{frame}
 
@@ -102,6 +110,16 @@ Each instance of an ADT is located on the heap, and instances of local/global AD
 
 \begin{frame}
 \frametitle{Notes on Runtimes}
+\begin{itemize}
+    \item<1-> When working with DUTs/ADTs, we often tend to create recursive algorithms...
+    \item<2-> This causes issues for \textbf{pywasm}
+    \begin{itemize}
+     \item <.-> Due to being interpreted in Python, a recursive call stack size limitation is imposed onto our programs.
+    \end{itemize}
+
+    \item<3-> Thankfully, \textbf{wasmer} has no issues!
+    \item<4-> In-browser WebAssembly execution also has no issues, but we don't ship a web browser with the compiler.
+\end{itemize}
 \end{frame}
 
 \section{Future Work}
@@ -109,23 +127,23 @@ Each instance of an ADT is located on the heap, and instances of local/global AD
 \begin{frame}
 
 \begin{itemize}
- \item<1-> Improved Memory Management
- \begin{itemize}
-  \item<.-> Memory freeing!
-  \item Memory reuse!
-  \item Built-in disjoint union type allocation specialization!
- \end{itemize}
-
- \item<2-> Type variables!
+ \item<1-> Type variables!
  \begin{itemize}
   \item<.-> Polymorphic disjoint union types! No more StringLists, IntLists, BooleanLists!
   \item More code reuse!
  \end{itemize}
  
- \item<3-> More built-in types and syntactic sugars (Strings, Lists, Maps, ``abcd..")
+ \item<2-> More built-in types and syntactic sugars
  \begin{itemize}
- \item<.-> Strings, Lists, Maps
+ \item<.-> Strings, Lists, Maps as a basic set of built-in DUTs
  \item Stronger syntactic sugar for String generation (e.g., ``abcd..." for quickly instantiating large strings)
+ \end{itemize}
+ 
+ \item<3-> Improved Memory Management
+ \begin{itemize}
+  \item<.-> Memory freeing!
+  \item Memory reuse!
+  \item Allocation specialization for built-in DUTs!
  \end{itemize}
 
 \end{itemize}
