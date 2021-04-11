@@ -1,6 +1,6 @@
 # Standard Procedures
 
-We've changed the functionality of the standard built-in procedures as follows:
+Additions and changes to the functionality of the existing standard procedures are as follows:
 
 | Name           | Inputs  | Outputs | Description                                                                                                   | 
 |----------------|---------|---------|---------------------------------------------------------------------------------------------------------------|
