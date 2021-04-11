@@ -18,8 +18,7 @@ procedure consumeList(l: List)
 procedure sumList(l: List) → (n: integer)
     case l of {
         Cons:
-            n ← sumList(l.tail)
-            n := n + l.head
+            n := sumList(l.tail) + l.head
         default:
             n := 0
     }
