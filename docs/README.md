@@ -10,10 +10,10 @@ Table of Contents
    2. <a href="EXAMPLES.md">Examples</a>
 3. <a href="GRAMMAR.md">Grammar</a>
    1. <a href="STANDARD_PROCEDURES.md">Standard Procedures</a>
-4. <a href="CHALLENGES.md">Challenges</a>
-5. <a href="MEMORY.md">Memory</a>
+4. <a href="MEMORY.md">Memory</a>
+5. <a href="CHALLENGES.md">Challenges</a>
 6.  <a href="RUNTIMES.md">Runtimes</a>
-7.  <a href="DESIGN_DECISIONS.md">Design Decisions</a>
+7.  <a href="Notable DESIGN_DECISIONS.md">Notable Design Decisions</a>
 8.  <a href="Future Work.md">Future Work</a>
 
 ## Members
