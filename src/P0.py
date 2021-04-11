@@ -955,6 +955,9 @@ def typ(adtName=None, parsingTypedIds=False):
                         if type(field) == ADTSelfRef:
                             field.tp = x
 
+            if len(kinds) == 1:
+                warning(f'redundant: "{adtName}" has only been given 1 only one kind variant!')
+
             if len(kinds) > 65535:
                 mark(f'"{adtName}" has been assigned too many ADT Kind variants, please trim down (max = 65535)')
 
