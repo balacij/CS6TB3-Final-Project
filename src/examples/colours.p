@@ -1,11 +1,7 @@
 
 type RainbowColour = Red | Orange | Yellow | Green | Blue | Indigo | Violet
 
-program Main
-    var rbwCol: RainbowColour
-
-    rbwCol := Red()
-
+procedure printColourCode(rbwCol: RainbowColour)
     case rbwCol of {
         Red:     writeCharLn('R')
         Orange:  writeCharLn('O')
@@ -16,3 +12,18 @@ program Main
         Violet:  writeCharLn('V')
         default: writeCharLn('?')
     }
+
+
+program Main
+    var rbwCol: RainbowColour
+
+    printColourCode(rbwCol) // Uninitialized variable!
+    
+    printColourCode(Red())
+    printColourCode(Orange())
+    printColourCode(Yellow())
+    printColourCode(Green())
+    printColourCode(Blue())
+    printColourCode(Indigo())
+    printColourCode(Violet())
+

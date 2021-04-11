@@ -12,16 +12,9 @@ procedure valOr(v: Maybe, n: integer) -> (r: integer)
 program Main
     var maybe: Maybe
 
-    var x: integer
-
     maybe <- Nothing()
-    maybe <- Just(1111)
+    writeln(valOr(maybe, -1))
 
-    case maybe of {
-        Just: 
-            x := maybe.value
-            maybe.value := 100
-            writeln(maybe.value)
-            writeln(x)
-        default: x := 1000
-    }
+    maybe <- Just(1111)
+    writeln(valOr(maybe, 0))
+
