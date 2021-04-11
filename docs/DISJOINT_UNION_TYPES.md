@@ -12,7 +12,7 @@ Kinds/variants of a disjoint union type are the individual named records.
 
 ### Self-references
 
-Any of the tagged records may variables that self-reference to another instance of the parent disjoint union/algebraic data type.
+Any of the tagged records may have variables that are of a self-reference type (another instance of the parent disjoint union/algebraic data type).
 
 ## Type Definitions
 
