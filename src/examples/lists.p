@@ -1,15 +1,12 @@
 type List = Cons(head: integer, tail: List)
           | Nil
 
-procedure uptoList(n: integer) → (l: List)
-    var tail: List
-    if n < 1 then l ← Nil() else tail ← uptoList(n-1); writeln(n); l ← Cons(n, tail)
+procedure upToList(n: integer) → (l: List)
+    if n < 1 then l := Nil() else l := Cons(n, upToList(n-1))
 
 procedure consumeList(l: List)
     case l of {
-        Cons:
-            writeln(l.head)
-            consumeList(l.tail)
+        Cons: writeln(l.head); consumeList(l.tail)
         default nothing
     }
 
@@ -30,7 +27,7 @@ procedure mulList(l: List) -> (n: integer)
     }
 
 procedure factorial(n: integer) -> (r: integer)
-    r := mulList(uptoList(n))
+    r := mulList(upToList(n))
 
 
 procedure weird(l: List)
@@ -50,7 +47,7 @@ program Main
     var mylist: List
     var a, b, c: integer
 
-    mylist ← uptoList(5)
+    mylist ← upToList(5)
 
     consumeList(mylist)
     x ← sumList(mylist)
