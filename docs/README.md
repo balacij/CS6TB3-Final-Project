@@ -7,14 +7,14 @@ Table of Contents
    1. <a href="MODULARIZATION.md">Modularization</a>
 2. <a href="DISJOINT_UNION_TYPES.md">Disjoint Union Types</a>
    1. <a href="CASE_STATEMENT.md">The Case Statement</a>
+   2. <a href="EXAMPLES.md">Examples</a>
 3. <a href="GRAMMAR.md">Grammar</a>
    1. <a href="STANDARD_PROCEDURES.md">Standard Procedures</a>
-4. <a href="EXAMPLES.md">Examples</a>
-5. <a href="CHALLENGES.md">Challenges</a>
-6. <a href="MEMORY.md">Memory</a>
-7.  <a href="RUNTIMES.md">Runtimes</a>
-8.  <a href="DESIGN_DECISIONS.md">Design Decisions</a>
-9.  <a href="Future Work.md">Future Work</a>
+4. <a href="CHALLENGES.md">Challenges</a>
+5. <a href="MEMORY.md">Memory</a>
+6.  <a href="RUNTIMES.md">Runtimes</a>
+7.  <a href="DESIGN_DECISIONS.md">Design Decisions</a>
+8.  <a href="Future Work.md">Future Work</a>
 
 ## Members
 * [Jason Balaci (balacij)](mailto:balacij@mcmaster.ca)
