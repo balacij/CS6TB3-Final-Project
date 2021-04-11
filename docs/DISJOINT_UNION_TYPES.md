@@ -6,9 +6,30 @@ Disjoint union types are also commonly referred to as _Algebraic Data Types_ in 
 
 Throughout this project, we may refer to it as well as _Algebraic Data Types_ or with the abbreviation "ADTs".
 
+### Example of a Disjoint Union Type
+```
+type List = Cons(head: integer, tail: List)
+          | Nil
+```
+
 ## Kinds / Variants
 
 Kinds/variants of a disjoint union type are the individual named records.
+
+### Instantiating Kinds
+
+Instantiation of disjoint union kinds is very similar to calling procedures in P0. If the kind being instantiated has no parameters, such as `Nil` above, you should simply treat instantiating it as if it were a procedure with no parameters. If the kind being instantiated has parameters, you should fill them in as you would with procedure parameters.
+
+For example, using the `List` disjoint union type above, we may instantiate instances of it as follows:
+```
+program Main
+    var l: List
+
+    l := Cons(10, Nil())
+
+    l <- Nil()
+```
+##### NOTE: We allow for procedure calls and instantiations to be performed in expressions if they have single return values.
 
 ### Self-references
 
