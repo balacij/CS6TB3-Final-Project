@@ -148,8 +148,11 @@ def number():
 
 def char():
     global sym, val
-    sym, val = CHAR, ord(ch)
-    getChar()
+    try:
+        sym, val = CHAR, ord(ch)
+        getChar()
+    except:
+        mark(f"invalid char; `{ch}`")
 
     if ch == "'":
         getChar()
