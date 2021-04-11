@@ -1,6 +1,6 @@
 # The `case` Statement
 
-The `case` statement is very important to using disjoint union types as it's the only way that you can access the data held within them. The `case` statement lets you execute code based on what the `kind` of a disjoint union type is. It also lets you check if a variable is not initialized through a `nil` case.
+The `case` statement is very important for effectively using disjoint union types as it's the only way that you can access the data held within them. The `case` statement lets you execute code based on what the `kind` of a disjoint union type is. It also lets you check if a variable is not initialized through a `nil` case.
 
 The `case` statement is of the form `case <variable> of { ... cases ... }` where `cases` are of the form `KindIdentifier: statementSuite` with optional `nil` (uninitialized disjoint union types) and `default` cases ("catch all other" case). Default cases may also do `nothing` (no-operations). _NOTE_: The `nil` case should be the first _kind_ if you choose to check for it, and the `default` case should be the last case if you choose to use it. If you choose to use the no-operation `default` case, you should simply write `default nothing` instead of writing a statement suite.
 
