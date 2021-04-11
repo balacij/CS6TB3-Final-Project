@@ -2,7 +2,26 @@
 
 \usepackage{svg}
 \usepackage{amsmath}
+\usepackage{textcomp}
 \usepackage{listings}
+
+\lstset{%
+    language=[latex]tex,
+    breaklines=true}
+
+\lstset{literate={→}{$\rightarrow$}1}
+\DeclareUnicodeCharacter{00A0}{ }
+\DeclareUnicodeCharacter{2192}{\dash}
+
+\newsavebox{\anatomyOfCaseBox}
+
+\newsavebox{\exampleMaybe}
+\newsavebox{\exampleList}
+\newsavebox{\exampleString}
+\newsavebox{\exampleImagination}
+
+\newcommand\omicron{o}
+
 \usepackage[utf8]{inputenc}
 \usetheme{Madrid}
 
@@ -23,6 +42,7 @@
 
 \begin{document}
 
+
 \frame{\titlepage}
 
 \begin{frame}
@@ -34,11 +54,14 @@
 
 \begin{frame}
 \frametitle{What are Disjoint Union Types?}
-This is a text in the first frame. This is a text in the first frame. This is a text in the first frame.\\
+
+% TODO: 
 \end{frame}
 
 \begin{frame}
-\frametitle{How were they implemented?}
+\frametitle{What do they look like?}
+% TODO: Code examples
+% TODO: Instantiation examples
 \end{frame}
 
 \begin{frame}
@@ -49,22 +72,226 @@ This is a text in the first frame. This is a text in the first frame. This is a 
  \item<2-> Text visible on slide 2
  \item<3-> Text visible on slide 3
  \item<4-> Text visible on slide 4
+ % TODO:
 \end{itemize}
 
 \end{frame}
 
-\section{Examples}
+
+\begin{lrbox}{\anatomyOfCaseBox}
+\begin{lstlisting}[language=Pascal, basicstyle=\footnotesize]
+case <variable> of {
+    [nil: <stmtSuite>]
+    Kind A: <stmtSuite>
+    Kind B: <stmtSuite>
+    ...
+    Kind Z: <stmtSuite>
+    [default: <stmtSuite>]
+    ... or ...
+    [default nothing]
+}
+\end{lstlisting}
+\end{lrbox}
 
 \begin{frame}
-\frametitle{Example: Maybe \& Either}
+ \frametitle{How do we use DUTs?}
+ \framesubtitle{The anatomy of a \texttt{case} statement.}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{.5\textwidth}
+            \begin{minipage}{\textwidth}
+                \begin{itemize}
+                    \item<1-> \texttt{case}s are the only way to access data inside of DUTs.
+                    \item<2-> Check if DUTs were \textit{initialized} using a \texttt{nil} case at the start.
+                    \item<3-> \texttt{case} on any of the variants you'd like to.
+                    \item<4-> \texttt{default} case allows you to perform either a statement suite or a no-op on all non-covered cases. 
+                    \item<5-> Within the statement suite of each variant \texttt{case}, the variable in question is assumed to be an instance of the variant's record.
+                \end{itemize}
+            \end{minipage}
+        \end{column}
+        \begin{column}{.45\textwidth}
+            \begin{onlyenv}
+                \begin{minipage}{\textwidth}
+                    \usebox{\anatomyOfCaseBox}
+                    \begin{alertblock}{\footnotesize Exhaust your \texttt{case}s!}<6->
+                        {\footnotesize If you create a non-exhaustive \texttt{case} statement, the compiler will warn you.}
+                    \end{alertblock}
+                \end{minipage}
+            \end{onlyenv}
+        \end{column}
+    \end{columns}
 \end{frame}
+
+\begin{frame}
+ \frametitle{\texttt{case} WebAssembly Generation}
+ % TODO
+\end{frame}
+
+\section{Examples}
+
+
+\begin{lrbox}{\exampleMaybe}
+\begin{lstlisting}[language=Pascal, basicstyle=\tiny]
+type Maybe = Just(value: integer)
+           | Nothing
+
+procedure valOr(v: Maybe, n: integer) → (r: integer)
+    case v of {
+        Just:
+            r := v.value
+        default:
+            r := n
+    }
+
+program Main
+    var maybe: Maybe
+
+    maybe <- Nothing()
+    writeln(valOr(maybe, -1))
+
+    maybe <- Just(1111)
+    writeln(valOr(maybe, 0))
+
+
+\end{lstlisting}
+\end{lrbox}
+
+\begin{frame}
+\frametitle{Example: Maybe}
+\usebox{\exampleMaybe}
+
+\begin{block}{Output}<2->
+-1\\
+1111
+\end{block}
+\end{frame}
+
+
+\begin{lrbox}{\exampleList}
+\begin{lstlisting}[language=Pascal, basicstyle=\tiny]
+type List = Cons(head: integer, tail: List)
+          | Nil
+
+procedure upToList(n: integer) → (l: List)
+    if n < 1 then l := Nil() else l := Cons(n, upToList(n-1))
+
+procedure consumeList(l: List)
+    case l of {
+        Cons: writeln(l.head); consumeList(l.tail)
+        default nothing
+    }
+
+procedure sumList(l: List) → (n: integer)
+    case l of {
+        Cons: n := sumList(l.tail) + l.head
+        default: n := 0
+    }
+
+program Main
+    var myList: List
+    myList := upToList(5)
+    consumeList(myList)
+    writeln(sumList(myList))
+\end{lstlisting}
+\end{lrbox}
 
 \begin{frame}
 \frametitle{Example: Lists}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{.8\textwidth}
+            \begin{minipage}{\textwidth}
+                \usebox{\exampleList}
+            \end{minipage}
+        \end{column}
+        \begin{column}{.2\textwidth}
+            \begin{onlyenv}
+                \begin{minipage}{\textwidth}
+                    \begin{block}{Output}<2->
+                        5\\
+                        4\\
+                        3\\
+                        2\\
+                        1\\
+                        15
+                    \end{block}
+                \end{minipage}
+            \end{onlyenv}
+        \end{column}
+    \end{columns}
 \end{frame}
+
+
+\begin{lrbox}{\exampleString}
+\begin{lstlisting}[language=Pascal,basicstyle=\tiny, literate={α}{$\alpha$}1{ω}{$\omega$}2]
+type String = SCons(ch: integer, tail: String)
+            | SNil
+
+procedure printStr(s: String, ln: boolean)
+    case s of {
+        SCons: writeChar(s.ch); printStr(s.tail, ln)
+        default: if ln then writeNewLine()
+    }
+
+// inclusively generating alphabets in a range
+procedure genBetwn(start: integer, end: integer) -> (s: String)
+    var ch: integer
+    ch := end
+    s := SNil()
+    
+    while start <= end do
+        s, start, ch := SCons(ch, s), start + 1, ch - 1
+
+program Main
+    // print capital letters
+    printStr(genBetwn('A', 'Z'), true)
+    
+    // print lowercase letters
+    printStr(genBetwn('a', 'z'), true)
+    
+    // print numbers 0-9
+    printStr(genBetwn('0', '9'), true)
+    
+    // print Greek letters
+    printStr(genBetwn('α', 'ω'), true)
+
+\end{lstlisting}
+\end{lrbox}
 
 \begin{frame}
 \frametitle{Example: Strings}
+\framesubtitle{... lists in disguise?}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{.65\textwidth}
+            \begin{minipage}{\textwidth}
+                \usebox{\exampleString}
+            \end{minipage}
+        \end{column}
+        \begin{column}{.35\textwidth}
+            \begin{onlyenv}
+                \begin{minipage}{\textwidth}
+                    \begin{block}{Output}<2->\tiny
+                        ABCDEFGHIJKLMNOPQRSTUVWXYZ\\
+                        abcdefghijklmnopqrstuvwxyz\\
+                        0123456789\\
+                        $\alpha\beta\gamma\delta\epsilon\zeta\eta\theta\iota\kappa\lambda\mu\nu\xi\omicron\pi\rho\sigma\tau\upsilon\phi\chi\psi\omega$
+                    \end{block}
+                \end{minipage}
+            \end{onlyenv}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+
+\begin{lrbox}{\exampleImagination}
+\begin{lstlisting}[language=Pascal]
+% TODO: 
+\end{lstlisting}
+\end{lrbox}
+
+\begin{frame}
+\frametitle{Other Examples}
+    
+\usebox{\exampleImagination}
 
 \begin{block}{Remark}
 Sample text

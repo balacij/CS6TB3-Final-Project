@@ -61,46 +61,26 @@ procedure strequals(l: String, r: String) -> (b: boolean)
 
 procedure printStr(s: String, ln: boolean)
     case s of {
-        SCons:
-            writeChar(s.ch)
-            printStr(s.tail, ln)
-        default:
-            if ln then writeNewLine()
+        SCons: writeChar(s.ch); printStr(s.tail, ln)
+        default: if ln then writeNewLine()
     }
 
-
-// inclusively generating alphabets between a range
+// inclusively generating alphabets in a range
 procedure genAlphabetsBetween(start: integer, end: integer) -> (s: String)
     var ch: integer
     ch := end
     s := SNil()
     
     while start <= end do
-        s := SCons(ch, s)
-        start := start + 1
-        ch := ch - 1
+        s, start, ch := SCons(ch, s), start + 1, ch - 1
 
 
 program Main
-    var caps, lowers, numbers: String
-    caps := genAlphabetsBetween('A', 'Z')
-    lowers := genAlphabetsBetween('a', 'z')
-    numbers := genAlphabetsBetween('0', '9')
-
-    printStr(caps, true)                                // print capital letters
-    printStr(lowers, true)                              // print lowercase letters
-    printStr(numbers, true)                             // print numbers 0-9
+    printStr(genAlphabetsBetween('A', 'Z'), true)  // print capital letters
+    printStr(genAlphabetsBetween('a', 'z'), true)  // print lowercase letters
+    printStr(genAlphabetsBetween('0', '9'), true)  // print numbers 0-9
     
     printStr(genAlphabetsBetween(67648, 67679), true)   // print Aramaic letters
     printStr(genAlphabetsBetween('𐡀','𐡟'), true)       // print Aramaic letters again
                                                         // Aramaic is R->L and it looks like VSCode tries to accommodate this... nice! :)
                                                         // (note that '𐡀' is displayed in the seemingly other argument but it is really the 67648 argument -- R->L changes this in rendering)
-    
-    printStr(strreverse(caps), true)                    // print reversed capital letters
-    writeln(strlen(caps))
-    printStr(strconcat(caps, lowers), true)
-    writeln(strlen(strconcat(caps, lowers)))
-
-    // NOTE: If we _really_ wanted to do, we can make `""` also a syntactic sugar for a built-in String type
-    // e.g., "abcd" becomes syntactic sugar for SCons('a', SCons('b', SCons('c', SCons('d', SNil()))))
-    //       and we don't create a new `char` type on purpose (because arithmetic on characters is frequent and not harmful -- so we think of it as a positive thing)
