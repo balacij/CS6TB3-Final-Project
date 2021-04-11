@@ -153,10 +153,10 @@ def genADTKindMkFuncs(adtKinds):
         if kind.record is not None:
             setparams = '\n'.join(
                 [
-                    f"""global.get $_memsize     ;; get current memory size
+                    f"""global.get $_memsize     ;; get known unused memory location
 i32.const {f.offset}         ;; get offset of the next type
-i32.add                      ;; impose offset from memory sie
-local.get ${f.name}          ;; get the param
+i32.add                      ;; impose offset onto total memory size
+local.get ${f.name}          ;; get param {f.name}
 i32.store                    ;; store it in it's area"""
                     for f in kind.record.val.fields
                 ]
@@ -167,17 +167,17 @@ i32.store                    ;; store it in it's area"""
             f"""(func $__mk_{kind.name} """
             + params
             + f"""(result i32)
-global.get $_memsize         ;; get last placed memory (global memsize)
+global.get $_memsize         ;; get known unused memory location
 i32.const {kind.index}       ;; get {kind.name}'s kind index
 i32.store                    ;; store it
 """
             + setparams
-            + f"""global.get $_memsize     ;; push memsize up, by the size of this adt
-i32.const {kind.size} ;; get size of kind {kind.name})
+            + f"""global.get $_memsize        ;; push memsize up, by the size of this DUT/ADT
+i32.const {kind.size}        ;; get size of kind ({kind.name})
 i32.add                      ;; add to memory size
 global.set $_memsize         ;; set, and then get the new memory size
 global.get $_memsize
-i32.const {kind.size} ;; get size of kind ({kind.name})
+i32.const {kind.size}        ;; get size of kind ({kind.name})
 i32.sub                      ;; leftover entry is the pointer to the generated thing
 )"""
         )
