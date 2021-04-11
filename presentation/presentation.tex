@@ -66,20 +66,6 @@
 % TODO: Instantiation examples
 \end{frame}
 
-\begin{frame}
-\frametitle{Grammar Changes}
-
-\begin{itemize}
- \item<1-> Text visible on slide 1
- \item<2-> Text visible on slide 2
- \item<3-> Text visible on slide 3
- \item<4-> Text visible on slide 4
- % TODO:
-\end{itemize}
-
-\end{frame}
-
-
 \begin{lrbox}{\anatomyOfCaseBox}
 \begin{lstlisting}[language=Pascal, basicstyle=\footnotesize]
 case <variable> of {
@@ -320,6 +306,18 @@ Modelling is nice with disjoint union types!
 
 \section{Implementation Evaluation and Notes}
 
+\begin{frame}
+\frametitle{Grammar Changes}
+
+\begin{itemize}
+ \item<1-> Text visible on slide 1
+ \item<2-> Text visible on slide 2
+ \item<3-> Text visible on slide 3
+ \item<4-> Text visible on slide 4
+ % TODO:
+\end{itemize}
+
+\end{frame}
 
 \begin{frame}
  \frametitle{\texttt{case} WebAssembly Generation}
@@ -352,7 +350,7 @@ Each instance of a DUT is located on the heap, and instances of local/global DUT
 \frametitle{Notable Design Decisions}
 
 \begin{itemize}
- \item<1-> The first 4 bytes of a program are to be always initialized to 0 so that we can always have uninitialized DUT pointers pointing to it, then when this uninitialized DUT is read in, we will always see that the ``instance" has $kindId = 0$, meaning it's uninitialized (and also not instantiated).
+ \item<1-> The first 4 bytes of a program are to be always initialized to 0 so that we can always have uninitialized DUT pointers pointing to it, then when this uninitialized DUT is read in, we will always see that the ``instance" has $kindId = 0$, meaning it hasn't been instantiated.
  \item<2-> When DUTs are read in, we create ``helper functions" for each DUT variant. These ``helper functions" are then used whenever we want to instantiate any particular DUT variant. DUT variant instantiation is hence secretly just a function call (to some function that creates a DUT on the heap and returns it's memory location).
  \item<3-> Disjoint union type variants are mutable records. You may modify the values of a DUT variant only when \texttt{case}ing on it from within it's case. 
  \item<4-> DUT variant kind identifiers are immutable!
