@@ -2,133 +2,136 @@
 
 # ## The P0 Compiler
 # #### COMP SCI 4TB3/6TB3, McMaster University
-# #### Original Author: Emil Sekerinski, revised March 2021
-#
-# This collection of _Jupyter notebooks_ develops a compiler for P0, a programming langauge inspired by Pascal, a language designed for ease of compilation. The compiler currently generates WebAssembly and MIPS code, but is modularized to facilitate other targets. WebAssembly is representative of stack-based virtual machines while the MIPS architecture is representative of Reduced Instruction Set Computing (RISC) processors.
-#
+# #### Original Author: Emil Sekerinski, revised April 2021
+# 
+# This work builds off of Dr. Sekerinski's original compiler for P0, a programming language inspired by Pascal, a language designed for ease of compilation. The compiler currently generates WebAssembly, but is modularized to facilitate other targets. WebAssembly is representative of stack-based virtual machines.
+# 
 # ### The P0 Language
 # The main syntactic elements of P0 are *statements*, *declarations*, *types*, and *expressions*.
-#
+# 
 # #### Statements
 # * _Assignment statement_ (`x₁`, `x₂`, … variable identifers, `d` selector, `e`, `e₁`, `e₂`, … expressions):
+# ```
 #       x₁, x₂, … := e₁, e₂, …
-#       x d := e
+#       x.d := e
+# ```
 # * _Procedure call_ (`p` procedure identifier, `e₁`, `e₂`, … expressions, `x₁`, `x₂`, … variable identifiers):
+# ```
 #       p(e₁, e₂, …)
 #       x₁, x₂, … ← p(e₁, e₂, …)
+# ```
 # * _Sequential composition_ (`S₁`, `S₂`, … statements):
+# ```
 #       S₁; S₂; …
+# ```
 # * _If-statements_ (`B` Boolean expression, `S`, `T` statements):
-# 	  if B then S
+# ```
+# 	if B then S
 #       if B then S else T
+# ```
 # * _While-statements_ (`B` Boolean expression, `S` statement):
+# ```
 #       while B do S
-#
+# ```
+# * _Case-statements_ (`A` ADT variable name, `k₁`, `k₂`, … adt kind identifiers of `A`, `S₁`, `S₂`, … statements) -- Optional `nil` and `default` cases.
+# ```
+#       case A of {
+#             k₁: S₁          // assuming A is variant k₁
+#             k₂: S₂          // assuming A is variant k₂
+#             …
+#       }
+# ```
+# ```
+#       case A of {
+#             nil: S₁
+#             k₁: S₂          // assuming A is variant k₁
+#             k₂: S₃          // assuming A is variant k₂
+#             …
+#       }
+# ```
+# ```
+#       case A of {
+#             nil: S₁
+#             k₁: S₂          // assuming A is variant k₁
+#             k₂: S₃          // assuming A is variant k₂
+#             …
+#             default: Sᵢ
+#       }
+# ```
+# ```
+#       case A of {
+#             nil: S₁
+#             k₁: S₂          // assuming A is variant k₁
+#             k₂: S₃          // assuming A is variant k₂
+#             …
+#             default nothing
+#       }
+# ```
 # #### Declarations
 # * _Constant declaration_ (`c` constant identifier, `e` constant expression):
+# ```
 #       const c =  e
+# ```
 # * _Type declaration_ (`t` type identifier, `T` type):
+# ```
 #       type t = T
+# ```
 # * _Variable declaration_ (`x₁`, `x₂`, … variable identifiers, `T` type):
+# ```
 #       var x₁, x₂, …: T
+# ```
 # * _Procedure declaration_ (`p` procedure identifier, `v₁`, `v₂`, … variable identifiers, `T₁`, `T₂`, …, `U₁`, `U₂`, … types, `D₁`, `D₂`, … declarations, `S` statement):
+# ```
 #       procedure p (v₁: T₁, v₂: T₂, …) → (r₁: U₁, r₂: U₂, …)
 #           D₁
 #           D₂
 #           …
 #               S
-#
+# ```
 # #### Types
 # * _Elementary Types:_
+# ```
 #       integer, boolean
+# ```
 # * _Arrays_ (`m`, `n` integer expressions, `T` type):
+# ```
 #       [m .. n] → T
+# ```
 # * _Records_ (`f₁`, `f₂`, … field identifiers, `T₁`, `T₂`, …, types):
+# ```
 #       (f₁: T₁, f₂: T₂, …)
+# ```
 # * _Sets_ (`m`, `n` integer expressions)
+# ```
 #       set [m .. n]
-#
+# ```
+# * _Disjoint Union Types (Algebraic Data Types)_ (`k₁`, `k₂`, … kind identifiers, `f₁`, `f₂`, … field identifiers, `T₁`, `T₂`, …, types)
+# ```
+#       k₁(f₁: T₁, f₂: T₂, …) | k₂(f₃: T₃, …) | k₃ …
+# ```
+# 
 # #### Expressions:
 # * _Constants:_
+# ```
 # 	  number, identifier
+# ```
 # * _Selectors_ (`i` index expression, `f` field identifier):
+# ```
 #       [i]
 #       .f
+# ```
 # * _Operators,_ in order of their binding power (e, e₁, e₂ are expressions):
+# ```
 # 	  (e), ¬ e, #e, ∁ e
 #       e₁ × e₂, e₁ div e₂, e₁ mod e₂, e₁ ∩ e₂, e₁ and e₂
 #       + e, – e, e₁ + e₂, e₁ – e₂, e₁ ∪ e₂, e₁ or e₂
 #       e₁ = e₂, e₁ ≠ e₂, e₁ < e₂, e₁ ≤ e₂, e₁ > e₂, e₁ ≥ e₂, e₁ ∈ e₂, e₁ ⊆ e₂, e₁ ⊇ e₂
-#
-# Types `integer`, `boolean`, constants `true`, `false`, and procedures `read`, `write`, `writeln` are not symbols of the grammar; they are _standard identifiers_ (*predefined identifiers*).
-
-# ### P0 Examples
-#
-# ```Pascal
-# procedure quotrem(x, y: integer) → (q, r: integer)
-#     q, r := 0, x
-#     while r ≥ y do // q × y + r = x ∧ r ≥ y
-#         r, q := r - y, q + 1
-#
-# program arithmetic
-#     var x, y, q, r: integer
-#       x ← read(); y ← read()
-#       q, r ← quotrem(x, y)
-#       write(q); write(r)
 # ```
+# 
+# Types `integer`, `boolean`, constants `true`, `false`, and procedures `read`, `write`, `writeln`, `writeChar`, `writeCharLn`, `writeNewLine` are not symbols of the grammar; they are _standard identifiers_ (*predefined identifiers*).
 
-# ```Pascal
-# procedure fact(n: integer) → (f: integer)
-#     if n = 0 then f := 1
-#     else
-#         f ← fact(n - 1); f := f × n
-#
-# program factorial;
-#     var y, z: integer
-#         y ← read(); z ← fact(y); write(z)
-# ```
 
-# ```Pascal
-# const N = 10
-# var a: [0 .. N - 1] → integer
-#
-# procedure has(x: integer) → (r: boolean)
-#     var i: integer
-#         i := 0
-#         while (i < N) and (a[i] ≠ x) do i := i + 1
-#         r := i < N
-# ```
 
-# ### The P0 Grammar
-#
-#     selector ::= { "[" expression "]" | "." ident}
-#     factor ::= ident selector | integer | "(" expression ")" | "{" [expression {"," expression}] "}" | ("¬" | "#" | "∁") factor
-#     term ::= factor {("×" | "div" | "mod" | "∩" | "and") factor}
-#     simpleExpression ::= ["+" | "-"] term {("+" | "-" | "∪" | "or") term}
-#     expression ::= simpleExpression
-#         {("=" | "≠" | "<" | "≤" | ">" | "≥" | "∈" | "⊆" | "⊇") simpleExpression}
-#     statementList ::= statement {";" statement}
-#     statementBlock ::= statementList {statementList}
-#     statementSuite ::= statementList | INDENT statementBlock DEDENT
-#     statement ::=
-#         ident selector ":=" expression |
-#         ident {"," ident} (":=" expression {"," expression} |
-#             "←" ident "(" [expression {"," expression}] ")") |
-#         "if" expression "then" statementSuite ["else" statementSuite] |
-#         "while" expression "do" statementSuite
-#     type ::=
-#         ident |
-#         "[" expression ".." expression "]" "→" type |
-#         "(" typedIds ")" |
-#         "set" "[" expression ".." expression "]"
-#     typedIds ::= ident {"," ident} ":" type {"," ident {"," ident} ":" type}.
-#     declarations ::=
-#         {"const" ident "=" expression}
-#         {"type" ident "=" type}
-#         {"var" typedIds}
-#         {"procedure" ident "(" [typedIds] ")" [ "→" "(" typedIds ")" ] body}
-#     body ::= INDENT declarations (statementBlock | INDENT statementBlock DEDENT) DEDENT
-#     program ::= declarations "program" ident body
 
 # ### Modularization
 # <div><span style="float:right"><img width="60%" src="./img/modularization.svg"/></span></div>
@@ -310,7 +313,7 @@ def selector(x, right=True):
 
 # Procedure `factor()` parses
 #
-#     factor ::= ident selector | integer | "(" expression ")" | "{" [expression {"," expression}] "}" | ("¬" | "#" | "∁") factor
+#     factor ::= ident selector | char | integer | "(" expression ")" | "{" [expression {"," expression}] "}" | ("¬" | "#" | "∁") factor
 #
 # and generates code for the factor if no error is reported. If the factor is a constant, a `Const` item is returned (and code may not be generated); if the factor is not a constant, the location of the result is returned.
 
@@ -404,7 +407,7 @@ def factor():
 
 # Procedure `term()` parses
 #
-#     term ::= factor {("×" | "div" | "mod" | "∩" | "and") factor}
+#     term ::= factor {("×" | '*' | "div" | "mod" | "∩" | "and") factor}
 #
 # and generates code for the term if no error is reported. If the term is a constant, a `Const` item is returned (and code may not be generated); if the term is not a constant, the location of the result is returned.
 
@@ -493,7 +496,7 @@ def simpleExpression():
 # Procedure `expression()` parses
 #
 #     expression ::= simpleExpression
-#         {("=" | "≠" | "<" | "≤" | ">" | "≥" | "∈" | "⊆" | "⊇") simpleExpression}
+#         {("=" | "≠" | "<" | "≤" | "<=" | ">" | "≥" | ">=" | "∈" | "⊆" | "⊇") simpleExpression}
 #
 # and generates code for the expression if no error is reported. If the expression is a constant, a `Const` item is returned (and code may not be generated); if the expression is not constant, the location of the result is returned.
 
@@ -597,9 +600,10 @@ def statementSuite():
 #         ident selector ":=" expression |
 #         ident "." ident
 #         ident {"," ident} (":=" expression {"," expression} |
-#             "←" ident "(" [expression {"," expression}] ")") |
+#             ("←" | "<-") ident "(" [expression {"," expression}] ")") |
 #         "if" expression "then" statementSuite ["else" statementSuite] |
-#         "while" expression "do" statementSuite
+#         "while" expression "do" statementSuite |
+#         "case" expression "of" "{" INDENT ["nil" ":" statementSuite] {ident ":" statementSuite} ["default" (":" statementSuite | "nothing")] DEDENT "}"
 #
 # and generates code for the statement if no error is reported.
 
@@ -890,8 +894,8 @@ def statement():
 # Procedure `typ` parses
 #
 #     type ::=
-#         ident |
-#         "[" expression ".." expression "]" "→" type |
+#         ident ["(" typedIds ")"] {"|" ident ["(" typedIds ")"]} |
+#         "[" expression ".." expression "]" ("→" | "->") type |
 #         "(" typedIds ")" |
 #         "set" "[" expression ".." expression "]"
 #
@@ -1083,7 +1087,7 @@ def typedIds(adtName=None):
 #         {"const" ident "=" expression}
 #         {"type" ident "=" type}
 #         {"var" typedIds}
-#         {"procedure" ["(" ident ":" type ")"] ident "(" [typedIds] ")" [ "→" "(" typedIds ")" ] body}
+#         {"procedure" ident "(" [typedIds] ")" [ ("→" | "->") "(" typedIds ")" ] body}
 #
 # and updates the top scope of symbol table; an error is reported if an identifier is already in the top scope. An error is also reported if the expression of a constant declarations is not constant. For each procedure, a new scope is opened for its formal parameters and local declarations, the formal parameters and added to the symbol table, and code is generated for the body. The size of the variable declarations is returned, as determined by calling paramater `allocVar`.
 

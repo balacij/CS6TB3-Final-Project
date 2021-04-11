@@ -46,6 +46,8 @@
     body ::= INDENT declarations (statementBlock | INDENT statementBlock DEDENT) DEDENT
     program ::= declarations "program" ident body
     char ::= "'" utf8Char "'"
+    integer ::= digit {digit}
+    digit ::= '0' | ... | '9'
 ```
 
 where `utf8Char` is any valid `utf-8` character that Python can read.

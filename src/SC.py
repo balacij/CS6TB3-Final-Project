@@ -227,8 +227,8 @@ def comment():
 
 # Procedure `getSym()` parses
 #
-#     symbol ::= { ' ' | comment} ( { '\n' {' ' | comment} } | identKW | number | '×' | '+' | '-' | '=' | '≠' |
-#                         '<' | '≤' | '>' | '≥' | ';' | ',' | ':' | ':=' | '.' | '¬' | '(' |  ')' | '[' | ']' | '←' | '→' | '{' | '}' |
+#     symbol ::= { ' ' | comment} ( { '\n' {' ' | comment} } | identKW | number | '×' | '*' | '+' | '-' | '=' | '≠' |
+#                         '<' | '≤' | '>' | '≥' | ';' | ',' | ':' | ':=' | '.' | '¬' | '(' |  ')' | '[' | ']' | '<-' | '←' | '→' | '->' | '{' | '}' |
 #                         '#' | '∁' | '∪' | '∩' | '∈' | '⊆' | '⊇')
 #
 # If a valid symbol is recognized, `sym` is set accordingly, otherwise an error is reported. The longest match is used for recognizing operators. Blanks that are not at the beginning of a line are skipped. A stack, `indents`, is used to keep track if blanks at the beginning of a line are either ignored or recognized as `INDENT` or `DEDENT`. On the first symbol of a line, `newline` is set to `True` if the indentation is the same as that of the previous line; for all subsequent symbols, `newline` is set to `False`. At the end of the source, `sym` is set to `EOF`.
