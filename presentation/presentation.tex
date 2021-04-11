@@ -22,6 +22,9 @@
 
 \newsavebox{\exampleInstantiationHelper}
 
+\newsavebox{\caseGenCode}
+\newsavebox{\caseGenWat}
+
 \newcommand\omicron{o}
 
 \usepackage[utf8]{inputenc}
@@ -307,7 +310,7 @@ Modelling is nice with disjoint union types!
 \section{Implementation Evaluation and Notes}
 
 \begin{frame}
-\frametitle{Grammar Changes}
+\frametitle{Focal Grammar Changes}
 
 \begin{itemize}
  \item<1-> Text visible on slide 1
@@ -319,9 +322,91 @@ Modelling is nice with disjoint union types!
 
 \end{frame}
 
+
 \begin{frame}
- \frametitle{\texttt{case} WebAssembly Generation}
- % TODO
+\frametitle{Supplementary Grammar and Procedure Changes}
+
+\begin{itemize}
+ \item<1-> Text visible on slide 1
+ \item<2-> Text visible on slide 2
+ \item<3-> Text visible on slide 3
+ \item<4-> Text visible on slide 4
+ % TODO:
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{lrbox}{\caseGenCode}
+\begin{lstlisting}[language=Pascal,basicstyle=\tiny]
+type Colour = R | G | Unknown
+
+procedure printCol(col: Colour)
+    case col of {
+        nil: writeCharLn('?')
+        R: writeCharLn('R')
+        G: writeCharLn('G')
+        default: writeCharLn('?')
+    }
+
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{lrbox}{\caseGenWat}
+\begin{lstlisting}[language=Pascal,basicstyle=\tiny]
+...
+local.get $col
+i32.load
+i32.const 0        ;; check if nil
+i32.eq
+if                 ;; if it is nil
+i32.const 63
+call $writeCharLn  ;; print '?'
+else               ;; otherwise
+local.get $col
+i32.load
+i32.const 1        ;; check if `R`
+i32.eq
+if                 ;; if it is `R`
+i32.const 82
+call $writeCharLn  ;; print 'R'
+else               ;; otherwise
+local.get $col
+i32.load
+i32.const 2        ;; check if `G`
+i32.eq
+if                 ;; if it is `G`
+i32.const 71
+call $writeCharLn  ;; print 'G'
+else
+i32.const 63       ;; otherwise, default
+call $writeCharLn  ;; print '?'
+end
+end
+end
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{frame}
+ \frametitle{Example: \texttt{case} WebAssembly Generation}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{.40\textwidth}
+            \begin{minipage}{\textwidth}
+                {\footnotesize For example, the WebAssembly code on the right-hand side for the below \texttt{case} statement.}
+                \ \\ \ \\ \ \\
+                \usebox{\caseGenCode}
+            \end{minipage}
+        \end{column}
+        \begin{column}{.50\textwidth}
+            \begin{minipage}{\textwidth}
+                \usebox{\caseGenWat}
+            \end{minipage}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}

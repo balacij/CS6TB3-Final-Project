@@ -1,2 +1,11 @@
 svg-inkscape
 *.kate-swp
+*.vrb
+*.aux
+*.log
+*.nav
+*.out
+*.synctex.gz
+*.snm
+*.toc
+
