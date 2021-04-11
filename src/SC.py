@@ -146,6 +146,11 @@ def number():
         mark("number too large")
 
 
+# Procedure `char()` parses
+#
+#     char ::= "'" utf8 "'"
+#
+
 def char():
     global sym, val
     try:

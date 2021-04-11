@@ -17,7 +17,7 @@
 ## Full Grammar
 ```
     selector ::= { "[" expression "]" | "." ident}
-    factor ::= ident selector | integer | "(" expression ")" | "{" [expression {"," expression}] "}" | ("¬" | "#" | "∁") factor
+    factor ::= ident selector | char | integer | "(" expression ")" | "{" [expression {"," expression}] "}" | ("¬" | "#" | "∁") factor
     term ::= factor {("×" | "*" | "div" | "mod" | "∩" | "and") factor}
     simpleExpression ::= ["+" | "-"] term {("+" | "-" | "∪" | "or") term}
     expression ::= simpleExpression
@@ -45,4 +45,7 @@
         {"procedure" ident "(" [typedIds] ")" [ ("→" | "->") "(" typedIds ")" ] body}
     body ::= INDENT declarations (statementBlock | INDENT statementBlock DEDENT) DEDENT
     program ::= declarations "program" ident body
+    char ::= "'" utf8Char "'"
 ```
+
+where `utf8Char` is any valid `utf-8` character that Python can read.
