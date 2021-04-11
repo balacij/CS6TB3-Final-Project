@@ -6,7 +6,7 @@ The first 4 bytes of all P0 programs are now intentionally left empty. This is t
 
 Disjoint union types are allocated by size of the actual kind being instantiation. For example if we had a type `type Maybe = Just(value: integer) | Nothing`, if we were allocating a `Just(10)`, we would be allocating a `Just` variant with a record `(10)` resulting in a total allocation size of 8 bytes (4 for the kind identifier [i32], and 4 for the integer `value` [i32]). However, if we were allocating a `Nothing`, the total memory size would be 4 bytes (only for the kind identifier code).
 
-ADT Kind records are allocated similarly to existing P0 records with values being consecutively placed next to each other, in order it was defined, with integers being 4 bytes, and booleans being 1 byte.
+ADT Kind records are allocated similarly to existing P0 records with values being consecutively placed next to each other, in order it was defined, with integers being 4 bytes, and booleans being 1 byte. To get the offset of any of the variables of any of the kinds, you should calculate the sum of all of the sizes of the variables before it plus 4 bytes for the kind identifier (`offset of var Xn = 4 + sum(size(X₁), ..., size(Xn₋₁))`).
 
 <div><span style="float:right"><img width="140%" src="./img/memory.svg"/></span></div>
 
