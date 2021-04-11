@@ -5,6 +5,10 @@ Adding Disjoint Union Types to P0
 
 If you would like to view my proposal for implementing Disjoint Union Types into P0, please see `proposal/PROPOSAL_DUT.md`. Please note that I was previously considering working on a partial evaluation project but I have since decided to continue through with the disjoint unions project.
 
+## Documentation
+
+Please see the `docs` folder for all information related to this project.
+
 ## Usage
 ### Prerequisites
 You will need to have a working installation of:
