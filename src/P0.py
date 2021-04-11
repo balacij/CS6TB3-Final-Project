@@ -841,8 +841,9 @@ def statement():
         x = CG.genWhileDo(t, x, y)
     elif SC.sym == CASE:
         getSym()
+        # TODO: Should we really allow expressions?
         x = expression()
-        if type(x) != Var and len(x.name) == 0:
+        if type(x) != Var and len(x.name) == 0:  # TODO: is this a glitch?
             mark('expected variable name to `case` on')
 
         # if the target is a selfref, it should be treated as if it were transient
@@ -850,7 +851,7 @@ def statement():
             x.tp = x.tp.tp.val
 
         if type(x.tp) != ADT:
-            mark(f'ADT variable expected in `case`; got "{x.name}" of type {type(x.tp)}')
+            mark(f'ADT variable expected in `case`; got "{x.name}" of type "{type(x.tp)}"')
 
         if SC.sym == OF:
             getSym()
@@ -949,6 +950,9 @@ def typ(adtName=None, parsingTypedIds=False):
                         field = field.tp
                         if type(field) == ADTSelfRef:
                             field.tp = x
+
+            if len(kinds) > 65535:
+                mark(f'"{adtName}" has been assigned too many ADT Kind variants, please trim down (max = 65535)')
 
             # JASON: generate helper functions for ADT Kind generation, and register them all as functions
             adtKinds = kinds
