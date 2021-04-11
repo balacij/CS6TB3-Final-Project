@@ -16,7 +16,7 @@ Recalling our results for the Sieve of Eratosthenes (from Lab 9):
 
 | Run Count | P0 (Pywasm) | P0 (wasm) | P0 (wasmer) |
 |-----------|-------------|-----------|-------------|
-| 1,000,000 | Too long!   | 1.67ms    | 56.8ms      |
+| 1,000,000 | >2hrs       | 1.67ms    | 56.8ms      |
 | 10,000    | 2min 2s     | 1.62ms    | 2.64ms      |
 | 1,000     | 12.3s       | 1.50ms    | 2.48ms      |
 
