@@ -10,4 +10,4 @@ To build my slideshow presentation, please simply run `pdflatex presentation.tex
 
 ## View
 
-To view my slideshow presentation, please open `presentation.pdf`.
+To view my slideshow presentation, please open `presentation.pdf` with your choice of PDF viewer.
