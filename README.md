@@ -33,7 +33,7 @@ Using one of my pre-made examples, you may run the following commands:
 2. Open up the Python virtual environment (if not already)<br>`source .venv/bin/activate`
 3. Compile and run the file<br>`python Compiler.py examples/lists.py --run` (or, you may designate another example or another file for it to compile)
 
-**Alternatively**, if you would like to run all of the examples at once, quickly, please follow steps 1 & 2, and then run `sh runall.sh` (note: this script is written in bash, and, as such, you will need some sort of bash shell as a prerequisite if you would like to use it).
+**Alternatively**, if you would like to run all of the examples at once, please follow steps 1 & 2, and then run `sh runall.sh` (note: this script is written in bash, and, as such, you will need some sort of bash shell as a prerequisite if you would like to use it).
 
 ## Members
 * [Jason Balaci (balacij)](mailto:balacij@mcmaster.ca)
