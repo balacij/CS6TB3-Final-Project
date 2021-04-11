@@ -66,8 +66,12 @@ type String = SCons(ch: integer, tail: String)
 
 ## Notes
 
-* The disjoint union types implemented in this project have mutable values in the records, but immutable kinds. As such, you may edit the values carried by instances of the disjoint union types, but you may not change the kind of an instantiated disjoint union type.
 * We allow arbitrary whitespace in between kind declarations, taking inspiration from programming languages like Haskell where many have different preferred code styling preference.
+
+
+## Mutability
+
+The disjoint union types implemented in this project have mutable values in the records, but immutable kinds. As such, you may edit the values carried by instances of the disjoint union types, but you may not change the kind of an instantiated disjoint union type.
 
 
 ## Warnings
