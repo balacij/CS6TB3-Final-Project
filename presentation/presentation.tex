@@ -264,7 +264,7 @@ program Main
                     \ \\
                     
                     \begin{block}{Note}<1->\tiny
-                        We convert single-quoted characters into UTF-8 integer representation when reading in P0 programs.
+                        We convert single-quoted characters into their UTF-8 integer representation when reading in P0 programs.
                     \end{block}
                 \end{minipage}
             \end{onlyenv}
@@ -327,11 +327,18 @@ Modelling is nice with disjoint union types!
 \frametitle{Supplementary Grammar and Procedure Changes}
 
 \begin{itemize}
- \item<1-> Text visible on slide 1
- \item<2-> Text visible on slide 2
- \item<3-> Text visible on slide 3
- \item<4-> Text visible on slide 4
- % TODO:
+ \item<1-> Single-value returning procedures may be used ``in-place'' in expressions
+ \item<2-> ``$<-$'' and ``$->$'' as alternatives for ``$\leftarrow$'' and ``$\rightarrow$'', respectively
+ \item<3-> ``$>=$'' and ``$<=$'' as alternatives for ``$\geq$'' and ``$\leq$'', respectively
+ \item<4-> ``$*$'' as an alternative for ``$\times$''
+ \item<5-> Standard procedures
+ \begin{itemize}
+  \item \texttt{write} - no longer prints a newline character
+  \item \texttt{writeln} - writes single integer to std. out. with a newline afterwards
+  \item \texttt{writeChar} - writes single integer converted into a utf-8 character to std. out.
+  \item \texttt{writeCharLn} - writes single integer converted into a utf-8 character to std. out. with a newline afterwards
+  \item \texttt{writeNewLine} - writes a newline character to std. out.
+ \end{itemize}
 \end{itemize}
 
 \end{frame}
