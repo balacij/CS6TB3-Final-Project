@@ -172,13 +172,11 @@ i32.const {kind.index}       ;; get {kind.name}'s kind index
 i32.store                    ;; store it
 """
             + setparams
-            + f"""global.get $_memsize        ;; push memsize up, by the size of this DUT/ADT
+            + f"""global.get $_memsize         ;; get global memory size
+global.get $_memsize         ;; get global memory size (again)
 i32.const {kind.size}        ;; get size of kind ({kind.name})
 i32.add                      ;; add to memory size
-global.set $_memsize         ;; set, and then get the new memory size
-global.get $_memsize
-i32.const {kind.size}        ;; get size of kind ({kind.name})
-i32.sub                      ;; leftover entry is the pointer to the generated thing
+global.set $_memsize         ;; set memory size, leftover i32 on stack which is the returned pointer to the generated {kind.name}
 )"""
         )
         asm.append(f)

@@ -20,6 +20,8 @@
 \newsavebox{\exampleString}
 \newsavebox{\exampleImagination}
 
+\newsavebox{\exampleInstantiationHelper}
+
 \newcommand\omicron{o}
 
 \usepackage[utf8]{inputenc}
@@ -357,10 +359,35 @@ Each instance of a DUT is located on the heap, and instances of local/global DUT
 \end{itemize}
 \end{frame}
 
+\begin{lrbox}{\exampleInstantiationHelper}
+\begin{lstlisting}[language=Lisp,basicstyle=\tiny]
+(func $__mk_Cons (param $head i32) (param $tail i32) (result i32)
+global.get $_memsize         ;; get known unused memory location
+i32.const 1                  ;; get Cons's kind index
+i32.store                    ;; store it
+global.get $_memsize         ;; get known unused memory location
+i32.const 4                  ;; get offset of the next type
+i32.add                      ;; impose offset onto total memory size
+local.get $head              ;; get param head
+i32.store                    ;; store it in it's area
+global.get $_memsize         ;; get known unused memory location
+i32.const 8                  ;; get offset of the next type
+i32.add                      ;; impose offset onto total memory size
+local.get $tail              ;; get param tail
+i32.store                    ;; store it in it's area
+global.get $_memsize         ;; get global memory size
+global.get $_memsize         ;; get global memory size (again)
+i32.const 12                 ;; get size of kind (Cons)
+i32.add                      ;; add to memory size
+global.set $_memsize         ;; set memory size, leftover i32 on stack which is the returned pointer to the generated Cons
+)
+\end{lstlisting}
+\end{lrbox}
+
 \begin{frame}
  \frametitle{Example of DUT instantiation helper}
  \framesubtitle{This function is used when wanting to instantiate a ``Cons'' variant (of a List).}
- % TODO: 
+ \usebox{\exampleInstantiationHelper}
 \end{frame}
 
 
