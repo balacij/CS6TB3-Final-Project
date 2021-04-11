@@ -13,8 +13,8 @@ Table of Contents
 4. <a href="MEMORY.md">Memory</a>
 5. <a href="CHALLENGES.md">Challenges</a>
 6.  <a href="RUNTIMES.md">Runtimes</a>
-7.  <a href="Notable DESIGN_DECISIONS.md">Notable Design Decisions</a>
-8.  <a href="Future Work.md">Future Work</a>
+7.  <a href="NOTABLE_DESIGN_DECISIONS.md">Notable Design Decisions</a>
+8.  <a href="FUTURE_WORK.md">Future Work</a>
 
 ## Members
 * [Jason Balaci (balacij)](mailto:balacij@mcmaster.ca)
