@@ -121,11 +121,6 @@ case <variable> of {
     \end{columns}
 \end{frame}
 
-\begin{frame}
- \frametitle{\texttt{case} WebAssembly Generation}
- % TODO
-\end{frame}
-
 \section{Examples}
 
 
@@ -274,6 +269,12 @@ program Main
                         0123456789\\
                         $\alpha\beta\gamma\delta\epsilon\zeta\eta\theta\iota\kappa\lambda\mu\nu\xi\omicron\pi\rho\sigma\tau\upsilon\phi\chi\psi\omega$
                     \end{block}
+                    
+                    \ \\
+                    
+                    \begin{block}{Note}<1->\tiny
+                        We convert single-quoted characters into UTF-8 integer representation when reading in P0 programs.
+                    \end{block}
                 \end{minipage}
             \end{onlyenv}
         \end{column}
@@ -283,8 +284,25 @@ program Main
 
 
 \begin{lrbox}{\exampleImagination}
-\begin{lstlisting}[language=Pascal]
-% TODO: 
+\begin{lstlisting}[language=Pascal,basicstyle=\tiny]
+type RainbowColour = Red | Orange | Yellow | Green | Blue | Indigo | Violet
+
+type Either = Left(value: integer)
+            | Right(value: boolean)
+
+type Tree = Branch(left: Tree, right: Tree)
+          | Leaf(value: integer)
+
+type Expr = Add(left: Expr, right: Expr)
+          | Sub(left: Expr, right: Expr)
+          | Mul(left: Expr, right: Expr)
+          | Div(num: Expr, den: Expr)
+          | Pow(base: Expr, exponent: Expr)
+          | Int(value: integer)
+
+type StringIntMap = SIMCons(key: String, value: integer, tail: StringIntMap)
+                  | SIMEmpty
+
 \end{lstlisting}
 \end{lrbox}
 
@@ -294,11 +312,17 @@ program Main
 \usebox{\exampleImagination}
 
 \begin{block}{Remark}
-Sample text
+Modelling is nice with disjoint union types!
 \end{block}
 \end{frame}
 
 \section{Implementation Evaluation and Notes}
+
+
+\begin{frame}
+ \frametitle{\texttt{case} WebAssembly Generation}
+ % TODO
+\end{frame}
 
 \begin{frame}
 \frametitle{Memory Impact \& Management}
@@ -308,7 +332,6 @@ Each instance of a DUT is located on the heap, and instances of local/global DUT
  \item <1-> Size of an allocation depends on the size of the variant being instantiated
  \item Offsets to accessing variables work similar to records, with a 4 byte offset for the variant id.
 \end{itemize}
-
 
 \begin{figure}
   \includesvg[width=0.9\textwidth]{../docs/img/memory_compressed.svg}
@@ -327,13 +350,19 @@ Each instance of a DUT is located on the heap, and instances of local/global DUT
 \frametitle{Notable Design Decisions}
 
 \begin{itemize}
- \item<1-> Text visible on slide 1
- \item<2-> Text visible on slide 2
- \item<3-> Text visible on slide 3
- \item<4-> Text visible on slide 4
+ \item<1-> The first 4 bytes of a program are to be always initialized to 0 so that we can always have uninitialized DUT pointers pointing to it, then when this uninitialized DUT is read in, we will always see that the ``instance" has $kindId = 0$, meaning it's uninitialized (and also not instantiated).
+ \item<2-> When DUTs are read in, we create ``helper functions" for each DUT variant. These ``helper functions" are then used whenever we want to instantiate any particular DUT variant. DUT variant instantiation is hence secretly just a function call (to some function that creates a DUT on the heap and returns it's memory location).
+ \item<3-> Disjoint union type variants are mutable records. You may modify the values of a DUT variant only when \texttt{case}ing on it from within it's case. 
+ \item<4-> DUT variant kind identifiers are immutable!
 \end{itemize}
-
 \end{frame}
+
+\begin{frame}
+ \frametitle{Example of DUT instantiation helper}
+ \framesubtitle{This function is used when wanting to instantiate a ``Cons'' variant (of a List).}
+ % TODO: 
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Notes on Runtimes}
@@ -356,7 +385,7 @@ Each instance of a DUT is located on the heap, and instances of local/global DUT
 \begin{itemize}
  \item<1-> Type variables!
  \begin{itemize}
-  \item<.-> Polymorphic disjoint union types! No more StringLists, IntLists, BooleanLists!
+  \item<.-> Polymorphic disjoint union types! No more StringLists, IntLists, BooleanLists, etc!
   \item More code reuse!
  \end{itemize}
  
