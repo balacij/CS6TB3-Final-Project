@@ -1,39 +1,40 @@
 # Grammar
 
-Key grammar changes:
+## Key grammar changes:
 * Disjoint union type definitions
-  * You may define ADTs using multiple lines to separate the ADT Kinds.
+  * _Note:_ You may define ADTs using multiple lines to separate the ADT Kinds.
 * `case` statements
 
-Supplementary grammar changes:
-* Single quoted characters are native conversions from UTF-8 characters to integers. This, in addition to our changes to the standard procedures write, writeln, etc are purely done for improving the presentation and usability of our `strings.p` example.
+## Supplementary grammar changes:
+* Single quoted characters (e.g., `'a'`, `'b'`, ...) are native conversions from UTF-8 characters to integers. This, in addition to our changes to the standard procedures write, writeln, etc are purely done for improving the presentation and usability of our `strings.p` example.
 
-Other grammar changes:
+## Other grammar changes:
 * We allow single-value returning procedures to be executed 'in-place' in expressions (without first setting them to variables)
 * `<-` and `->` as alternatives for `←` and `→`, respectively
 * `>=` and `<=` as alternatives for `≥` and `≤`, respectively
 * `*` is added as an alternative to the multiplication symbol
 
-
+## Full Grammar
 ```
     selector ::= { "[" expression "]" | "." ident}
     factor ::= ident selector | integer | "(" expression ")" | "{" [expression {"," expression}] "}" | ("¬" | "#" | "∁") factor
-    term ::= factor {("×" | "div" | "mod" | "∩" | "and") factor}
+    term ::= factor {("×" | "*" | "div" | "mod" | "∩" | "and") factor}
     simpleExpression ::= ["+" | "-"] term {("+" | "-" | "∪" | "or") term}
     expression ::= simpleExpression
-        {("=" | "≠" | "<" | "≤" | ">" | "≥" | "∈" | "⊆" | "⊇") simpleExpression}
+        {("=" | "≠" | "<" | "≤" | "<=" | ">" | "≥" | ">=" | "∈" | "⊆" | "⊇") simpleExpression}
     statementList ::= statement {";" statement}
     statementBlock ::= statementList {statementList}
     statementSuite ::= statementList | INDENT statementBlock DEDENT
     statement ::=
         ident selector ":=" expression |
         ident {"," ident} (":=" expression {"," expression} |
-            "←" ident "(" [expression {"," expression}] ")") |
+            ("←" | "<-") ident "(" [expression {"," expression}] ")") |
         "if" expression "then" statementSuite ["else" statementSuite] |
-        "while" expression "do" statementSuite
+        "while" expression "do" statementSuite |
+        "case" expression "of" "{" INDENT ["nil" ":" statementSuite] {ident ":" statementSuite} ["default" (":" statementSuite | "nothing")] DEDENT "}"
     type ::=
-        ident |
-        "[" expression ".." expression "]" "→" type |
+        ident ["(" typedIds ")"] {"|" ident ["(" typedIds ")"]} |
+        "[" expression ".." expression "]" ("→" | "->") type |
         "(" typedIds ")" |
         "set" "[" expression ".." expression "]"
     typedIds ::= ident {"," ident} ":" type {"," ident {"," ident} ":" type}.
@@ -41,7 +42,7 @@ Other grammar changes:
         {"const" ident "=" expression}
         {"type" ident "=" type}
         {"var" typedIds}
-        {"procedure" ident "(" [typedIds] ")" [ "→" "(" typedIds ")" ] body}
+        {"procedure" ident "(" [typedIds] ")" [ ("→" | "->") "(" typedIds ")" ] body}
     body ::= INDENT declarations (statementBlock | INDENT statementBlock DEDENT) DEDENT
     program ::= declarations "program" ident body
 ```

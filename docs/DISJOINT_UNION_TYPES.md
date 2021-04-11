@@ -1,5 +1,7 @@
 # Disjoint Union Types
 
-# Kinds / Variants
+## Kinds / Variants
 
-## Self-references
+### Self-references
+
+## Type Definitions
