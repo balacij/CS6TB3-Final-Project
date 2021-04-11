@@ -173,11 +173,11 @@ i32.store                    ;; store it
 """
             + setparams
             + f"""global.get $_memsize     ;; push memsize up, by the size of this adt
-i32.const {kind.tp.val.size} ;; get size of parent type ({kind.tp.val.name})
+i32.const {kind.size} ;; get size of kind {kind.name})
 i32.add                      ;; add to memory size
 global.set $_memsize         ;; set, and then get the new memory size
 global.get $_memsize
-i32.const {kind.tp.val.size} ;; get size of parent type ({kind.tp.val.name})
+i32.const {kind.size} ;; get size of kind ({kind.name})
 i32.sub                      ;; leftover entry is the pointer to the generated thing
 )"""
         )
