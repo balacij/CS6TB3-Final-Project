@@ -20,7 +20,7 @@ type List = Cons(head: integer, tail: List)
 
 Recalling our standard `List` disjoint union type (above), we may model how memory will be allocated for our `List` variants `Cons` and `Nil`.
 
+Specifically, we would like to note that the size of the variants are dynamic, being based on the record held internally. As per below, the `Cons` variants require 12 bytes of memory while the `Nil` variant requires only 4 bytes. This is because `Nil` contains no record values while the `Cons` construction contains an integer and a reference to another list (which are held internally as WebAssembly `i32`s).
 
 <div><span style="float:right"><img width="140%" src="./img/memory_example_list.svg"/></span></div>
 
-Specifically, we would like to note that the size of the variants are dynamic and based on the record held internally. As per above, the `Cons` variants require 12 bytes of memory while the `Nil` variant requires only 4 bytes. This is because `Nil` contains no record values, while the `Cons` construction contains an integer and a reference to another list (which are held internally as WebAssembly `i32`s).
