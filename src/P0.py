@@ -847,7 +847,7 @@ def statement():
         getSym()
         # TODO: Should we really allow expressions?
         x = expression()
-        if type(x) != Var and len(x.name) == 0:  # TODO: is this a glitch?
+        if type(x) != Var or (not hasattr(x, 'name')) or len(x.name) == 0:
             mark('expected variable name to `case` on')
 
         # if the target is a selfref, it should be treated as if it were transient

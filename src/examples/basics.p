@@ -12,6 +12,10 @@ type Something2 = Something
 
 type P = [0 .. 10] → Something
 
+var a: Something
+var b: Something
+var c: Something
+
 procedure doubler(x: integer) -> (r: integer)
     r := x * 2
 
@@ -23,6 +27,20 @@ program Main
     var a: Something
     var x: integer
     var y: Something2
+    var q: P
+
+    q[0] := A(1)
+    y := q[0]
+    case y of {
+        nil: writeCharLn('?')
+        A: writeln(y.value)
+        B: writeCharLn('B')
+        C: writeCharLn('C')
+        D: writeCharLn('D')
+        E: writeCharLn('E')
+        F: writeCharLn('F')
+        default: writeln(0)
+    }
 
     y <- F()
 

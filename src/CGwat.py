@@ -120,7 +120,8 @@ def genSet(s: Set):
 
 
 def genADT(adt: ADT):
-    adt.size = max([kind.size for kind in adt.kinds])
+    # adt.size = max([kind.size for kind in adt.kinds])
+    adt.size = 4 # Now that we conserve memory, we can recognize that ADTs are merely just pointers, as such, they are just 32bit integers!
     return adt
 
 
@@ -222,7 +223,7 @@ def genGlobalVars(sc, start):
         if type(sc[i]) == Var:
             if sc[i].tp in (Int, Bool) or type(sc[i].tp) in {Set, ADT}:
                 asm.append("(global $" + sc[i].name + " (mut i32) i32.const 0)")
-            elif type(sc[i].tp) in (Array, Record, ADT):
+            elif type(sc[i].tp) in (Array, Record):
                 sc[i].lev, sc[i].adr, memsize = MemAbs, memsize, memsize + sc[i].tp.size
             else:
                 mark("WASM: type?")
@@ -433,7 +434,7 @@ def genIndex(x, y):
             asm.append("i32.const " + str(x.adr))
         asm.append("i32.add")
         x = Var(x.tp.base)
-        if x.tp in (Int, Bool) or type(x.tp) == Set:
+        if x.tp in (Int, Bool) or type(x.tp) in {Set, ADT}:
             x.lev = MemInd
         else:
             x.lev = Stack
