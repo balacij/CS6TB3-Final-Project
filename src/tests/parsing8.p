@@ -1,0 +1,11 @@
+type Maybe = Just(value: integer) | Nothing
+
+program Main
+    var m: Maybe
+    m := Just(20)
+    
+    // non-exhaustive
+    case m of {
+        nil: writeln(1)
+        Just: writeln(m.value)
+    }
