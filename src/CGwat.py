@@ -121,7 +121,7 @@ def genSet(s: Set):
 
 def genADT(adt: ADT):
     # adt.size = max([kind.size for kind in adt.kinds])
-    adt.size = 4 # Now that we conserve memory, we can recognize that ADTs are merely just pointers, as such, they are just 32bit integers!
+    adt.size = 4  # Now that we conserve memory, we can recognize that ADTs are merely just pointers, as such, they are just 32bit integers!
     return adt
 
 

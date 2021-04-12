@@ -151,6 +151,7 @@ def number():
 #     char ::= "'" utf8 "'"
 #
 
+
 def char():
     global sym, val
     try:

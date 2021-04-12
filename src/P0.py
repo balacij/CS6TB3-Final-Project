@@ -3,12 +3,12 @@
 # ## The P0 Compiler
 # #### COMP SCI 4TB3/6TB3, McMaster University
 # #### Original Author: Emil Sekerinski, revised April 2021
-# 
+#
 # This work builds off of Dr. Sekerinski's original compiler for P0, a programming language inspired by Pascal, a language designed for ease of compilation. The compiler currently generates WebAssembly, but is modularized to facilitate other targets. WebAssembly is representative of stack-based virtual machines.
-# 
+#
 # ### The P0 Language
 # The main syntactic elements of P0 are *statements*, *declarations*, *types*, and *expressions*.
-# 
+#
 # #### Statements
 # * _Assignment statement_ (`x₁`, `x₂`, … variable identifers, `d` selector, `e`, `e₁`, `e₂`, … expressions):
 # ```
@@ -109,7 +109,7 @@
 # ```
 #       k₁(f₁: T₁, f₂: T₂, …) | k₂(f₃: T₃, …) | k₃ …
 # ```
-# 
+#
 # #### Expressions:
 # * _Constants:_
 # ```
@@ -127,10 +127,8 @@
 #       + e, – e, e₁ + e₂, e₁ – e₂, e₁ ∪ e₂, e₁ or e₂
 #       e₁ = e₂, e₁ ≠ e₂, e₁ < e₂, e₁ ≤ e₂, e₁ > e₂, e₁ ≥ e₂, e₁ ∈ e₂, e₁ ⊆ e₂, e₁ ⊇ e₂
 # ```
-# 
+#
 # Types `integer`, `boolean`, constants `true`, `false`, and procedures `read`, `write`, `writeln`, `writeChar`, `writeCharLn`, `writeNewLine` are not symbols of the grammar; they are _standard identifiers_ (*predefined identifiers*).
-
-
 
 
 # ### Modularization

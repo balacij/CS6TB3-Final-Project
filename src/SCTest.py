@@ -149,10 +149,11 @@ def scanString(src):  # for a more readable scanner output
         syms.append((symbol[SC.sym], SC.newline))
         SC.getSym()
     if doPrint:
-      print('SCANNING TEST:', i)
-      print(syms)
+        print('SCANNING TEST:', i)
+        print(syms)
     i = i + 1
     return syms
+
 
 # test; i = 0
 scanString(

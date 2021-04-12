@@ -17,7 +17,10 @@ procedure (r: A) q()
   r[2] := 7
 program p
   writeNewLine() //a.q()
-""", 'assign1.wat', target='wat')
+""",
+    'assign1.wat',
+    target='wat',
+)
 
 
 # #### Error: "WASM: no nested procedures"
@@ -31,7 +34,6 @@ program p
     writeln(5)
   q()
 """,
-
     target='wat',
 )
 
@@ -254,7 +256,6 @@ program p
 )
 
 
-
 # #### Array Copies
 
 # Following tests copy arrays and records. P0 generates `memory.copy` instructions, which are not supported by pywasm, but are supported by Chrome. For conversion of textual to binary WebAssembly, `wat2wasm` needs the `enable-bulk-memory` flag.
@@ -348,7 +349,6 @@ program p
     'arrayvalueresult.wat',
     target='wat',
 )
-
 
 
 # ```
@@ -472,7 +472,6 @@ program p
 )
 
 
-
 # #### Booleans and Conditions
 
 
@@ -527,8 +526,6 @@ program p
     'cond.wat',
     target='wat',
 )
-
-
 
 
 # #### Constant Folding, Local & Global Variables
@@ -743,8 +740,6 @@ program p
 )
 
 
-
-
 # #### Two-dimensional Array
 # ```
 # (module
@@ -804,7 +799,6 @@ program p
     'twoD.wat',
     target='wat',
 )
-
 
 
 # #### Array Parameters
@@ -918,4 +912,3 @@ program p
     'sets.wat',
     target='wat',
 )
-
