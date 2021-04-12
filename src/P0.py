@@ -904,6 +904,10 @@ def statement():
 
 def adtKind(index, adtName):
     name = SC.val
+
+    if SC.sym != IDENT:
+        mark(f'kind identifier expected but got `{name}`')
+
     getSym()
 
     record = None
