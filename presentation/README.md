@@ -17,4 +17,4 @@ To view my slideshow presentation, please open `presentation.pdf` with your choi
 
 ## Running the examples from the slides
 
-If you would like to run any of the examples from our slides, please view the `src/` folder for information about how you can run any of our pre-built examples.
+If you would like to run any of the examples from our slides, please view the `../src/` folder for information about how you can run any of our pre-built examples.
