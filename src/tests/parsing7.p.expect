@@ -1,0 +1,3 @@
+WARNING: line 10: missing explicit `nil` case
+WARNING: line 10: non-exhaustive cases
+20
