@@ -28,6 +28,9 @@ program Main
     var x: integer
     var y: Something2
     var q: P
+    var r: (b: integer, c: integer)
+
+    r.b := 10
 
     q[0] := A(1)
     y := q[0]

@@ -1,15 +1,14 @@
 
 echo "Starting!"
 
-for i in examples/*.p; do
+for i in tests/*.p; do
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    echo ">>> $i"
+    echo "Stabilizing $i"
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    python Compiler.py "$i" --run
+    python Compiler.py "$i" --run 2>&1 > "$i.expect"
 done
 
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
 echo "Finished!"
 
 while true; do
