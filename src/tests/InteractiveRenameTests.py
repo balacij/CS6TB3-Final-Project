@@ -40,7 +40,6 @@ for fileName in os.listdir('.'):
 
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print(f'Renaming: {fileName}')
-    print(f'Enter test variant; {variantsStr}')
     trg = nextName()
     print(variants[trg])
     try:
