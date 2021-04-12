@@ -662,10 +662,12 @@ def cases(x, casedOn):
             mark("':' expected after ADT kind identifier")
         openScope()
         oldXTp = None
+        # print('PRE-JIG: ', x.name, x)
         if y.record is not None:
             oldXTp = x.tp
             x.tp = y.record.val
         newDecl(x.name, x, overwriteLev=False, errOnDup=False)
+        # print('POST-JIG: ', x.name, x)
         statementSuite()
         if y.record is not None:
             x.tp = oldXTp
@@ -843,8 +845,15 @@ def statement():
         x = CG.genWhileDo(t, x, y)
     elif SC.sym == CASE:
         getSym()
-        # TODO: Should we really allow expressions?
-        x = expression()
+        if SC.sym == IDENT:
+            x = find(SC.val)
+            x = CG.genVar(x)
+            getSym()
+            if SC.sym in FIRSTSELECTOR:
+                mark(f'matching is restricted to variables')
+        else:
+            mark('expected variable identifier')
+        
         if type(x) != Var or (not hasattr(x, 'name')) or len(x.name) == 0:
             mark('expected variable name to `case` on')
 

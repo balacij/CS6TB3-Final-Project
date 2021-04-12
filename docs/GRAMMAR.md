@@ -31,7 +31,7 @@
             ("←" | "<-") ident "(" [expression {"," expression}] ")") |
         "if" expression "then" statementSuite ["else" statementSuite] |
         "while" expression "do" statementSuite |
-        "case" expression "of" "{" INDENT ["nil" ":" statementSuite] {ident ":" statementSuite} ["default" (":" statementSuite | "nothing")] DEDENT "}"
+        "case" ident "of" "{" INDENT ["nil" ":" statementSuite] {ident ":" statementSuite} ["default" (":" statementSuite | "nothing")] DEDENT "}"
     type ::=
         ident ["(" typedIds ")"] {"|" ident ["(" typedIds ")"]} |
         "[" expression ".." expression "]" ("→" | "->") type |

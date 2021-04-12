@@ -376,7 +376,7 @@ type ::=
 
  \item<2-> \texttt{case} statements
 {\small \begin{verbatim}
-statement ::= ... | "case" expression "of" "{" INDENT 
+statement ::= ... | "case" ident "of" "{" INDENT 
                 ["nil" ":" statementSuite] 
                 {ident ":" statementSuite} 
                 ["default" (":" statementSuite | "nothing")] 

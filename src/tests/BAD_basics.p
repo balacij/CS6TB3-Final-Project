@@ -20,35 +20,14 @@ procedure doubler2(x: integer) -> (y: integer, z: integer)
     y, z := x, N
 
 program Main
-    var a: Something
-    var x: integer
-    var y: Something2
+    var m: Maybe
     var q: (i: integer, m: Maybe)
     q.i := 10
     q.m := Just(20)
+    m := Just(20)
 
     case q.m of {
         Just:
-            writeln(q.m.value)
-        default nothing
-    }
-
-    y <- F()
-
-    a <- A(doubler(4))
-
-    case a of {
-        A:
-            writeln(a.value)
-        B:
-            writeln(1)
-        C:
-            writeln(2)
-        D:
-            writeln(3)
-        E:
-            writeln(4)
-        F:
-            writeln(5)
+            writeln(r.value)
         default nothing
     }
