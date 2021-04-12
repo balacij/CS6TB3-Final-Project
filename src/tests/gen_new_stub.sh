@@ -4,7 +4,7 @@ TESTS=$((TESTS+1))
 
 echo "Generating new testing stub..."
 
-TRG="parsing$TESTS.p"
+TRG="test$TESTS.p"
 
 if cp model.stub "$TRG"
 then
