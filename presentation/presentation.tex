@@ -13,6 +13,11 @@
 \DeclareUnicodeCharacter{00A0}{ }
 \DeclareUnicodeCharacter{2192}{\dash}
 
+\newsavebox{\haskellTypes}
+\newsavebox{\pZeroTypes}
+\newsavebox{\haskellTypesInst}
+\newsavebox{\pZeroTypesInst}
+
 \newsavebox{\anatomyOfCaseBox}
 
 \newsavebox{\exampleMaybe}
@@ -62,18 +67,60 @@
 
 \begin{itemize}
  % TODO
- \item<1-> Something 1
- \item<2-> Something 2
- \item<3-> Something 3
- \item<4-> In functional programming languages, they are often known as \textbf{Algebraic Data Types} (ADTs for short).
+ \item<1-> \textbf{Disjoint union types} (DUTs) are types in which can take on different types, differentiated by a \textbf{unique identifier tag}.
+ \item<2-> Each DUT has a set of possible types it can take on, called ``variants'', or ``kinds''.
+ \item<3-> These ``variants'' it may take on may be records or the unit type.
+ \item<4-> An instance of a DUT may take on the form of \textbf{only one} of it's variants. 
+ \item<5-> They are often found in functional programming languages, where they are usually known as \textbf{Algebraic Data Types} (ADTs).
 \end{itemize}
 
 \end{frame}
 
+\begin{lrbox}{\haskellTypes}
+\begin{lstlisting}[language=Haskell, basicstyle=\footnotesize]
+data List a = Nil | Cons a (List a)
+data RGB = Red | Green | Blue
+\end{lstlisting}
+\end{lrbox}
+
+\begin{lrbox}{\pZeroTypes}
+\begin{lstlisting}[language=Pascal, basicstyle=\footnotesize]
+type List = Nil | Cons(value: integer, tail: List)
+type RGB = Red | Green | Blue
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{lrbox}{\haskellTypesInst}
+\begin{lstlisting}[language=Haskell, basicstyle=\footnotesize]
+a = Cons 1 (Cons 2 (Cons 3 Nil))
+b = Red
+\end{lstlisting}
+\end{lrbox}
+
+\begin{lrbox}{\pZeroTypesInst}
+\begin{lstlisting}[language=Pascal, basicstyle=\footnotesize]
+a := Cons(1, Cons(2, Cons(3, Nil())))
+b := Red()
+\end{lstlisting}
+\end{lrbox}
+
 \begin{frame}
 \frametitle{What do they look like?}
-% TODO: Code examples
-% TODO: Instantiation examples
+\begin{itemize}
+ \item<1-> In Haskell,\\
+    \usebox{\haskellTypes} \\
+    \ \\
+ \item<2-> In our implementation,\\
+    \usebox{\pZeroTypes} \\
+    \ \\
+ \item<3-> Instantiation in Haskell,\\
+    \usebox{\haskellTypesInst} \\
+    \ \\
+ \item<4-> Instantiation in our implementation,\\
+    \usebox{\pZeroTypesInst} \\
+\end{itemize}
+
 \end{frame}
 
 \begin{lrbox}{\anatomyOfCaseBox}
