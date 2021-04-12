@@ -19,7 +19,9 @@ for fileName in os.listdir('.'):
         if fileName.startswith(v):
             existingVariants[invertedVariants[v]] += 1
 
+print('Initial count sets:')
 print(existingVariants)
+print()
 
 def nextName():
     ret = None
@@ -28,7 +30,7 @@ def nextName():
         ret = input()
     return ret
 
-
+print('Starting!')
 for fileName in os.listdir('.'):
     if not os.path.isfile(fileName):
         continue
@@ -50,6 +52,8 @@ for fileName in os.listdir('.'):
         print(f'failed to rename: {fileName}')
         exit(1)
     existingVariants[trg] += 1
-    
 
+print('No more found for renaming!')
+print()
+print('Post count sets:')
 print(existingVariants)
