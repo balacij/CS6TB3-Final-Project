@@ -37,7 +37,7 @@
         "[" expression ".." expression "]" ("→" | "->") type |
         "(" typedIds ")" |
         "set" "[" expression ".." expression "]"
-    typedIds ::= ident {"," ident} ":" type {"," ident {"," ident} ":" type}.
+    typedIds ::= ident {"," ident} ":" type {"," ident {"," ident} ":" type}
     declarations ::= 
         {"const" ident "=" expression}
         {"type" ident "=" type}

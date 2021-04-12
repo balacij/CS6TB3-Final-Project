@@ -60,7 +60,14 @@
 \begin{frame}
 \frametitle{What are Disjoint Union Types?}
 
-% TODO: 
+\begin{itemize}
+ % TODO
+ \item<1-> Something 1
+ \item<2-> Something 2
+ \item<3-> Something 3
+ \item<4-> In functional programming languages, they are often known as \textbf{Algebraic Data Types} (ADTs for short).
+\end{itemize}
+
 \end{frame}
 
 \begin{frame}
@@ -76,7 +83,7 @@ case <variable> of {
     Kind A: <stmtSuite>
     Kind B: <stmtSuite>
     ...
-    Kind Z: <stmtSuite>
+    ...
     [default: <stmtSuite>]
     ... or ...
     [default nothing]
@@ -309,15 +316,26 @@ Modelling is nice with disjoint union types!
 
 \section{Implementation Evaluation and Notes}
 
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Focal Grammar Changes}
 
 \begin{itemize}
- \item<1-> Text visible on slide 1
- \item<2-> Text visible on slide 2
- \item<3-> Text visible on slide 3
- \item<4-> Text visible on slide 4
- % TODO:
+ \item<1-> Disjoint union type declarations
+    {\small \begin{verbatim}
+type ::=
+    ident ["(" typedIds ")"] {"|" ident ["(" typedIds ")"]} 
+    | ...
+            \end{verbatim}}
+
+ \item<2-> \texttt{case} statements
+{\small \begin{verbatim}
+statement ::= ... | "case" expression "of" "{" INDENT 
+                ["nil" ":" statementSuite] 
+                {ident ":" statementSuite} 
+                ["default" (":" statementSuite | "nothing")] 
+               DEDENT "}"
+    \end{verbatim}}
+
 \end{itemize}
 
 \end{frame}
@@ -328,10 +346,11 @@ Modelling is nice with disjoint union types!
 
 \begin{itemize}
  \item<1-> Single-value returning procedures may be used ``in-place'' in expressions
- \item<2-> ``$<-$'' and ``$->$'' as alternatives for ``$\leftarrow$'' and ``$\rightarrow$'', respectively
- \item<3-> ``$>=$'' and ``$<=$'' as alternatives for ``$\geq$'' and ``$\leq$'', respectively
- \item<4-> ``$*$'' as an alternative for ``$\times$''
- \item<5-> Standard procedures
+ \item<2-> Single characters wrapped in single-quotes (\textbf{\texttt{`a'}}) is a syntactic sugar for converting single utf-8 characters into P0 integers
+ \item<3-> ``$<-$'' and ``$->$'' as alternatives for ``$\leftarrow$'' and ``$\rightarrow$'', respectively
+ \item<4-> ``$>=$'' and ``$<=$'' as alternatives for ``$\geq$'' and ``$\leq$'', respectively
+ \item<5-> ``$*$'' as an alternative for ``$\times$''
+ \item<6-> Standard procedures
  \begin{itemize}
   \item \texttt{write} - no longer prints a newline character
   \item \texttt{writeln} - writes single integer to std. out. with a newline afterwards
@@ -342,8 +361,6 @@ Modelling is nice with disjoint union types!
 \end{itemize}
 
 \end{frame}
-
-
 
 
 \begin{lrbox}{\caseGenCode}
@@ -525,6 +542,7 @@ global.set $_memsize         ;; set memory size, leftover i32 on stack which is 
 
 \begin{frame}
 \frametitle{References}
+% TODO: References
 \end{frame}
 
 
