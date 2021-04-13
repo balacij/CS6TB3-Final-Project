@@ -6,7 +6,7 @@ rm ./*.snm 2> /dev/null
 rm ./*.synctex.gz 2> /dev/null
 rm ./*.synctex\(busy\) 2> /dev/null
 rm ./*.toc 2> /dev/null
-rm -rf svg-inkscape 2> /dev/null
 rm ./*.vrb 2> /dev/null
+rm -rf svg-inkscape 2> /dev/null
 
 echo 'All done! ✨ 🍰 ✨'
