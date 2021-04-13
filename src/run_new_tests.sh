@@ -19,3 +19,12 @@ done
 
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo "Finished!"
+
+while true; do
+    read -p "Clean project? [Yy/Nn]" yn
+    case $yn in
+        [Yy]* ) sh clean.sh; break;;
+        [Nn]* ) echo "Bye!"; exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
