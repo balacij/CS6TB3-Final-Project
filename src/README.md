@@ -2,7 +2,7 @@
 
 ## Documentation
 
-Please see the `../docs` folder for all information related to this project.
+Please see the <a href="../docs/README.md">`../docs`</a> folder for all information related to this project.
 
 ## Usage
 ### Prerequisites
@@ -36,7 +36,7 @@ Using one of my pre-made examples, you may run the following commands:
 
 Each component of compiler has it's own testing suite built originally by Dr. Sekerinski. I've ported these tests, tweaked them to accommodate my changes to core P0, added new tests to them, and now they are all applicable.
 
-Please run the related testing stub(s) for each component you would like to test.
+Please run the related testing stub(s) for each component you would like to test using `python <testing_stub>`.
 
 For example, if you would like to test parsing of the P0 language, please run `python P0ParsingTest.py` (assuming you're already using the virtualenv, otherwise, please follow the steps above).
 
@@ -48,4 +48,4 @@ As such, I've differentiated my own from the original ones.
 
 To test the project using my testing stubs, please run `sh new_tests.sh`.
 
-Additionally, please visit `tests/README.md` for more information about the testing stubs.
+Additionally, please visit <a href="tests/README.md">`tests/README.md`</a> for more information about the testing stubs.

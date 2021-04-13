@@ -15,6 +15,10 @@ Please see the `docs` folder for all <a href="docs/README.md">information relate
 
 Please refer to the `src` folder's <a href="src/README.md">README</a> file for all information regarding using the compiler.
 
+## Tests
+
+Please refer to the `src` folder's <a href="src/README.md">README</a> and `src/tests/` folder's <a href="src/tests/README.md"></a> file for all information regarding tests performed on the compiler.
+
 ## Presentation
 
 If you would like to view the presentation, please visit the `presentation` folder's `presentation.pdf` file.
