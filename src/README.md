@@ -47,3 +47,5 @@ All of my tests are strictly related to P0 and it's interactions with my impleme
 As such, I've differentiated my own from the original ones.
 
 To test the project using my testing stubs, please run `sh new_tests.sh`.
+
+Additionally, please visit `tests/README.md` for more information about the testing stubs.

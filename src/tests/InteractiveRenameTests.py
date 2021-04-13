@@ -12,7 +12,7 @@ for v in variants:
     existingVariants[v] = 0
 
 for fileName in os.listdir('.'):
-    if not os.path.isfile(fileName):
+    if not os.path.isfile(fileName) or not fileName.endswith('.p'):
         continue
 
     for v in invertedVariants.keys():

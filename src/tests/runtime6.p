@@ -20,6 +20,17 @@ program Main
     while i < 10 do
         m := maybes[i]
         case m of {
+            Just: m.value := 999
+            default nothing
+        }
+        i := i + 1
+    
+    i := 0
+
+    // showing that the maybes are mutable
+    while i < 10 do
+        m := maybes[i]
+        case m of {
             Just: writeln(m.value)
             Nothing: writeln(-1)
             default nothing

@@ -51,3 +51,5 @@
 ```
 
 where `utf8Char` is any valid `utf-8` character that Python can read.
+
+##### NOTE: when defining the disjoint union types, we ignore indents and dedents between variants to accommodate multiline and differing preferred coding styles for defining such constructions. This is purely for cosmetic purposes.

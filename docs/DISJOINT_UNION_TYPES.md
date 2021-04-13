@@ -56,6 +56,7 @@ Formalized both here and in the <a href="GRAMMAR.md">GRAMMAR</a> file, the disjo
 ```
 
 ##### NOTE: Disjoint union types are still built with the standard `type` definitions for type aliases but may become disjoint union types if the expected alias does not exist.
+##### NOTE: when defining the disjoint union types, we ignore indents and dedents between variants to accommodate multiline and differing preferred coding styles for defining such constructions. This is purely for cosmetic purposes.
 
 ## Examples
 

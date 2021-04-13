@@ -1,10 +1,6 @@
--1
-999
--1
-999
--1
-999
--1
-999
--1
-999
+WARNING: line 7: missing explicit `nil` case
+WARNING: line 7: non-exhaustive cases
+WARNING: line 15: redundant `case`ing (only has default case, `case`ing can be removed)
+WARNING: line 19: redundant `case`ing (only has default case, `case`ing can be removed)
+F
+R

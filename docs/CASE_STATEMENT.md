@@ -47,7 +47,7 @@ Formalized both here and in the <a href="GRAMMAR.md">GRAMMAR</a> file, statement
             ("←" | "<-") ident "(" [expression {"," expression}] ")") |
         "if" expression "then" statementSuite ["else" statementSuite] |
         "while" expression "do" statementSuite |
-        "case" expression "of" "{" INDENT ["nil" ":" statementSuite] {ident ":" statementSuite} ["default" (":" statementSuite | "nothing")] DEDENT "}"
+        "case" ident "of" "{" INDENT ["nil" ":" statementSuite] {ident ":" statementSuite} ["default" (":" statementSuite | "nothing")] DEDENT "}"
 ```
 
 ## Warnings

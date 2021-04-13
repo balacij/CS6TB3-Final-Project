@@ -1,20 +1,16 @@
-type Colour = R | G | B
+type Colour = R | G | Unknown
 
 procedure printCol(col: Colour)
     case col of {
+        nil: writeCharLn('?')
         R: writeCharLn('R')
         G: writeCharLn('G')
+        default: writeCharLn('?')
     }
 
 program Main
     var s: Colour
-
     s <- R()
-    case s of {
-        default: writeCharLn('F'); printCol(s)
-    }
 
-    case s of {
-        default nothing
-    }
+    printCol(s)
 
