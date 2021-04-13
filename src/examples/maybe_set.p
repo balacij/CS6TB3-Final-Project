@@ -19,7 +19,7 @@ program Main
                 writeChar('-')
                 writeChar('>')
                 writeChar(' ')
-                if i ∈ s then
+                if i ∈ m.value then
                     writeCharLn('T')
                 else
                     writeCharLn('F')
