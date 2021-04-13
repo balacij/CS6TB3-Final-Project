@@ -8,7 +8,7 @@ The majority of the scanner and symbol table checks are fairly simple and straig
 
 ## `.p <-> .p.expect`
 
-Each `.p` file in this folder can be thought of as a testing stub. The related `.p.expect` file is what we test test runs of these `.p` files against. The `.p.expect` are considered stable and what we expect.
+Each `.p` file in this folder can be thought of as a testing stub. The related `.p.expect` file is what we test test runs of these `.p` files against. The `.p.expect` are considered stable and what we expect to be outputted when running it's corresponding testing stub program.
 
 ## Testing
 
