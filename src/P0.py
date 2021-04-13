@@ -3,12 +3,12 @@
 # ## The P0 Compiler
 # #### COMP SCI 4TB3/6TB3, McMaster University
 # #### Original Author: Emil Sekerinski, revised April 2021
-#
+# 
 # This work builds off of Dr. Sekerinski's original compiler for P0, a programming language inspired by Pascal, a language designed for ease of compilation. The compiler currently generates WebAssembly, but is modularized to facilitate other targets. WebAssembly is representative of stack-based virtual machines.
-#
+# 
 # ### The P0 Language
 # The main syntactic elements of P0 are *statements*, *declarations*, *types*, and *expressions*.
-#
+# 
 # #### Statements
 # * _Assignment statement_ (`x₁`, `x₂`, … variable identifers, `d` selector, `e`, `e₁`, `e₂`, … expressions):
 # ```
@@ -33,7 +33,7 @@
 # ```
 #       while B do S
 # ```
-# * _Case-statements_ (`A` ADT variable name, `k₁`, `k₂`, … adt kind identifiers of `A`, `S₁`, `S₂`, … statements) -- Optional `nil` and `default` cases.
+# * _Case-statements_ (`A` DUT/ADT variable name, `k₁`, `k₂`, … DUT/ADT kind identifiers of `A`, `S₁`, `S₂`, … statements) -- Optional `nil` and `default` cases.
 # ```
 #       case A of {
 #             k₁: S₁          // assuming A is variant k₁
@@ -109,7 +109,7 @@
 # ```
 #       k₁(f₁: T₁, f₂: T₂, …) | k₂(f₃: T₃, …) | k₃ …
 # ```
-#
+# 
 # #### Expressions:
 # * _Constants:_
 # ```
@@ -127,19 +127,21 @@
 #       + e, – e, e₁ + e₂, e₁ – e₂, e₁ ∪ e₂, e₁ or e₂
 #       e₁ = e₂, e₁ ≠ e₂, e₁ < e₂, e₁ ≤ e₂, e₁ > e₂, e₁ ≥ e₂, e₁ ∈ e₂, e₁ ⊆ e₂, e₁ ⊇ e₂
 # ```
-#
+# 
 # Types `integer`, `boolean`, constants `true`, `false`, and procedures `read`, `write`, `writeln`, `writeChar`, `writeCharLn`, `writeNewLine` are not symbols of the grammar; they are _standard identifiers_ (*predefined identifiers*).
 
 
 # ### Modularization
 # <div><span style="float:right"><img width="60%" src="./img/modularization.svg"/></span></div>
-#
+# 
 # - The parser, `P0`, parses the source text, type-checks it, evaluates constant expressions, and generates target code, in one pass over the source text.
 # - The scanner, `SC`, reads characters of the source text and provides the next symbol to the parser; it allows errors to be reported at the current position in the source text.
 # - The symbol table, `ST`, stores all currently valid declarations, as needed for type-checking.
-# - The code generator, `CG`, provides the parser with procedures for generating code for P0 expressions, statements, and variable declarations, and procedure declarations.
-#
-# The parser is the main program that calls the scanner, symbol table, and code generator. All call the scanner for error reporting. The code generator augments the entries in the the symbol table, for example with the size and location of variables. There are three code generators: `CCGwat` generates WebAssembly code, `CGmips` generates MIPS code, and `CGast` generates only an abstract syntax tree.
+# - The code generator, `CGwat`, provides the parser with procedures for generating code for P0 expressions, statements, and variable declarations, and procedure declarations.
+# - `Runtimes` contains a basic set of utilities for executing P0 programs using `pywasm` or `wasmer` as execution engines.
+# - `Compiler` handles command-line usage of the compiler suite.
+# 
+# The parser is the main program that calls the scanner, symbol table, and code generator. All call the scanner for error reporting. The code generator augments the entries in the the symbol table, for example with the size and location of variables. There is one target code generator, `CCGwat`, which generates WebAssembly code.
 
 # ### The Parser
 # The scanner and symbol table are always imported. Depending on the selected target, a different code generator is imported when compilation starts.
@@ -601,7 +603,7 @@ def statementSuite():
 #             ("←" | "<-") ident "(" [expression {"," expression}] ")") |
 #         "if" expression "then" statementSuite ["else" statementSuite] |
 #         "while" expression "do" statementSuite |
-#         "case" expression "of" "{" INDENT ["nil" ":" statementSuite] {ident ":" statementSuite} ["default" (":" statementSuite | "nothing")] DEDENT "}"
+#         "case" ident "of" "{" INDENT ["nil" ":" statementSuite] {ident ":" statementSuite} ["default" (":" statementSuite | "nothing")] DEDENT "}"
 #
 # and generates code for the statement if no error is reported.
 

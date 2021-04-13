@@ -5,7 +5,7 @@ Adding Disjoint Union Types to P0
 
 ## Proposal
 
-If you would like to view my proposal for implementing Disjoint Union Types into P0, please see `proposal/PROPOSAL_DUT.md`. Please note that I was previously considering working on a partial evaluation project but I have since decided to continue through with the disjoint unions project.
+If you would like to view my proposal for implementing Disjoint Union Types into P0, please see <a href="proposal/PROPOSAL_DUT.md">`proposal/PROPOSAL_DUT.md`</a>. Please note that I was previously considering working on a partial evaluation project but I have since decided to continue through with the disjoint unions project.
 
 ## Documentation
 
@@ -17,7 +17,7 @@ Please refer to the `src` folder's <a href="src/README.md">README</a> file for a
 
 ## Tests
 
-Please refer to the `src` folder's <a href="src/README.md">README</a> and `src/tests/` folder's <a href="src/tests/README.md"></a> file for all information regarding tests performed on the compiler.
+Please refer to the `src` folder's <a href="src/README.md">README</a> and `src/tests/` folder's <a href="src/tests/README.md">README</a> file for all information regarding tests performed on the compiler.
 
 ## Presentation
 
