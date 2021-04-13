@@ -112,5 +112,5 @@ program Main
 
 You will be greeted with the following warning messages:
 ```
-WARNING: line 3: redundant: "Colour" has only been given 1 only one kind variant!
+WARNING: redundant: "Colour" has only been given 1 only one kind variant!
 ```

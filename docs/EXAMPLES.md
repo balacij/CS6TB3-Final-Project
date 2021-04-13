@@ -1,6 +1,6 @@
 # Examples
 
-The following are a select group of examples that I found interesting. However, to view full program implementations making full use of these disjoint union types, please visit the `../src/examples/` folder.
+The following are a select group of examples that I found interesting. However, to view full program implementations (making full use of these disjoint union types and other existing types), please visit the <a href="../src/examples/">`../src/examples/`</a> folder.
 
 * Colours
 ```

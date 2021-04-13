@@ -2,6 +2,11 @@
 
 While developing this project, I came across a few interesting challenges.
 
+## Self-references
+
+Consider our list definition, `type List = Cons(value: integer, tail: List) | Nil`. In this construction, we create a "Cons" construction which contains another "List". However, when we are parsing the "Cons" construction, we are also parsing the "List" construction. As such, while parsing "List", we assume it to be a new construction that is not yet declared so that when we encounter it in the variants, we know that it is a self-reference to the "List" type. In this way, we register it as a pointer to another "List" instance.
+
+
 ## Runtime -- pywasm
 
 While testing out early programs that heavily used recursive, I was running into a frequent "stack size limit" error that seemingly occurred very quickly. I had first thought that this might have been a restriction by WebAssembly but after a bit of research, I found out that the real culprit was `pywasm`. `pywasm` is, of course, written in Python, for which has a rather small recursive call stack size limit. As such I switched my default runtime to `wasmer` and there were no more issues.

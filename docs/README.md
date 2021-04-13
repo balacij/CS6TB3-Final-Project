@@ -1,6 +1,6 @@
-# Group 8 Documentations
+# Group 8 Documentation
 
-Please note that we will often be referring to the Disjoint Union Types as Algebraic Data Types, or as DUTs and/or ADTs for short.
+Please note that we will often be referring to the Disjoint Union Types as "Algebraic Data Types", or as "DUTs" and/or "ADTs" for short.
 
 Table of Contents
 1. <a href="P0.md">P0 General Information</a>
