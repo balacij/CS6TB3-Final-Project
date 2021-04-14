@@ -54,6 +54,28 @@ procedure printList(l: List)
             writeCharLn('⊥')    // 8869 = '⊥'
     }
 
+procedure iPrintTree(t: Tree)
+    case t of {
+        Branch:
+            writeChar('(')
+            iPrintTree(t.left)
+            writeChar(')')
+            writeChar(' ')
+            writeChar('<')
+            writeChar('-')
+            writeChar('>')
+            writeChar(' ')
+            writeChar('(')
+            iPrintTree(t.right)
+            writeChar(')')
+        Leaf: write(t.value)
+        default nothing
+    }
+
+procedure printTree(t: Tree)
+    iPrintTree(t)
+    writeNewLine()
+
 
 program Main
     var base: Tree
@@ -73,3 +95,5 @@ program Main
     writeln(sumTree(base))
 
     printList(flattenTree(base))
+
+    printTree(base)
