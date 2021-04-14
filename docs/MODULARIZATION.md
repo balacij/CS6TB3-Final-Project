@@ -1,5 +1,5 @@
 ### Modularization
-<div><span style="float:right"><img width="60%" src="./img/modularization.svg"/></span></div>
+<div><span style="float:right"><img width="200px" src="./img/modularization.svg"/></span></div>
 
 - The parser, `P0`, parses the source text, type-checks it, evaluates constant expressions, and generates target code, in one pass over the source text.
 - The scanner, `SC`, reads characters of the source text and provides the next symbol to the parser; it allows errors to be reported at the current position in the source text.
