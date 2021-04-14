@@ -67,9 +67,9 @@
 
 \begin{itemize}
  % TODO
- \item<1-> \textbf{Disjoint union types} (DUTs) are types which can take the form of one of many different types, differentiated by a \textbf{unique identifier tag}.
+ \item<1-> \textbf{Disjoint union types} (DUTs) are types where values can take the form of one of many different constructions, with a \textbf{unique identifier tag}.
  \item<2-> Each DUT has a set of possible types it can take on, called ``variants'', or ``kinds''.
- \item<3-> These ``variants'' it may take on may be records or the unit type.
+ \item<3-> These ``variants'' may be records, or the unit type (``()'').
  \item<4-> An instance of a DUT may take on the form of \textbf{only one} of it's variants. 
  \item<5-> They are often found in functional programming languages, where they are usually known as \textbf{Algebraic Data Types} (ADTs).
 \end{itemize}
@@ -108,10 +108,10 @@ b := Red()
 \begin{frame}
 \frametitle{What do they look like?}
 \begin{itemize}
- \item<1-> In Haskell,\\
+ \item<1-> Declarations in Haskell,\\
     \usebox{\haskellTypes} \\
     \ \\
- \item<2-> In our implementation,\\
+ \item<2-> Declarations in our implementation,\\
     \usebox{\pZeroTypes} \\
     \ \\
  \item<3-> Instantiation in Haskell,\\
@@ -140,24 +140,37 @@ case <variable> of {
 
 \begin{frame}
  \frametitle{How do we use DUTs?}
- \framesubtitle{The anatomy of a \texttt{case} statement.}
+ \framesubtitle{The anatomy of the \texttt{case} statement.}
     \begin{columns}[T,onlytextwidth]
         \begin{column}{.5\textwidth}
             \begin{minipage}{\textwidth}
                 \begin{itemize}
                     \item<1-> \texttt{case}s are the only way to access data inside of DUTs.
-                    \item<2-> Check if DUTs were \textit{initialized} using a \texttt{nil} case at the start.
-                    \item<3-> \texttt{case} on any of the variants you'd like to.
-                    \item<4-> \texttt{default} case allows you to perform either a statement suite or a no-op on all non-covered cases. 
-                    \item<5-> Within the statement suite of each variant \texttt{case}, the variable in question is assumed to be an instance of the variant's record.
+                    \item<2-> Check if DUTs were \textit{initialized} using an optional \texttt{nil} case at the start.
+                    \item<3-> \texttt{case} on any of the variants.
+                    \item<4-> Within the statement suite of each variant \texttt{case}, the variable in question is assumed to be an instance of the variant's record.
+                    \item<5-> \texttt{default} case allows you to perform either a statement suite or a no-op on all non-covered cases. 
                 \end{itemize}
             \end{minipage}
         \end{column}
         \begin{column}{.45\textwidth}
             \begin{onlyenv}
                 \begin{minipage}{\textwidth}
-                    \usebox{\anatomyOfCaseBox}
-                    \begin{alertblock}{\footnotesize Cover your \texttt{case}s!}<6->
+                    \setlength{\leftmargini}{0cm}
+                    % \usebox{\anatomyOfCaseBox}
+                    \begin{itemize}[label={},leftmargin=*]
+                     \item[]<1-> \texttt{case <variable> of \{}
+                     \item[]<2-> \hphantom{~~~~}\texttt{[nil: <stmtSuite>]}
+                     \item[]<3-> \hphantom{~~~~}\texttt{Kind A: <stmtSuite>}
+                     \item[]<4-> \hphantom{~~~~}\texttt{Kind B: <stmtSuite>}
+                     \item[]<4-> \hphantom{~~~~}\texttt{...}
+                     \item[]<5-> \hphantom{~~~~}\texttt{[default: <stmtSuite>]}
+                     \item[]<6-> \hphantom{~~~~}\texttt{... or ...}
+                     \item[]<7-> \hphantom{~~~~}\texttt{[default nothing]}
+                     \item[]<7-> \texttt{\}}
+                    \end{itemize}
+
+                    \begin{alertblock}{\footnotesize Cover your \texttt{case}s!}<8->
                         {\footnotesize If you create a non-exhaustive \texttt{case} statement, the compiler will warn you.}
                     \end{alertblock}
                 \end{minipage}
@@ -197,12 +210,24 @@ program Main
 
 \begin{frame}
 \frametitle{Example: Maybe}
-\usebox{\exampleMaybe}
 
-\begin{block}{Output}<2->
--1\\
-1111
-\end{block}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{.6\textwidth}
+            \begin{minipage}{\textwidth}
+                \usebox{\exampleMaybe}
+            \end{minipage}
+        \end{column}
+        \begin{column}{.35\textwidth}
+            \begin{onlyenv}
+                \begin{minipage}{\textwidth}
+                    \begin{block}{Output}<2->
+                        -1\\
+                        1111
+                    \end{block}
+                \end{minipage}
+            \end{onlyenv}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 
@@ -214,9 +239,9 @@ type List = Cons(head: integer, tail: List)
 procedure upToList(n: integer) → (l: List)
     if n < 1 then l := Nil() else l := Cons(n, upToList(n-1))
 
-procedure consumeList(l: List)
+procedure printList(l: List)
     case l of {
-        Cons: writeln(l.head); consumeList(l.tail)
+        Cons: writeln(l.head); printList(l.tail)
         default nothing
     }
 
@@ -229,13 +254,13 @@ procedure sumList(l: List) → (n: integer)
 program Main
     var myList: List
     myList := upToList(5)
-    consumeList(myList)
+    printList(myList)
     writeln(sumList(myList))
 \end{lstlisting}
 \end{lrbox}
 
 \begin{frame}
-\frametitle{Example: Lists}
+\frametitle{Example: Integer Lists}
     \begin{columns}[T,onlytextwidth]
         \begin{column}{.8\textwidth}
             \begin{minipage}{\textwidth}
@@ -361,7 +386,7 @@ Modelling is nice with disjoint union types!
 \end{block}
 \end{frame}
 
-\section{Implementation Evaluation and Notes}
+\section{Implementation Discussion \& Evaluation}
 
 \begin{frame}[fragile]
 \frametitle{Focal Grammar Changes}
@@ -392,8 +417,8 @@ statement ::= ... | "case" ident "of" "{" INDENT
 \frametitle{Supplementary Grammar and Procedure Changes}
 
 \begin{itemize}
- \item<1-> Single-value returning procedures may be used ``in-place'' in expressions
- \item<2-> Single characters wrapped in single-quotes (\textbf{\texttt{`a'}}) is a syntactic sugar for converting single utf-8 characters into P0 integers
+ \item<1-> Single-value returning procedures may be used ``in-place'' in expressions (e.g., ``\texttt{m := 1 + pow(2, 3)}'')
+ \item<2-> Single characters wrapped in single-quotes (e.g., \textbf{\texttt{`a'}}) is a syntactic sugar for converting single utf-8 characters into P0 integers
  \item<3-> ``$<-$'' and ``$->$'' as alternatives for ``$\leftarrow$'' and ``$\rightarrow$'', respectively
  \item<4-> ``$>=$'' and ``$<=$'' as alternatives for ``$\geq$'' and ``$\leq$'', respectively
  \item<5-> ``$*$'' as an alternative for ``$\times$''
@@ -431,32 +456,32 @@ procedure printCol(col: Colour)
 ...
 local.get $col
 i32.load
-i32.const 0        ;; check if nil
+i32.const 0              ;; check if nil/0
 i32.eq
-if                 ;; if it is nil
-i32.const 63
-call $writeCharLn  ;; print '?'
-else               ;; otherwise
-local.get $col
-i32.load
-i32.const 1        ;; check if `R`
-i32.eq
-if                 ;; if it is `R`
-i32.const 82
-call $writeCharLn  ;; print 'R'
-else               ;; otherwise
-local.get $col
-i32.load
-i32.const 2        ;; check if `G`
-i32.eq
-if                 ;; if it is `G`
-i32.const 71
-call $writeCharLn  ;; print 'G'
-else
-i32.const 63       ;; otherwise, default
-call $writeCharLn  ;; print '?'
-end
-end
+if                       ;; if it is nil
+  i32.const 63
+  call $writeCharLn      ;; print '?'
+else                     ;; otherwise
+  local.get $col
+  i32.load
+  i32.const 1            ;; check if `R`
+  i32.eq
+  if                     ;; if it is `R`
+    i32.const 82
+    call $writeCharLn    ;; print 'R'
+  else                   ;; otherwise
+    local.get $col
+    i32.load
+    i32.const 2          ;; check if `G`
+    i32.eq
+    if                   ;; if it is `G` kind
+      i32.const 71
+      call $writeCharLn  ;; print 'G'
+    else
+      i32.const 63       ;; otherwise, default
+      call $writeCharLn  ;; print '?'
+    end
+  end
 end
 \end{lstlisting}
 \end{lrbox}
@@ -467,12 +492,12 @@ end
     \begin{columns}[T,onlytextwidth]
         \begin{column}{.40\textwidth}
             \begin{minipage}{\textwidth}
-                {\footnotesize For example, the WebAssembly code on the right-hand side for the below \texttt{case} statement.}
+                {\footnotesize The WebAssembly code on the right-hand side is generated for the below \texttt{case} statement.}
                 \ \\ \ \\ \ \\
                 \usebox{\caseGenCode}
             \end{minipage}
         \end{column}
-        \begin{column}{.50\textwidth}
+        \begin{column}{.55\textwidth}
             \begin{minipage}{\textwidth}
                 \usebox{\caseGenWat}
             \end{minipage}
@@ -482,11 +507,11 @@ end
 
 \begin{frame}
 \frametitle{Memory Impact \& Management}
-
-Each instance of a DUT is located on the heap, and instances of local/global DUTs are pointers to the locations of their corresponding DUT on the heap.
 \begin{itemize}
- \item <1-> Size of an allocation depends on the size of the variant being instantiated
- \item Offsets to accessing variables work similar to records, with a 4 byte offset for the variant id.
+ \item<1-> Each instance of a DUT is located on the heap, and instances of local/global DUTs are pointers to locations on the heap.
+ \item<2-> Size of an allocation depends on the size of the variant being instantiated
+ \item<3-> Offsets to accessing variables work similar to records, with a 4 byte offset for the variant id.
+ \item<4-> Memory usage can be fairly inefficient for certain constructions (e.g., \texttt{String}s, \texttt{List}s, etc).
 \end{itemize}
 
 \begin{figure}
@@ -495,7 +520,8 @@ Each instance of a DUT is located on the heap, and instances of local/global DUT
 \end{frame}
 
 \begin{frame}
-\frametitle{Example: Lists in Memory}
+\frametitle{Example: Integer Lists in Memory}
+\framesubtitle{Strings are very similar}
 \begin{figure}
   \includesvg[width=0.9\textwidth]{../docs/img/memory_example_list_compressed.svg}
 \end{figure}
@@ -506,10 +532,14 @@ Each instance of a DUT is located on the heap, and instances of local/global DUT
 \frametitle{Notable Design Decisions}
 
 \begin{itemize}
- \item<1-> The first 4 bytes of a program are to be always initialized to 0 so that we can always have uninitialized DUT pointers pointing to it, then when this uninitialized DUT is read in, we will always see that the ``instance" has $kindId = 0$, meaning it hasn't been instantiated.
- \item<2-> When DUTs are read in, we create ``helper functions" for each DUT variant. These ``helper functions" are then used whenever we want to instantiate any particular DUT variant. DUT variant instantiation is hence secretly just a function call (to some function that creates a DUT on the heap and returns it's memory location).
- \item<3-> Disjoint union type variants are mutable records. You may modify the values of a DUT variant only when \texttt{case}ing on it from within it's case. 
- \item<4-> DUT variant kind identifiers are immutable!
+ \item<1-> The first 4 bytes of a program are always left as 0 so that we can always have uninitialized DUT pointers pointing to it naturally, then when this uninitialized DUT is read in, we will always see that the ``instance" has $id = 0$, meaning it hasn't been instantiated.
+ \item<2-> DUT variant/kind identifiers are immutable and indexed consecutively, starting from 1.
+ \item<3-> The data within the records are mutable, but you can only access them through \texttt{case}ing.
+ \item<4-> When parsing DUTs, we create ``instantiation helper functions" for each DUT variant. 
+ \begin{itemize}
+  \item<5-> ``DUT variant instantiation'' is secretly rewritten into procedure calls.
+  \item<6-> This simplifies parsing, and trims down generated code size.
+ \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -559,9 +589,30 @@ global.set $_memsize         ;; set memory size, leftover i32 on stack which is 
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+ \frametitle{Challenges}
+ \begin{itemize}
+  \item<1-> pywasm
+  \begin{itemize}
+    \item<2-> wasmer!
+  \end{itemize}
+  
+  \item<3-> Recursive disjoint union types (self-references)
+  \begin{itemize}
+    \item<4-> Assume type existence while parsing
+    \item<5-> Instances are references to other memory locations
+  \end{itemize}
+  
+  \item<6-> Making the grammar reasonably ``natural'' feeling in P0
+ \end{itemize}
+
+\end{frame}
+
+
 \section{Future Work}
 
 \begin{frame}
+\frametitle{Future Work}
 
 \begin{itemize}
  \item<1-> Type variables!
@@ -573,7 +624,7 @@ global.set $_memsize         ;; set memory size, leftover i32 on stack which is 
  \item<2-> More built-in types and syntactic sugars
  \begin{itemize}
  \item<.-> Strings, Lists, Maps as a basic set of built-in DUTs
- \item Stronger syntactic sugar for String generation (e.g., ``abcd..." for quickly instantiating large strings)
+ \item Syntactic sugar for String generation (e.g., ``abcd..." for quickly instantiating large strings)
  \end{itemize}
  
  \item<3-> Improved Memory Management
@@ -586,6 +637,20 @@ global.set $_memsize         ;; set memory size, leftover i32 on stack which is 
 \end{itemize}
 
 \end{frame}
+
+\section{Conclusion}
+
+\begin{frame}
+ \frametitle{Final Remarks}
+ In conclusion,
+ \begin{itemize}
+  \item<2-> Memory can grow quickly with recursive DUTs.
+  \item<3-> DUTs are easy to implement!
+  \item<4-> DUTs are nice to work with!
+ \end{itemize}
+
+\end{frame}
+
 
 \begin{frame}
 \frametitle{References}

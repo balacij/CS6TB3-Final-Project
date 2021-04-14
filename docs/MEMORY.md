@@ -12,7 +12,7 @@ ADT Kind records are allocated similarly to existing P0 records with values bein
 
 Once allocated, disjoint union types may not be "freed" to memory (yet). However, allocated disjoint union types are mutable, except for their variant/kind which may not be changed -- only the fields of their record may be mutated. In this sense, we have a tradeoff between memory consumption and functionality of being able to mutate the kind of an allocated disjoint union type variant. If we wanted functionality of being able to change the kind of a disjoint union type, we would need to pre-allocate the size of the largest variant belonging to the parent disjoint union type.
 
-## An Example
+## An Example: Integer Lists
 ```
 type List = Cons(head: integer, tail: List)
           | Nil
