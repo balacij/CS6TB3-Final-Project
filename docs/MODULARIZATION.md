@@ -7,6 +7,8 @@
 - The code generator, `CGwat`, provides the parser with procedures for generating code for P0 expressions, statements, and variable declarations, and procedure declarations.
 - `Runtimes` contains a basic set of utilities for executing P0 programs using `pywasm` or `wasmer` as execution engines.
 - `Compiler` handles command-line usage of the compiler suite.
+- `tests/` contains a list of testing stubs.
+- `examples/` contains a list of example programs making use of Disjoint Union Types.
 
 The parser is the main program that calls the scanner, symbol table, and code generator. All call the scanner for error reporting. The code generator augments the entries in the the symbol table, for example with the size and location of variables. There is one target code generator, `CGwat`, which generates WebAssembly code.
 
