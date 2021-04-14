@@ -19,6 +19,7 @@ Table of Contents
 10. <a href="TESTS.md">Tests</a>
 11. <a href="FUTURE_WORK.md">Future Work</a>
 12. <a href="CONCLUSION.md">Conclusion</a>
+13. <a href="REFERENCES.md">References</a>
 
 ## Members
 * [Jason Balaci (balacij)](mailto:balacij@mcmaster.ca)

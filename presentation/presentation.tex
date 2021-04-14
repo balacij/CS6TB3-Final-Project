@@ -66,8 +66,7 @@
 \frametitle{What are Disjoint Union Types?}
 
 \begin{itemize}
- % TODO
- \item<1-> \textbf{Disjoint union types} (DUTs) are types where values can take the form of one of many different constructions, with a \textbf{unique identifier tag}.
+ \item<1-> \textbf{Disjoint union types} (DUTs) are types where values can take the form of one of many type constructions, with a \textbf{unique identifier tag}.
  \item<2-> Each DUT has a set of possible types it can take on, called ``variants'', or ``kinds''.
  \item<3-> These ``variants'' may be records, or the unit type (``()'').
  \item<4-> An instance of a DUT may take on the form of \textbf{only one} of it's variants. 
@@ -500,6 +499,7 @@ end
                 \usebox{\caseGenCode}
             \end{minipage}
         \end{column}
+        
         \begin{column}{.55\textwidth}
             \begin{minipage}{\textwidth}
                 \usebox{\caseGenWat}
@@ -512,7 +512,7 @@ end
 \frametitle{Memory Impact \& Management}
 \begin{itemize}
  \item<1-> Each instance of a DUT is located on the heap, and variables are just pointers to locations on the heap.
- \item<2-> Size of an allocation depends on the size of the variant being instantiated
+ \item<2-> Size of an allocation depends on the size of the variant being instantiated.
  \item<3-> Offsets to accessing variables works the same as records, with a 4 byte offset for the variant id.
  \item<4-> Memory usage can be fairly inefficient for certain constructions (e.g., \texttt{String}s, \texttt{List}s, etc).
 \end{itemize}
@@ -611,6 +611,20 @@ global.set $_memsize         ;; set memory size, leftover i32 on stack which is 
 
 \end{frame}
 
+\begin{frame}
+ \frametitle{Statistics}
+ \begin{itemize}
+  \item<1-> core components $\approx$ 330 lines of code
+  \item<2-> supplementary components $\approx$ 450 lines of code
+  \item<3-> tests and documentation $\approx$ 1400 lines of code
+  \item<4-> $\sim$230 commits
+  \item<5-> $\sim$18hrs for stable product
+  \item<6-> $\sim$42hrs for testing, debugging, documentation, and presentation slides
+ \end{itemize}
+
+\end{frame}
+
+
 
 \section{Future Work}
 
@@ -657,7 +671,10 @@ global.set $_memsize         ;; set memory size, leftover i32 on stack which is 
 
 \begin{frame}
 \frametitle{References}
-% TODO: References
+\begin{itemize}
+ \item Carette, Jacques, Oleg Kiselyov, and Chung-chieh Shan. ``Finally tagless, partially evaluated: Tagless staged interpreters for simpler typed languages.'' \textit{Journal of Functional Programming} 19.5 (2009): 509.
+\end{itemize}
+
 \end{frame}
 
 
