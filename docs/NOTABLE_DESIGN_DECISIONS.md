@@ -7,3 +7,6 @@
 * Disjoint union type variants are mutable records. However, the variant kind identifiers are immutable!
 
 ##### NOTE: All of these points are discussed in greater length in the other documents. However, I felt it was necessary to retain a short list of these "notable design decisions" here as well for quick overview.
+
+
+<a style="float:left" href="RUNTIMES.md">\<\< Runtimes</a> <a style="float:right" href="STATISTICS.md">Statistics \>\></a>

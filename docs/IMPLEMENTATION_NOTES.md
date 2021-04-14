@@ -4,7 +4,7 @@ We try to implement DUTs as close to the definition of DUTs as possible.
 
 Essentially, we define the disjoint union types as an instance of one of many records, whereby each record has a uniquely identifying tag. We treat instances of these DUTs to be records in memory with the variant records prepended with a unique id. For example, if we had `type Maybe = Just(value: integer) | Nothing`, we treat it as if it were closer to `Just(id: integer, value: integer) | Nothing(id: integer)`, using `id` as a common location and identifier between each data construction. Additionally, the `id` for `Just` will always be `1` and the `id` for `Maybe` will always be `2`, which allows us to uniquely identify which DUT constructor an instance takes the form of.
 
-When reading in the DUT type declarations, we create "instantiation helper" functions for each data constructor of each DUT type. Consider instantiating `Just` specifically using `Just(10)`. When parsing, we rewrite the `Just` into our internal helper function (in this case, it would be `__mk_Just`) and then parse the arguments `(10)` as we would when parsing the parameters of a P0 procedure call. This allows us to easily construct DUTs. In our helper functions, we do the "behind the scenes" work, where we store the inputs into the latest free memory area, and then grow the total memory size by the size of the DUT construction (in bytes). This memory component is discussed in depth in <a href="MEMORY.md">MEMORY.md</a>.
+When reading in the DUT type declarations, we create "instantiation helper" functions for each data constructor of each DUT type. Consider instantiating `Just`, specifically using `Just(10)`. When parsing, we rewrite the `Just` into our internal helper function (in this case, it would be `__mk_Just`) and then parse the arguments `(10)` as we would when parsing the parameters of a P0 procedure call. This instantiation helper function then allocates the construction on the heap and returns the memory address for which it was placed. This allows us to easily construct DUTs. In our helper functions, we do the "behind the scenes" work, where we store the inputs into the latest free memory area, and then grow the total memory size by the size of the DUT construction (in bytes). This memory component is discussed in depth in <a href="MEMORY.md">`MEMORY.md`</a>.
 
 Consider the following code:
 ```
@@ -136,3 +136,5 @@ end
 end
 end
 ```
+
+<a style="float:left" href="MEMORY.md">\<\< Memory</a> <a style="float:right" href="CHALLENGES.md">Challenges \>\></a>

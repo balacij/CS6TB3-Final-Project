@@ -24,3 +24,5 @@ Specifically, we would like to note that the size of the variants are dynamic, b
 
 <div><span style="float:right"><img width="140%" src="./img/memory_example_list.svg"/></span></div>
 
+
+<a style="float:left" href="STANDARD_PROCEDURES.md">\<\< Standard Procedures</a> <a style="float:right" href="IMPLEMENTATION_NOTES.md">Implementation Notes \>\></a>

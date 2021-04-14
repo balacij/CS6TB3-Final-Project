@@ -8,4 +8,7 @@
 - `Runtimes` contains a basic set of utilities for executing P0 programs using `pywasm` or `wasmer` as execution engines.
 - `Compiler` handles command-line usage of the compiler suite.
 
-The parser is the main program that calls the scanner, symbol table, and code generator. All call the scanner for error reporting. The code generator augments the entries in the the symbol table, for example with the size and location of variables. There is one target code generator, `CCGwat`, which generates WebAssembly code.
+The parser is the main program that calls the scanner, symbol table, and code generator. All call the scanner for error reporting. The code generator augments the entries in the the symbol table, for example with the size and location of variables. There is one target code generator, `CGwat`, which generates WebAssembly code.
+
+
+<a style="float:left" href="P0.md">\<\< P0 General Information</a> <a style="float:right" href="DISJOINT_UNION_TYPES.md">Disjoint Union Types \>\></a>

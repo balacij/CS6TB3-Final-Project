@@ -4,3 +4,5 @@ While implementing the disjoint union types, we've create many tests along the w
 
 These tests are all new and specifically geared towards testing P0 and disjoint union types. In particular, we also test compatibility with existing data structures in P0 (e.g., records, sets, and arrays). We have also ported over the stable tests originally created by Dr. Sekerinski as well and updated them to accommodate the changes we made to the compiler and the standard procedures.
 
+
+<a style="float:left" href="STATISTICS.md">\<\< Statistics</a> <a style="float:right" href="FUTURE_WORK.md">Future Work \>\></a>

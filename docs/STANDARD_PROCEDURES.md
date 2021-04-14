@@ -12,3 +12,5 @@ Additions and changes to the functionality of the existing standard procedures a
 | `writeNewLine` | -       | -       | Writes single newline character to standard output                                                            |
 
 ##### Note: `i32` is represented by an `integer` in P0.
+
+<a style="float:left" href="GRAMMAR.md">\<\< Grammar</a> <a style="float:right" href="MEMORY.md">Memory \>\></a>

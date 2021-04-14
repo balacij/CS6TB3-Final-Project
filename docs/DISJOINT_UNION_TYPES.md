@@ -114,3 +114,5 @@ You will be greeted with the following warning messages:
 ```
 WARNING: redundant: "Colour" has only been given 1 only one kind variant!
 ```
+
+<a style="float:left" href="MODULARIZATION.md">\<\< Modularization</a> <a style="float:right" href="CASE_STATEMENT.md">The Case Statement \>\></a>

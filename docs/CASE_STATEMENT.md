@@ -81,3 +81,6 @@ WARNING: line 15: redundant `case`ing (only has default case, `case`ing can be r
 ```
 
 The first two lines of these messages mean that the first-most `case` statement is incomplete -- it does not cover all variant possibilities (as such, it is "non-exhaustive"), it's specifically missing variant `B` and the `nil` case. The third line is just a warning that the second `case` statement which only has `default` case and statement is redundant. 
+
+
+<a style="float:left" href="DISJOINT_UNION_TYPES.md">\<\< Disjoint Union Types</a> <a style="float:right" href="EXAMPLES.md">Examples \>\></a>

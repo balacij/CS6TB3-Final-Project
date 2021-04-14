@@ -22,3 +22,6 @@ In particular, I would like to have Strings, Maps, Lists, and the Natural number
 ## Improving Memory management
 
 Presently, memory is allocated but never freed when no longer in use. I would like to implement better memory management to allow for more memory efficient applications, as well as potentially figuring out how to unfold more disjoint union types to conserve memory further.
+
+
+<a style="float:left" href="TESTS.md">\<\< Tests</a> <a style="float:right" href="CONCLUSION.md">Conclusion \>\></a>
