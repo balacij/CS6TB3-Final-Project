@@ -357,6 +357,9 @@ program Main
 \begin{lstlisting}[language=Pascal,basicstyle=\tiny]
 type RainbowColour = Red | Orange | Yellow | Green | Blue | Indigo | Violet
 
+type Maybe = Just(value: integer)
+           | Nothing
+
 type Either = Left(value: integer)
             | Right(value: boolean)
 
@@ -381,7 +384,7 @@ type StringIntMap = SIMCons(key: String, value: integer, tail: StringIntMap)
     
 \usebox{\exampleImagination}
 
-\begin{block}{Remark}
+\begin{block}{Remark}<2->
 Modelling is nice with disjoint union types!
 \end{block}
 \end{frame}
@@ -508,9 +511,9 @@ end
 \begin{frame}
 \frametitle{Memory Impact \& Management}
 \begin{itemize}
- \item<1-> Each instance of a DUT is located on the heap, and instances of local/global DUTs are pointers to locations on the heap.
+ \item<1-> Each instance of a DUT is located on the heap, and variables are just pointers to locations on the heap.
  \item<2-> Size of an allocation depends on the size of the variant being instantiated
- \item<3-> Offsets to accessing variables work similar to records, with a 4 byte offset for the variant id.
+ \item<3-> Offsets to accessing variables works the same as records, with a 4 byte offset for the variant id.
  \item<4-> Memory usage can be fairly inefficient for certain constructions (e.g., \texttt{String}s, \texttt{List}s, etc).
 \end{itemize}
 
@@ -532,7 +535,7 @@ end
 \frametitle{Notable Design Decisions}
 
 \begin{itemize}
- \item<1-> The first 4 bytes of a program are always left as 0 so that we can always have uninitialized DUT pointers pointing to it naturally, then when this uninitialized DUT is read in, we will always see that the ``instance" has $id = 0$, meaning it hasn't been instantiated.
+ \item<1-> The first 4 bytes of a program are always left as 0 so that we can always have uninitialized DUT pointers pointing to it naturally. When this uninitialized DUT is \texttt{case}d on, we will always see that the ``instance" has $id = 0$, meaning it's ``\texttt{nil}''/not instantiated.
  \item<2-> DUT variant/kind identifiers are immutable and indexed consecutively, starting from 1.
  \item<3-> The data within the records are mutable, but you can only access them through \texttt{case}ing.
  \item<4-> When parsing DUTs, we create ``instantiation helper functions" for each DUT variant. 
