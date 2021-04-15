@@ -342,7 +342,7 @@ program Main
                     \ \\
                     
                     \begin{block}{Note}<1->\tiny
-                        We convert single-quoted characters into their UTF-8 integer representation when reading in P0 programs.
+                        We convert single-quoted characters into their Unicode integer representation when reading in P0 programs.
                     \end{block}
                 \end{minipage}
             \end{onlyenv}
@@ -420,7 +420,7 @@ statement ::= ... | "case" ident "of" "{" INDENT
 
 \begin{itemize}
  \item<1-> Single-value returning procedures may be used ``in-place'' in expressions (e.g., ``\texttt{m := 1 + pow(2, 3)}'')
- \item<2-> Single characters wrapped in single-quotes (e.g., \textbf{\texttt{`a'}}) is a syntactic sugar for converting single utf-8 characters into P0 integers
+ \item<2-> Single characters wrapped in single-quotes (e.g., \textbf{\texttt{`a'}}) is a syntactic sugar for converting single Unicode characters into P0 integers
  \item<3-> ``$<-$'' and ``$->$'' as alternatives for ``$\leftarrow$'' and ``$\rightarrow$'', respectively
  \item<4-> ``$>=$'' and ``$<=$'' as alternatives for ``$\geq$'' and ``$\leq$'', respectively
  \item<5-> ``$*$'' as an alternative for ``$\times$''
@@ -428,8 +428,8 @@ statement ::= ... | "case" ident "of" "{" INDENT
  \begin{itemize}
   \item \texttt{write} - no longer prints a newline character
   \item \texttt{writeln} - writes single integer to std. out. with a newline afterwards
-  \item \texttt{writeChar} - writes single integer converted into a utf-8 character to std. out.
-  \item \texttt{writeCharLn} - writes single integer converted into a utf-8 character to std. out. with a newline afterwards
+  \item \texttt{writeChar} - writes single integer converted into a Unicode character to std. out.
+  \item \texttt{writeCharLn} - writes single integer converted into a Unicode character to std. out. with a newline afterwards
   \item \texttt{writeNewLine} - writes a newline character to std. out.
  \end{itemize}
 \end{itemize}

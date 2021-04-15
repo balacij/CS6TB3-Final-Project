@@ -6,7 +6,7 @@
 * `case` statements
 
 ## Supplementary grammar changes:
-* Single quoted characters (e.g., `'a'`, `'b'`, ...) are native conversions from UTF-8 characters to integers. This, in addition to our changes to the standard procedures `write`, `writeln`, etc are purely done for improving the presentation and usability of our `strings.p` example. You may read more information on the changes to the standard procedures in <a href="STANDARD_PROCEDURES.md">`STANDARD_PROCEDURES.md`</a>.
+* Single quoted characters (e.g., `'a'`, `'b'`, ...) are native conversions from Unicode characters to integers. This, in addition to our changes to the standard procedures `write`, `writeln`, etc are purely done for improving the presentation and usability of our `strings.p` example. You may read more information on the changes to the standard procedures in <a href="STANDARD_PROCEDURES.md">`STANDARD_PROCEDURES.md`</a>.
 
 ## Other grammar changes:
 * We allow single-value returning procedures to be executed 'in-place' in expressions (without first setting them to variables)
@@ -45,12 +45,12 @@
         {"procedure" ident "(" [typedIds] ")" [ ("→" | "->") "(" typedIds ")" ] body}
     body ::= INDENT declarations (statementBlock | INDENT statementBlock DEDENT) DEDENT
     program ::= declarations "program" ident body
-    char ::= "'" utf8Char "'"
+    char ::= "'" unicodeChar "'"
     integer ::= digit {digit}
     digit ::= '0' | ... | '9'
 ```
 
-where `utf8Char` is any valid `utf-8` character that Python can read.
+where `unicodeChar` is any valid `unicode` character that Python can read.
 
 ##### NOTE: when defining the disjoint union types, we ignore indents and dedents between variants to accommodate multiline and differing preferred coding styles for defining such constructions. This is purely for cosmetic purposes.
 
