@@ -144,7 +144,6 @@ def genADTSelfRef(adtSelfRef: ADTSelfRef):
 
 
 def genADTKindMkFuncs(adtKinds):
-    # TODO: if memsize increases past 1024, should we grow the memory page?
     for kind in adtKinds:
         params = "" if kind.record is None else ' '.join([f'(param ${f.name} i32)' for f in kind.record.val.fields])
         if len(params) > 0:

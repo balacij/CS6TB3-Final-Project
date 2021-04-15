@@ -417,5 +417,3 @@ program p
   writeNewLine()
 """
 )
-
-# TODO: Add ADT-related, case-related cases
