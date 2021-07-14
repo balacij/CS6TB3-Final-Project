@@ -1,12 +1,12 @@
-rm ./*.aux 2> /dev/null
-rm ./*.log 2> /dev/null
-rm ./*.nav 2> /dev/null
-rm ./*.out 2> /dev/null
-rm ./*.snm 2> /dev/null
-rm ./*.synctex.gz 2> /dev/null
-rm ./*.synctex\(busy\) 2> /dev/null
-rm ./*.toc 2> /dev/null
-rm ./*.vrb 2> /dev/null
-rm -rf svg-inkscape 2> /dev/null
+rm -f ./*.aux
+rm -f ./*.log
+rm -f ./*.nav
+rm -f ./*.out
+rm -f ./*.snm
+rm -f ./*.synctex.gz
+rm -f ./*.synctex\(busy\)
+rm -f ./*.toc
+rm -f ./*.vrb
+rm -rf svg-inkscape
 
 echo 'All done! ✨ 🍰 ✨'
