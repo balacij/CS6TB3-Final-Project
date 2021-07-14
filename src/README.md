@@ -10,6 +10,7 @@ You will need to have a working installation of:
 * Python 3.7+
 * `pip`
 * `virtualenv`
+* `wat2wasm`
 
 ### Setup environment
 Please carefully read and follow these instructions:
